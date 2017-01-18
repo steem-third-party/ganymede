@@ -1,0 +1,24 @@
+= link_to 'Promoted by Third Parties', discussions_url(other_promoted: true)
+
+%small
+  %ul
+    - @discussions.group_by{ |d| [time_ago_in_words(d[:timestamp]), d[:from], d[:amount]] }.each do |group|
+      - key = group.first
+      - ago = key.first
+      - from = key.second
+      - amount = key.last
+      %li
+        #{ago} ago, #{link_to from, "http://steemit.com/@#{from}"} paid #{amount}
+        - if group.last.size == 1
+          - discussion = group.last.last
+          \-
+          = link_to discussion[:slug], discussion[:url]
+        - else
+          %ul
+            - group.last.each do |discussion|
+              %li
+                = link_to discussion[:slug], discussion[:url]
+
+- if @other_promoted == 'true'
+  See:
+  = link_to "How to Find Post Promotions Paid by a Third Party in Ruby", "https://steemit.com/radiator/@inertia/how-to-find-post-promotions-paid-by-a-third-party-in-ruby"
