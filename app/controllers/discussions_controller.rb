@@ -28,7 +28,7 @@ class DiscussionsController < ApplicationController
         
         {
           slug: slug,
-          url: "https://steemit.com/tag/@#{slug}",
+          url: "/tag/@#{slug}",
           from: from,
           amount: amount,
           timestamp: timestamp,
@@ -89,7 +89,7 @@ class DiscussionsController < ApplicationController
         {
           difference: prediction - base_value(comment.total_pending_payout_value),
           symbol: symbol_value(comment.total_pending_payout_value),
-          url: "https://steemit.com#{comment.url}",
+          url: comment.url,
           slug: comment.url.split('@').last,
           cashout_time: comment.cashout_time
         }
@@ -102,7 +102,8 @@ class DiscussionsController < ApplicationController
             url: prediction[:url],
             from: prediction[:slug].split('@').last.split('/').first,
             amount: prediction[:difference],
-            timestamp: prediction[:cashout_time]
+            timestamp: prediction[:cashout_time],
+            symbol: prediction[:symbol]
           }
         end
       end
