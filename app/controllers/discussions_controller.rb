@@ -61,6 +61,8 @@ class DiscussionsController < ApplicationController
           end
         end
       end
+      
+      render 'index' and return if data_items.empty?
 
       data_set = Ai4r::Data::DataSet.new data_labels: data_labels, data_items: data_items
       id3 = Ai4r::Classifiers::ID3.new.build(data_set)

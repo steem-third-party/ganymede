@@ -2,6 +2,14 @@
 
 = link_to 'Predicted to Trend', discussions_url(predicted: true), class: 'btn btn-primary'
 
+- if @predicted == 'true'
+  %div.float-right
+    = form_tag discussions_path, method: :get do
+      = hidden_field_tag :predicted, true
+      Tag:
+      = select_tag 'tag', tags_for_select(@tag)
+      = submit_tag 'Query', class: 'btn btn-primary'
+
 %hr
 
 - if @other_promoted == 'true'
@@ -10,7 +18,10 @@
 
 - if @predicted == 'true'
   .jumbotron
-    %h4 This is list of new posts and their predicted payout based on analysis of the current trending posts ...
+    - if @discussions.any?
+      %h4 This is list of new posts and their predicted payout based on analysis of the current trending posts ...
+    - else
+      %h4 Unable to do prediction right now.  This might be because there were no posts trending for this tag or no new posts to make a prediction on.
 
 %small
   %ul
