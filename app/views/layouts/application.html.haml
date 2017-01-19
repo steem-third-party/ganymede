@@ -18,7 +18,11 @@
           = link_to 'Home', root_url, class: 'btn btn-secondary'
           &nbsp;&nbsp;&nbsp;&nbsp;
           &nbsp;&nbsp;&nbsp;&nbsp;
-      .card-block= yield
+      .card-block
+        .container
+          .alert-container
+            %flash{'flash-message' => 5000, data: {messages: flash.to_json}}
+        = yield
       .card-footer
         %small.float-right
           %kbd

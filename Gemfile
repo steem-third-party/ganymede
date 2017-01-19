@@ -21,8 +21,6 @@ gem 'coffee-rails', '~> 4.2'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -45,10 +43,18 @@ gem 'ai4r'
 gem 'haml'
 
 #Assets
+
 gem 'bootstrap-glyphicons', '~> 0.0.1'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap', '~> 4.0.0.alpha.6'
+  gem 'rails-assets-jquery', '~> 2.2.4'
+  gem 'rails-assets-jquery-ujs', '~> 1.2.0'
+  gem 'rails-assets-angular', '~> 1.5.7'
+  gem 'rails-assets-angular-flash-alert', '~> 1.1.1'
+  gem 'rails-assets-nprogress', '~> 0.2.0'
+  # Tooltips and popovers depend on tether for positioning.
+  gem 'rails-assets-tether', '>= 1.3.2'
 end
 
 gem 'listen'
