@@ -13,7 +13,7 @@ This project is hosted publicly here:
 
 *Ganymede, Jupiter's largest satellite, by Voyager 1 on the afternoon of March 5, 1979 from a range of 253,000 kilometers (151,800 miles).*
 
-This project also serves to demonstrate a Ruby on Rails project that can access the STEEM blockchain using the [Radiator](https://github.com/inertia186/radiator)gem.
+This project also serves to demonstrate a Ruby on Rails project that can access the STEEM blockchain using the [Radiator](https://github.com/inertia186/radiator) gem.
 
 ---
 
