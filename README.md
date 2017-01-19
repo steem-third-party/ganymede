@@ -1,6 +1,19 @@
 # ganymede
 
-[Ganymede](https://github.com/steem-third-party/ganymede) is a demonstration of ruby scripts and api calls in a Ruby on Rails project that can access the STEEM blockchain using the [Radiator](https://github.com/inertia186/radiator) gem.
+[Ganymede](https://github.com/steem-third-party/ganymede) is a demonstration collection of web implementations exploring various ruby scripts and api calls posted on the STEEM blockchain, see:
+
+[https://steemit.com/created/radiator](https://steemit.com/created/radiator)
+
+This project is hosted publicly here:
+
+* [steem-ganymede.herokuapp.com](https://steem-ganymede.herokuapp.com/)
+* [golos-ganymede.herokuapp.com](https://golos-ganymede.herokuapp.com/)
+
+![](https://upload.wikimedia.org/wikipedia/commons/1/17/Ganymede_-_PIA02278.jpg)
+
+*Ganymede, Jupiter's largest satellite, by Voyager 1 on the afternoon of March 5, 1979 from a range of 253,000 kilometers (151,800 miles).*
+
+This project also serves to demonstrate a Ruby on Rails project that can access the STEEM blockchain using the [Radiator](https://github.com/inertia186/radiator)gem.
 
 ---
 
