@@ -1,6 +1,16 @@
-= link_to 'Promoted by Third Parties', discussions_url(other_promoted: true)
-|
-= link_to 'Predicted to Trend', discussions_url(predicted: true)
+= link_to 'Promoted by Third Parties', discussions_url(other_promoted: true), class: 'btn btn-primary'
+
+= link_to 'Predicted to Trend', discussions_url(predicted: true), class: 'btn btn-primary'
+
+%hr
+
+- if @other_promoted == 'true'
+  .jumbotron
+    %h4 These posts have been promoted by someone other than the author ...
+
+- if @predicted == 'true'
+  .jumbotron
+    %h4 This is list of new posts and their predited payout based on analysis of the current trending posts ...
 
 %small
   %ul

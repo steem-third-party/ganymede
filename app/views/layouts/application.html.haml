@@ -7,4 +7,14 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
 
-  %body= yield
+  %body
+    .card
+      .card-header Ganymede by #{link_to '@inertia', 'http://steemit.com/@inertia'}
+      .card-block= yield
+      .card-footer
+        %small.float-right
+          %kbd
+            = link_to 'http://creativecommons.org/publicdomain/zero/1.0/', style: 'color: white' do
+              = image_tag 'http://i.creativecommons.org/p/zero/1.0/80x15.png'
+              &nbsp;
+              = Time.now.year
