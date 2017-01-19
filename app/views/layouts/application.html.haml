@@ -21,6 +21,7 @@
         .container
           .alert-container
             %flash{'flash-message' => 5000, data: {messages: flash.to_json}}
+        %hr
         = yield
       .card-footer
         %small.float-right
