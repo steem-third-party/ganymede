@@ -1,7 +1,7 @@
 %div.float-right
   = form_tag follows_path, method: :get do
     = select_tag :op, options_for_select([['Followers:', 'followers'], ['Following:', 'followings'], ['Ignored by:', 'ignores'], ['Ignoring:', 'ignoring']], @op)
-    = text_field_tag :account, @account
+    = text_field_tag :account, @account, placeholder: 'User Name'
     = submit_tag 'Query', class: 'btn btn-primary'
 %br
 %hr
