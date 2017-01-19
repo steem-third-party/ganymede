@@ -4,7 +4,7 @@
 
 %small
   %ul
-    - @discussions.group_by{ |d| [time_ago_in_words(d[:timestamp]), d[:from], d[:amount]] }.each do |group|
+    - @discussions.group_by{ |d| group_pattern(d) }.each do |group|
       - key = group.first
       - duration = key.first
       - from = key.second
@@ -13,7 +13,7 @@
         - if @other_promoted == 'true'
           #{duration} ago, #{link_to from, "http://steemit.com/@#{from}"} paid #{amount}
         - else
-          #{duration} from now, #{link_to from, "http://steemit.com/@#{from}"} prediction: #{amount} SBD
+          #{duration} from now, prediction: #{amount} SBD
         - if group.last.size == 1
           - discussion = group.last.last
           \-

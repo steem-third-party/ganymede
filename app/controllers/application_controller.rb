@@ -5,9 +5,6 @@ class ApplicationController < ActionController::Base
 
   INITIAL_TIMEOUT = 2
   MAX_TIMEOUT = 300
-  
-  @timeout ||= INITIAL_TIMEOUT
-  
 private
   def api
     @@API ||= Radiator::Api.new(url: 'https://node.steem.ws:443')
@@ -18,6 +15,7 @@ private
   end
   
   def timeout
+    @timeout ||= INITIAL_TIMEOUT
     @timeout = INITIAL_TIMEOUT if @timeout > MAX_TIMEOUT
     
     sleep(@timeout += 2)

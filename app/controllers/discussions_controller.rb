@@ -88,7 +88,7 @@ class DiscussionsController < ApplicationController
           difference: prediction - base_value(comment.total_pending_payout_value),
           symbol: symbol_value(comment.total_pending_payout_value),
           url: "https://steemit.com#{comment.url}",
-          slug: comment.url,
+          slug: comment.url.split('@').last,
           cashout_time: comment.cashout_time
         }
       end.reject(&:nil?)
