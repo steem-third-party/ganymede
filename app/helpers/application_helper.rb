@@ -39,4 +39,19 @@ module ApplicationHelper
     
     response
   end
+  
+  def follow_api_execute (m, *options)
+    response = nil
+    
+    loop do
+      begin
+        response = follow_api.send(m, *options)
+        break if !!response
+      rescue
+        timeout
+      end
+    end
+    
+    response
+  end
 end

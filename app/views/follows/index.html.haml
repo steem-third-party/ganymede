@@ -1,0 +1,43 @@
+%div.float-right
+  = form_tag follows_path, method: :get do
+    User:
+    = select_tag :op, options_for_select([['Followers', 'followers'], ['Following', 'followings'], ['Ignored by', 'ignores'], ['Ignoring', 'ignoring']], @op)
+    = text_field_tag :account, @account
+    = submit_tag 'Query', class: 'btn btn-primary'
+%br
+%hr
+
+- if @op == 'followers'
+  .jumbotron
+    %h4
+      #{pluralize(@follows.size, 'users')} followed by
+      = @account
+- elsif @op == 'followings'
+  .jumbotron
+    %h4
+      #{pluralize(@follows.size, 'users')} following
+      = @account
+- elsif @op == 'ignores'
+  .jumbotron
+    %h4
+      #{pluralize(@follows.size, 'users')} ignored by
+      = @account
+- elsif @op == 'ignoring'
+  .jumbotron
+    %h4
+      #{pluralize(@follows.size, 'users')} ignoring
+      = @account
+
+- if !!@follows
+  %small
+    %ul
+      - @follows.each do |follow|
+        %li= link_to follow, "#{site_prefix}/@#{follow}"
+
+- if @op == 'followers' || @op == 'followings'
+  See:
+  = link_to 'How to List All Followers in Ruby', 'https://steemit.com/radiator/@inertia/how-to-list-all-followers-in-ruby'
+  
+- if @op == 'ignores' || @op == 'ignoring'
+  See:
+  = link_to 'How to List All Ignores (Mutes) in Ruby', 'https://steemit.com/radiator/@inertia/how-to-list-all-ignores-mutes-in-ruby'
