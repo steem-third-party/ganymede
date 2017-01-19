@@ -38,6 +38,9 @@ gem 'jbuilder', '~> 2.5'
 # Access the STEEM blockchain.
 gem 'radiator', github: 'inertia186/radiator'
 
+# Adds general machine learning capabilities.
+gem 'ai4r'
+
 # Templates
 gem 'haml'
 

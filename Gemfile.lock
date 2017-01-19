@@ -48,6 +48,7 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    ai4r (1.13)
     arel (7.1.4)
     bootstrap-glyphicons (0.0.1)
       railties (>= 3.0)
@@ -179,6 +180,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ai4r
   bootstrap-glyphicons (~> 0.0.1)
   byebug
   coffee-rails (~> 4.2)
