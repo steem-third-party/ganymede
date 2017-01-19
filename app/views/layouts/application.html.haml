@@ -6,10 +6,13 @@
 
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    = favicon_link_tag 'ganymede.svg', rel: 'apple-touch-icon', type: 'image/png'
 
   %body
     .card
-      .card-header Ganymede by #{link_to '@inertia', 'http://steemit.com/@inertia'}
+      .card-header
+        = image_tag 'ganymede.svg', width: 24, height: 24
+        Ganymede by #{link_to '@inertia', 'http://steemit.com/@inertia'}
       .card-block= yield
       .card-footer
         %small.float-right
