@@ -1,3 +1,5 @@
+= content_for :head, auto_discovery_link_tag(:atom, discussions_url(predicted: 'true', format: :atom))
+
 = render partial: 'nav'
 
 %div.float-right

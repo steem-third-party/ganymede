@@ -1,4 +1,22 @@
 module DiscussionsHelper
+  def discussion_title
+    title = 'Gamymede - '
+    
+    title << if @other_promoted == 'true'
+      'Promoted by Third Parties'
+    elsif @predicted == 'true'
+      'Predicted to Trend'
+    elsif @trending_flagged == 'true'
+      'Flagged on Trending'
+    elsif @trending_ignored == 'true'
+      'Ignored on Trending'
+    elsif @vote_ready == 'true'
+      'Vote Ready'
+    else
+      'Untitled'
+    end
+  end
+  
   def group_pattern(discussion)
     if @other_promoted == 'true'
       [time_ago_in_words(discussion[:timestamp]), discussion[:from], discussion[:amount]]

@@ -41,6 +41,7 @@ gem 'ai4r'
 
 # Templates
 gem 'haml'
+gem 'rdiscount'
 
 #Assets
 

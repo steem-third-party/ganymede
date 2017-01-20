@@ -42,11 +42,16 @@ private
         from: from,
         amount: amount,
         timestamp: timestamp,
-        # content: api.get_content(author, url).result
+        votes: nil,
+        title: memo,
+        content: ''
       }
     end.reject(&:nil?)
     
-    render 'other_promoted'
+    respond_to do |format|
+      format.html { render 'other_promoted' }
+      format.atom { }
+    end
   end
   
   def predicted
@@ -105,7 +110,10 @@ private
         symbol: symbol_value(comment.total_pending_payout_value),
         url: comment.url,
         slug: comment.url.split('@').last,
-        cashout_time: comment.cashout_time
+        cashout_time: comment.cashout_time,
+        votes: comment.active_votes.size,
+        title: comment.title,
+        content: comment.body
       }
     end.reject(&:nil?)
 
@@ -117,12 +125,18 @@ private
           from: prediction[:slug].split('@').last.split('/').first,
           amount: prediction[:difference],
           timestamp: prediction[:cashout_time],
-          symbol: prediction[:symbol]
+          symbol: prediction[:symbol],
+          votes: prediction[:votes],
+          title: prediction[:title],
+          content: prediction[:content]
         }
       end
     end
     
-    render 'predicted'
+    respond_to do |format|
+      format.html { render 'predicted' }
+      format.atom { }
+    end
   end
   
   def trending_flagged
@@ -138,11 +152,17 @@ private
         url: comment.url,
         from: flaggers.map { |f| "<a href=\"#{site_prefix}/@#{f}\">#{f}</a>" },
         slug: comment.url.split('@').last,
-        timestamp: comment.cashout_time
+        timestamp: comment.cashout_time,
+        votes: comment.active_votes.size,
+        title: comment.title,
+        content: comment.body
       }
     end.reject(&:nil?)
     
-    render 'trending_flagged'
+    respond_to do |format|
+      format.html { render 'trending_flagged' }
+      format.atom { }
+    end
   end
 
   def trending_ignored
@@ -156,11 +176,17 @@ private
         url: comment.url,
         from: ignoring.map { |f| "<a href=\"#{site_prefix}/@#{f}\">#{f}</a>" },
         slug: comment.url.split('@').last,
-        timestamp: comment.cashout_time
+        timestamp: comment.cashout_time,
+        votes: comment.active_votes.size,
+        title: comment.title,
+        content: comment.body
       }
     end.reject(&:nil?)
     
-    render 'trending_ignored'
+    respond_to do |format|
+      format.html { render 'trending_ignored' }
+      format.atom { }
+    end
   end
 
   def vote_ready
@@ -179,14 +205,19 @@ private
       {
         symbol: symbol_value(comment.total_pending_payout_value),
         url: comment.url,
-        from: nil,
+        from: comment.author,
         slug: comment.url.split('@').last,
         timestamp: created,
-        votes: comment.active_votes.size
+        votes: comment.active_votes.size,
+        title: comment.title,
+        content: comment.body
       }
     end.reject(&:nil?)
     
-    render 'vote_ready'
+    respond_to do |format|
+      format.html { render 'vote_ready' }
+      format.atom { }
+    end
   end
 
   def to_rep(raw)
