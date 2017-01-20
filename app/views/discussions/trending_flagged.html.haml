@@ -7,12 +7,12 @@
 
 %small
   %ul
-    - @discussions.group_by{ |d| group_pattern(d) }.each do |group|
+    - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.last.last[:timestamp] }.each do |group|
       - key = group.first
       - from = key.first
       - amount = key.last
+      - discussion = group.last.last
       %li
-        - discussion = group.last.last
         flagged by
         %strong= from.to_sentence.html_safe
         - if group.last.size == 1

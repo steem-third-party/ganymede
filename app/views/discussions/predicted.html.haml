@@ -17,13 +17,13 @@
 
 %small
   %ul
-    - @discussions.group_by{ |d| group_pattern(d) }.each do |group|
+    - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.last.last[:timestamp] }.reverse.each do |group|
       - key = group.first
       - duration = key.first
       - from = key.second
       - amount = key.last
+      - discussion = group.last.last
       %li
-        - discussion = group.last.last
         #{duration} from now, will rise by: #{amount} #{discussion[:symbol]}
         - if group.last.size == 1
           \-
