@@ -1,0 +1,28 @@
+= render partial: 'nav'
+
+%hr
+
+.jumbotron
+  %h4 These posts have been promoted by someone other than the author ...
+
+%small
+  %ul
+    - @discussions.group_by{ |d| group_pattern(d) }.each do |group|
+      - key = group.first
+      - duration = key.first
+      - from = key.second
+      - amount = key.last
+      %li
+        - discussion = group.last.last
+        #{duration} ago, #{link_to from, "@#{from}"} paid #{amount}
+        - if group.last.size == 1
+          \-
+          = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"
+        - else
+          %ul
+            - group.last.each do |discussion|
+              %li
+                = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"
+
+See:
+= link_to "How to Find Post Promotions Paid by a Third Party in Ruby", "https://steemit.com/radiator/@inertia/how-to-find-post-promotions-paid-by-a-third-party-in-ruby"

@@ -1,0 +1,25 @@
+= render partial: 'nav'
+
+%hr
+
+.jumbotron
+  %h4 These posts have been flagged on trending ...
+
+%small
+  %ul
+    - @discussions.group_by{ |d| group_pattern(d) }.each do |group|
+      - key = group.first
+      - from = key.first
+      - amount = key.last
+      %li
+        - discussion = group.last.last
+        flagged by
+        %strong= from.to_sentence.html_safe
+        - if group.last.size == 1
+          \-
+          = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"
+        - else
+          %ul
+            - group.last.each do |discussion|
+              %li
+                = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"

@@ -2,6 +2,10 @@ module DiscussionsHelper
   def group_pattern(discussion)
     if @other_promoted == 'true'
       [time_ago_in_words(discussion[:timestamp]), discussion[:from], discussion[:amount]]
+    elsif @predicted == 'true'
+      [time_ago_in_words(discussion[:timestamp]), discussion[:amount]]
+    elsif @trending_flagged == 'true' || @trending_ignored == 'true'
+      [discussion[:from]]
     else
       [time_ago_in_words(discussion[:timestamp]), discussion[:amount]]
     end
