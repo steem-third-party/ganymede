@@ -9,7 +9,7 @@ class DiscussionsController < ApplicationController
 
     @discussions = []
     
-    other_predicted if @other_promoted == 'true'
+    other_promoted if @other_promoted == 'true'
     predicted if @predicted == 'true'
     trending_flagged if @trending_flagged == 'true'
     trending_ignored if @trending_ignored == 'true'
