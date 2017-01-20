@@ -4,6 +4,7 @@ class DiscussionsController < ApplicationController
     @predicted = params[:predicted].presence || 'false'
     @trending_flagged = params[:trending_flagged].presence || 'false'
     @trending_ignored = params[:trending_ignored].presence || 'false'
+    @vote_ready = params[:vote_ready].presence || 'false'
     @limit = params[:limit].presence || '2000'
     @tag = params[:tag].presence || nil
 
@@ -13,6 +14,7 @@ class DiscussionsController < ApplicationController
     predicted if @predicted == 'true'
     trending_flagged if @trending_flagged == 'true'
     trending_ignored if @trending_ignored == 'true'
+    vote_ready if @vote_ready == 'true'
   end
 private
   def other_promoted
@@ -159,6 +161,32 @@ private
     end.reject(&:nil?)
     
     render 'trending_ignored'
+  end
+
+  def vote_ready
+    options = {
+      limit: 100
+    }
+
+    options[:tag] = @tag if !!@tag
+    
+    response = api_execute(:get_discussions_by_created, options)
+    
+    @discussions += response.result.map do |comment|
+      next if comment.active_votes.size > 9
+      next if (created = Time.parse(comment.created + 'Z')) > 30.minutes.ago
+      
+      {
+        symbol: symbol_value(comment.total_pending_payout_value),
+        url: comment.url,
+        from: nil,
+        slug: comment.url.split('@').last,
+        timestamp: created,
+        votes: comment.active_votes.size
+      }
+    end.reject(&:nil?)
+    
+    render 'vote_ready'
   end
 
   def to_rep(raw)
