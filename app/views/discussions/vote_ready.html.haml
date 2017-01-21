@@ -1,4 +1,4 @@
-= content_for :head, auto_discovery_link_tag(:atom, discussions_url(vote_ready: 'true', format: :atom))
+= content_for :head, auto_discovery_link_tag(:atom, discussions_url(vote_ready: 'true', min_reputation: @min_reputation, format: :atom))
 
 = render partial: 'nav'
 
@@ -31,7 +31,7 @@
           = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
           by
           = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
-          (reputation: #{discussion[:author_reputation]})
+          %font.reputation= discussion[:author_reputation]
         - else
           %ul
             - group.last.each do |discussion|
@@ -39,7 +39,7 @@
                 = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
                 by
                 = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
-                (reputation: #{discussion[:author_reputation]})
+                %font.reputation= discussion[:author_reputation]
 
 See:
 =link_to 'How to Find Hidden Gems with Ruby', 'https://steemit.com/radiator/@inertia/how-to-find-hidden-gems-with-ruby'
