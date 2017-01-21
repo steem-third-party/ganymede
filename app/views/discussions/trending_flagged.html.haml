@@ -9,13 +9,14 @@
 
 %small
   %ul
-    - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.last.last[:timestamp] }.each do |group|
+    - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.first }.each do |group|
       - key = group.first
-      - from = key.first
+      - from_size = key.first
+      - from = key.second
       - amount = key.last
       - discussion = group.last.last
       %li
-        flagged by
+        #{pluralize from_size, 'flag'} by
         %strong= from.to_sentence.html_safe
         - if group.last.size == 1
           \-

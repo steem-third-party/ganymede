@@ -23,7 +23,7 @@ module DiscussionsHelper
     elsif @predicted == 'true'
       [time_ago_in_words(discussion[:timestamp]), discussion[:amount]]
     elsif @trending_flagged == 'true' || @trending_ignored == 'true'
-      [discussion[:from]]
+      [discussion[:from].size, discussion[:from]]
     elsif @vote_ready == 'true'
       [time_ago_in_words(discussion[:timestamp]), discussion[:votes]]
     else
