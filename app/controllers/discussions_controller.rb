@@ -7,6 +7,7 @@ class DiscussionsController < ApplicationController
     @vote_ready = params[:vote_ready].presence || 'false'
     @limit = params[:limit].presence || '2000'
     @tag = params[:tag].presence || nil
+    @min_reputation = (params[:min_reputation].presence || '25').to_i
 
     @discussions = []
     
@@ -199,6 +200,7 @@ private
     response = api_execute(:get_discussions_by_created, options)
     
     @discussions += response.result.map do |comment|
+      next if (author_reputation = to_rep comment.author_reputation) < @min_reputation
       next if comment.active_votes.size > 9
       next if (created = Time.parse(comment.created + 'Z')) > 30.minutes.ago
       
@@ -210,7 +212,8 @@ private
         timestamp: created,
         votes: comment.active_votes.size,
         title: comment.title,
-        content: comment.body
+        content: comment.body,
+        author_reputation: author_reputation
       }
     end.reject(&:nil?)
     

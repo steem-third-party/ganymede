@@ -5,8 +5,10 @@
 %div.float-right
   = form_tag discussions_path, method: :get do
     = hidden_field_tag :vote_ready, true
+    Minimum Reputation:
+    = number_field_tag :min_reputation, @min_reputation
     Tag:
-    = select_tag 'tag', tags_for_select(@tag)
+    = select_tag :tag, tags_for_select(@tag)
     = submit_tag 'Query', class: 'btn btn-primary'
 
 %hr
@@ -21,16 +23,23 @@
       - duration = key.first
       - votes = key.last
       - discussion = group.last.last
+      - author = discussion[:slug].split('/').first
       %li
         posted #{duration} ago (#{pluralize votes, 'vote'})
         - if group.last.size == 1
           \-
-          = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"
+          = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+          by
+          = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
+          (reputation: #{discussion[:author_reputation]})
         - else
           %ul
             - group.last.each do |discussion|
               %li
-                = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"
+                = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+                by
+                = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
+                (reputation: #{discussion[:author_reputation]})
 
 See:
 =link_to 'How to Find Hidden Gems with Ruby', 'https://steemit.com/radiator/@inertia/how-to-find-hidden-gems-with-ruby'
