@@ -1,6 +1,10 @@
 module ApplicationHelper
   INITIAL_TIMEOUT = 2
-  MAX_TIMEOUT = 300
+  MAX_TIMEOUT = case Rails.env
+    when 'test' then 0
+    when 'development' then 4
+    else 15
+    end
 
   def site_prefix
     ENV['SITE_PREFIX'] || 'http://steemit.com'
@@ -18,9 +22,9 @@ module ApplicationHelper
     @@FOLLOW_API ||= Radiator::FollowApi.new(url: api_url)
   end
   
-  def timeout
+  def timeout(exception = nil)
     @timeout ||= INITIAL_TIMEOUT
-    @timeout = INITIAL_TIMEOUT if @timeout > MAX_TIMEOUT
+    raise exception if @timeout > MAX_TIMEOUT
     
     sleep(@timeout += 2)
   end
@@ -32,8 +36,8 @@ module ApplicationHelper
       begin
         response = api.send(m, *options)
         break if !!response
-      rescue
-        timeout
+      rescue => e
+        timeout e
       end
     end
     
@@ -53,5 +57,21 @@ module ApplicationHelper
     end
     
     response
+  end
+  
+  def mvests
+    feed_history = api_execute(:get_feed_history).result
+    steem_per_mvest = api_execute(:steem_per_mvest)
+
+    current_median_history = feed_history.current_median_history
+    base = current_median_history.base
+    base = base.split(' ').first.to_f
+    quote = current_median_history.quote
+    quote = quote.split(' ').first.to_f
+
+    steem_per_usd = (base / quote) * steem_per_mvest
+
+    # E.g. from 2016/11/25: 1 MV = 1M VESTS = 459.680 STEEM = $50.147
+    "1 MV = 1M VESTS = #{("%.3f" % steem_per_mvest)} STEEM = $#{("%.3f" % steem_per_usd)}"
   end
 end
