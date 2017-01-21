@@ -6,6 +6,10 @@ module ApplicationHelper
     else 15
     end
 
+  def site_logo
+    ENV['SITE_LOGO'] || 'https://i.imgur.com/uCaoQzf.png'
+  end
+  
   def site_prefix
     ENV['SITE_PREFIX'] || 'http://steemit.com'
   end
