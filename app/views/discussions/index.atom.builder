@@ -9,6 +9,8 @@ atom_feed do |feed|
         entry.content markdown(d[:content])
         entry.author do |author|
           author.name "@#{d[:from]}"
+          author.blog "#{site_prefix}/@#{d[:from]}"
+          author.reputation d[:author_reputation] if !!d[:author_reputation]
         end
       end
     end
