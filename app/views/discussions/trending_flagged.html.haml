@@ -9,7 +9,7 @@
 
 %small
   %ul
-    - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.first }.each do |group|
+    - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.first }.reverse.each do |group|
       - key = group.first
       - from_size = key.first
       - from = key.second
