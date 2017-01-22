@@ -4,5 +4,5 @@ Rails.application.routes.draw do
   
   resources :static, only: :index
   resources :discussions, only: :index
-  resources :follows, onyl: :index
+  resources :follows, only: :index
 end
