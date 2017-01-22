@@ -18,12 +18,16 @@ module ApplicationHelper
     ENV['API_URL'] || 'https://node.steem.ws:443'
   end
 
-  def api
-    @@API ||= Radiator::Api.new(url: api_url)
+  def fallback_api_url
+    ENV['FALLBACK_API_URL'] || 'https://this.piston.rocks:443'
+  end
+
+  def api(url = api_url)
+    @@API ||= Radiator::Api.new(url: url)
   end
   
-  def follow_api
-    @@FOLLOW_API ||= Radiator::FollowApi.new(url: api_url)
+  def follow_api(url = api_url)
+    @@FOLLOW_API ||= Radiator::FollowApi.new(url: url)
   end
   
   def timeout(exception = nil)
@@ -41,6 +45,8 @@ module ApplicationHelper
         response = api.send(m, *options)
         break if !!response
       rescue => e
+        @@API = nil
+        api(fallback_api_url)
         timeout e
       end
     end
@@ -56,6 +62,8 @@ module ApplicationHelper
         response = follow_api.send(m, *options)
         break if !!response
       rescue
+        @@FOLLOW_API = nil
+        follow_api(fallback_api_url)
         timeout
       end
     end
