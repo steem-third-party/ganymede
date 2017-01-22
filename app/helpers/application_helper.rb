@@ -45,6 +45,7 @@ module ApplicationHelper
         response = api.send(m, *options)
         break if !!response
       rescue => e
+        Rails.logger.warn "Radiator::Api falling back to: #{fallback_api_url}"
         @@API = nil
         api(fallback_api_url)
         timeout e
@@ -62,6 +63,7 @@ module ApplicationHelper
         response = follow_api.send(m, *options)
         break if !!response
       rescue
+        Rails.logger.warn "Radiator::FollowApi Falling back to: #{fallback_api_url}"
         @@FOLLOW_API = nil
         follow_api(fallback_api_url)
         timeout
