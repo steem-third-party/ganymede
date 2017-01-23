@@ -10,10 +10,13 @@ class AccountsController < ApplicationController
   end
   
   def downvoted
-    # downvotes_json = JSON[open('https://steemdb.com/api/downvotes').read]
-    # @voters = downvotes_json.last["accounts"].map do |account|
-    #   account.last["voter"]
-    # end
+    @@DOWNVOTES_JSON = JSON[open(downvotes_json_url).read]
+    @suggested_voters = @@DOWNVOTES_JSON.last["accounts"].map do |account|
+      voter = account.last
+      {voter["voter"] => voter["votes"]}
+    end.sort_by do |voter|
+      voter["votes"]
+    end
     
     render 'downvoted' and return if @voters.empty?
     

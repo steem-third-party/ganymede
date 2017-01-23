@@ -21,6 +21,10 @@ module ApplicationHelper
   def fallback_api_url
     ENV['FALLBACK_API_URL'] || 'https://this.piston.rocks:443'
   end
+  
+  def downvotes_json_url
+    ENV['DOWNVOTES_JSON_URL'] || 'https://steemdb.com/api/downvotes'
+  end
 
   def api(url = api_url)
     @api ||= Radiator::Api.new(url: url)
