@@ -23,11 +23,11 @@ module ApplicationHelper
   end
 
   def api(url = api_url)
-    @@API ||= Radiator::Api.new(url: url)
+    @api ||= Radiator::Api.new(url: url)
   end
   
   def follow_api(url = api_url)
-    @@FOLLOW_API ||= Radiator::FollowApi.new(url: url)
+    @follow_api ||= Radiator::FollowApi.new(url: url)
   end
   
   def timeout(exception = nil)
@@ -46,7 +46,7 @@ module ApplicationHelper
         break if !!response
       rescue => e
         Rails.logger.warn "Radiator::Api falling back to: #{fallback_api_url}"
-        @@API = nil
+        @api = nil
         api(fallback_api_url)
         timeout e
       end
@@ -64,7 +64,7 @@ module ApplicationHelper
         break if !!response
       rescue
         Rails.logger.warn "Radiator::FollowApi Falling back to: #{fallback_api_url}"
-        @@FOLLOW_API = nil
+        @follow_api = nil
         follow_api(fallback_api_url)
         timeout
       end
