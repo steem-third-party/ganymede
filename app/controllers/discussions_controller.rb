@@ -77,6 +77,7 @@ private
       format.html { render 'other_promoted' }
       format.atom { render layout: false }
       format.rss { render layout: false }
+      format.text { send_urls('other_promoted') }
     end
   end
   
@@ -167,6 +168,7 @@ private
       format.html { render 'predicted' }
       format.atom { render layout: false }
       format.rss { render layout: false }
+      format.text { send_urls('predicted') }
     end
   end
   
@@ -196,6 +198,7 @@ private
       format.html { render 'trending_flagged' }
       format.atom { render layout: false }
       format.rss { render layout: false }
+      format.text { send_urls('trending_flagged') }
     end
   end
 
@@ -223,6 +226,7 @@ private
       format.html { render 'trending_ignored' }
       format.atom { render layout: false }
       format.rss { render layout: false }
+      format.text { send_urls('trending_ignored') }
     end
   end
 
@@ -257,6 +261,7 @@ private
       format.html { render 'vote_ready' }
       format.atom { render layout: false }
       format.rss { render layout: false }
+      format.text { send_urls('vote_ready') }
     end
   end
 
@@ -283,5 +288,13 @@ private
     
     @@IGNORE_CACHE[author] ||= follow_api_execute(:get_followers, author, nil, 'ignore', 100).
       result.map(&:follower).reject(&:nil?)
+  end
+  
+  def send_urls(filename)
+    urls = @discussions.map do |discussion|
+      "#{site_prefix}#{discussion[:url]}"
+    end
+    
+    send_data urls.join("\n"), filename: "#{filename}.txt", content_type: 'text/plain', disposition: :attachment
   end
 end
