@@ -8,6 +8,7 @@ class DiscussionsController < ApplicationController
     @limit = params[:limit].presence || '2000'
     @tag = params[:tag].presence || nil
     @min_reputation = (params[:min_reputation].presence || '25').to_i
+    @min_promotion_amount = (params[:min_promotion_amount].presence || '0.001').to_f
 
     @discussions = []
     
@@ -30,7 +31,9 @@ private
       from = op.from
       memo = op.memo
       amount = op.amount
+      base_amount = amount.split(' ').first.to_f
       
+      next if base_amount < @min_promotion_amount
       next if memo.nil? || memo.empty?
       next if memo.include? from
 
