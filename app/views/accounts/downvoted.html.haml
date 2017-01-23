@@ -1,0 +1,25 @@
+= render partial: 'nav'
+
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
+
+        %div.float-right
+          = form_tag accounts_path, method: :get do
+            = hidden_field_tag :downvoted, true
+            Downvoters:
+            = text_field_tag :voters, @voters, size: 100
+            = submit_tag 'Query', class: 'btn btn-primary'
+
+        %br
+        %br
+
+        - if @accounts.any?
+          %h3 Downvoted Accounts
+
+          %code= @accounts.join(' ')
+          
+          %br
+          
+          = link_to 'Download List', accounts_path(downvoted: true, voters: @voters, format: :text), class: 'btn btn-primary'

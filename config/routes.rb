@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :static, only: :index
   resources :discussions, only: :index
   resources :follows, only: :index
+  resources :accounts, only: :index
 end
