@@ -36,12 +36,18 @@
                 #{duration} from now, will rise by: #{amount} #{discussion[:symbol]}
                 - if group.last.size == 1
                   \-
-                  = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"
+                  = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+                  by
+                  = link_to discussion[:author], "#{site_prefix}/@#{discussion[:author]}"
+                  %font.reputation= discussion[:author_reputation]
                 - else
                   %ul
                     - group.last.each do |discussion|
                       %li
-                        = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"
+                        = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+                        by
+                        = link_to discussion[:author], "#{site_prefix}/@#{discussion[:author]}"
+                        %font.reputation= discussion[:author_reputation]
 
         See:
         = link_to "How to Use AI to Find Articles with Ruby", "https://steemit.com/radiator/@inertia/how-to-use-ai-to-find-articles-with-ruby"

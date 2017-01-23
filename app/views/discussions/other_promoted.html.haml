@@ -24,23 +24,26 @@
               - from = key.second
               - amount = key.last
               - discussion = group.last.last
-              - author = discussion[:slug].split('/').first
               - title = discussion[:slug].split('/')[1..-1].join(' ')
               - title = title.titleize
               %li
-                #{duration} ago, #{link_to from, "@#{from}"} paid #{amount}
+                #{duration} ago, #{link_to from, "#{site_prefix}/@#{from}"}
+                %font.reputation= discussion[:from_reputation]
+                paid #{amount}
                 - if group.last.size == 1
                   \-
                   = link_to title, "#{site_prefix}#{discussion[:url]}"
                   by
-                  = link_to author, "#{site_prefix}/@#{author}"
+                  = link_to discussion[:author], "#{site_prefix}/@#{discussion[:author]}"
+                  %font.reputation= discussion[:author_reputation]
                 - else
                   %ul
                     - group.last.each do |discussion|
                       %li
                         = link_to title, "#{site_prefix}#{discussion[:url]}"
                         by
-                        = link_to author, "#{site_prefix}/@#{author}"
+                        = link_to discussion[:author], "#{site_prefix}/@#{discussion[:author]}"
+                        %font.reputation= discussion[:author_reputation]
 
         See:
         = link_to "How to Find Post Promotions Paid by a Third Party in Ruby", "https://steemit.com/radiator/@inertia/how-to-find-post-promotions-paid-by-a-third-party-in-ruby"

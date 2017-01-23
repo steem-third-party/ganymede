@@ -48,9 +48,30 @@ private
         timestamp: timestamp,
         votes: nil,
         title: memo,
-        content: ''
+        content: '',
+        author: author
       }
     end.reject(&:nil?)
+    
+    accounts = @discussions.map do |discussion|
+      [discussion[:author], discussion[:from]]
+    end.flatten.uniq
+    
+    if accounts.any?
+      accounts = api_execute(:get_accounts, accounts).result
+      
+      @discussions.each do |discussion|
+        accounts.each do |account|
+          if discussion[:author] == account.name
+            discussion[:author_reputation] = to_rep(account.reputation)
+          end
+          
+          if discussion[:from] == account.name
+            discussion[:from_reputation] = to_rep(account.reputation)
+          end
+        end
+      end
+    end
     
     respond_to do |format|
       format.html { render 'other_promoted' }
@@ -118,7 +139,9 @@ private
         cashout_time: comment.cashout_time,
         votes: comment.active_votes.size,
         title: comment.title,
-        content: comment.body
+        content: comment.body,
+        author: comment.author,
+        author_reputation: to_rep(comment.author_reputation)
       }
     end.reject(&:nil?)
 
@@ -133,7 +156,9 @@ private
           symbol: prediction[:symbol],
           votes: prediction[:votes],
           title: prediction[:title],
-          content: prediction[:content]
+          content: prediction[:content],
+          author: prediction[:author],
+          author_reputation: prediction[:author_reputation]
         }
       end
     end
@@ -161,7 +186,9 @@ private
         timestamp: comment.cashout_time,
         votes: comment.active_votes.size,
         title: comment.title,
-        content: comment.body
+        content: comment.body,
+        author: comment.author,
+        author_reputation: to_rep(comment.author_reputation)
       }
     end.reject(&:nil?)
     
@@ -186,7 +213,9 @@ private
         timestamp: comment.cashout_time,
         votes: comment.active_votes.size,
         title: comment.title,
-        content: comment.body
+        content: comment.body,
+        author: comment.author,
+        author_reputation: to_rep(comment.author_reputation)
       }
     end.reject(&:nil?)
     
