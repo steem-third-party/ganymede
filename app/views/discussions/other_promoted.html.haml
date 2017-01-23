@@ -3,36 +3,42 @@
 
 = render partial: 'nav'
 
-%hr
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
 
-.jumbotron
-  %h4 These posts have been promoted by someone other than the author ...
+        %br
+        %br
 
-%small
-  %ul
-    - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.last.last[:timestamp] }.each do |group|
-      - key = group.first
-      - duration = key.first
-      - from = key.second
-      - amount = key.last
-      - discussion = group.last.last
-      - author = discussion[:slug].split('/').first
-      - title = discussion[:slug].split('/')[1..-1].join(' ')
-      - title = title.titleize
-      %li
-        #{duration} ago, #{link_to from, "@#{from}"} paid #{amount}
-        - if group.last.size == 1
-          \-
-          = link_to title, "#{site_prefix}#{discussion[:url]}"
-          by
-          = link_to author, "#{site_prefix}/@#{author}"
-        - else
+        .jumbotron
+          %h4 These posts have been promoted by someone other than the author ...
+
+        %small
           %ul
-            - group.last.each do |discussion|
+            - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.last.last[:timestamp] }.each do |group|
+              - key = group.first
+              - duration = key.first
+              - from = key.second
+              - amount = key.last
+              - discussion = group.last.last
+              - author = discussion[:slug].split('/').first
+              - title = discussion[:slug].split('/')[1..-1].join(' ')
+              - title = title.titleize
               %li
-                = link_to title, "#{site_prefix}#{discussion[:url]}"
-                by
-                = link_to author, "#{site_prefix}/@#{author}"
+                #{duration} ago, #{link_to from, "@#{from}"} paid #{amount}
+                - if group.last.size == 1
+                  \-
+                  = link_to title, "#{site_prefix}#{discussion[:url]}"
+                  by
+                  = link_to author, "#{site_prefix}/@#{author}"
+                - else
+                  %ul
+                    - group.last.each do |discussion|
+                      %li
+                        = link_to title, "#{site_prefix}#{discussion[:url]}"
+                        by
+                        = link_to author, "#{site_prefix}/@#{author}"
 
-See:
-= link_to "How to Find Post Promotions Paid by a Third Party in Ruby", "https://steemit.com/radiator/@inertia/how-to-find-post-promotions-paid-by-a-third-party-in-ruby"
+        See:
+        = link_to "How to Find Post Promotions Paid by a Third Party in Ruby", "https://steemit.com/radiator/@inertia/how-to-find-post-promotions-paid-by-a-third-party-in-ruby"

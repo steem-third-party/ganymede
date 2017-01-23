@@ -17,6 +17,21 @@ module DiscussionsHelper
     end
   end
   
+  def discussion_active_class(current_tab, classes = [])
+    classes << case current_tab
+    when :other_promoted
+      'active' if @other_promoted == 'true'
+    when :predicted
+      'active' if @predicted == 'true'
+    when :trending
+      'active' if @trending_flagged == 'true' || @trending_ignored == 'true'
+    when :vote_ready
+      'active' if @vote_ready == 'true'
+    end
+    
+    classes.join(' ')
+  end
+  
   def group_pattern(discussion)
     if @other_promoted == 'true'
       [time_ago_in_words(discussion[:timestamp]), discussion[:from], discussion[:amount]]

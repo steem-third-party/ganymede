@@ -3,44 +3,50 @@
 
 = render partial: 'nav'
 
-%div.float-right
-  = form_tag discussions_path, method: :get do
-    = hidden_field_tag :vote_ready, true
-    Minimum Reputation:
-    = number_field_tag :min_reputation, @min_reputation
-    Tag:
-    = select_tag :tag, tags_for_select(@tag)
-    = submit_tag 'Query', class: 'btn btn-primary'
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
 
-%hr
+        %div.float-right
+          = form_tag discussions_path, method: :get do
+            = hidden_field_tag :vote_ready, true
+            Minimum Reputation:
+            = number_field_tag :min_reputation, @min_reputation
+            Tag:
+            = select_tag :tag, tags_for_select(@tag)
+            = submit_tag 'Query', class: 'btn btn-primary'
 
-.jumbotron
-  %h4 These posts have less than 10 votes and are older than 30 minutes.
+        %br
+        %br
 
-%small
-  %ul
-    - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.last.last[:timestamp] }.each do |group|
-      - key = group.first
-      - duration = key.first
-      - votes = key.last
-      - discussion = group.last.last
-      - author = discussion[:slug].split('/').first
-      %li
-        posted #{duration} ago (#{pluralize votes, 'vote'})
-        - if group.last.size == 1
-          \-
-          = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
-          by
-          = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
-          %font.reputation= discussion[:author_reputation]
-        - else
+        .jumbotron
+          %h4 These posts have less than 10 votes and are older than 30 minutes.
+
+        %small
           %ul
-            - group.last.each do |discussion|
+            - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.last.last[:timestamp] }.each do |group|
+              - key = group.first
+              - duration = key.first
+              - votes = key.last
+              - discussion = group.last.last
+              - author = discussion[:slug].split('/').first
               %li
-                = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
-                by
-                = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
-                %font.reputation= discussion[:author_reputation]
+                posted #{duration} ago (#{pluralize votes, 'vote'})
+                - if group.last.size == 1
+                  \-
+                  = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+                  by
+                  = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
+                  %font.reputation= discussion[:author_reputation]
+                - else
+                  %ul
+                    - group.last.each do |discussion|
+                      %li
+                        = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+                        by
+                        = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
+                        %font.reputation= discussion[:author_reputation]
 
-See:
-=link_to 'How to Find Hidden Gems with Ruby', 'https://steemit.com/radiator/@inertia/how-to-find-hidden-gems-with-ruby'
+        See:
+        =link_to 'How to Find Hidden Gems with Ruby', 'https://steemit.com/radiator/@inertia/how-to-find-hidden-gems-with-ruby'

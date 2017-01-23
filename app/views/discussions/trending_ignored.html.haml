@@ -3,27 +3,33 @@
 
 = render partial: 'nav'
 
-%hr
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
 
-.jumbotron
-  %h4 Up to the top 25 posts that have been ignored (muted) on trending ...
+        %br
+        %br
 
-%small
-  %ul
-    - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.first }.reverse.each do |group|
-      - key = group.first
-      - from_size = key.first
-      - from = key.second
-      - amount = key.last
-      - discussion = group.last.last
-      %li
-        #{pluralize from_size, 'ignore'} by
-        %strong= from.to_sentence.html_safe
-        - if group.last.size == 1
-          \-
-          = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"
-        - else
+        .jumbotron
+          %h4 Up to the top 25 posts that have been ignored (muted) on trending ...
+
+        %small
           %ul
-            - group.last.each do |discussion|
+            - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.first }.reverse.each do |group|
+              - key = group.first
+              - from_size = key.first
+              - from = key.second
+              - amount = key.last
+              - discussion = group.last.last
               %li
-                = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"
+                #{pluralize from_size, 'ignore'} by
+                %strong= from.to_sentence.html_safe
+                - if group.last.size == 1
+                  \-
+                  = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"
+                - else
+                  %ul
+                    - group.last.each do |discussion|
+                      %li
+                        = link_to discussion[:slug], "#{site_prefix}#{discussion[:url]}"
