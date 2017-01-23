@@ -63,11 +63,14 @@ module DiscussionsHelper
   
   def discussion_amounts_total
     totals = {}
+    
     @discussions.each do |d|
       a, s = d[:amount].split(' ')
       totals[s] ||= 0
       totals[s] += a.to_f
     end
+    
+    return 0 if totals.none?
     
     totals.map do |total|
       "%.3f #{total.first}" % total.last
