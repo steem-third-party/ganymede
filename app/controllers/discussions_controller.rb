@@ -51,7 +51,8 @@ private
     
     respond_to do |format|
       format.html { render 'other_promoted' }
-      format.atom { }
+      format.atom { render layout: false }
+      format.rss { render layout: false }
     end
   end
   
@@ -136,7 +137,8 @@ private
     
     respond_to do |format|
       format.html { render 'predicted' }
-      format.atom { }
+      format.atom { render layout: false }
+      format.rss { render layout: false }
     end
   end
   
@@ -162,7 +164,8 @@ private
     
     respond_to do |format|
       format.html { render 'trending_flagged' }
-      format.atom { }
+      format.atom { render layout: false }
+      format.rss { render layout: false }
     end
   end
 
@@ -186,7 +189,8 @@ private
     
     respond_to do |format|
       format.html { render 'trending_ignored' }
-      format.atom { }
+      format.atom { render layout: false }
+      format.rss { render layout: false }
     end
   end
 
@@ -219,7 +223,8 @@ private
     
     respond_to do |format|
       format.html { render 'vote_ready' }
-      format.atom { }
+      format.atom { render layout: false }
+      format.rss { render layout: false }
     end
   end
 

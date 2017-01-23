@@ -1,4 +1,5 @@
 = content_for :head, auto_discovery_link_tag(:atom, discussions_url(other_promoted: 'true', format: :atom))
+= content_for :head, auto_discovery_link_tag(:rss, discussions_url(other_promoted: 'true', format: :rss))
 
 = render partial: 'nav'
 
