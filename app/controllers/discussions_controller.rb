@@ -279,7 +279,7 @@ private
       by_cashout += response.result
     else
       # since we're querying the top 100 tags, limit to n*n results each
-      options[:limit] = 10
+      options[:limit] = 5
       response = api_execute(:get_discussions_by_cashout, options)
       by_cashout += response.result
 
