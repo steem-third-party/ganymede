@@ -12,7 +12,6 @@ class AccountsController < ApplicationController
   end
   
   def upvoted
-    @suggested_voters = []
     # @@UPVOTES_JSON = JSON[open(upvotes_json_url).read]
     # @suggested_voters = @@DOWNVOTES_JSON.last["accounts"].map do |account|
     #   voter = account.last

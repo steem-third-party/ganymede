@@ -5,10 +5,11 @@
     .row
       .col-md-12
 
-        %strong Today's top downvoters:
-        - @suggested_voters.each do |voter|
-          = link_to voter.keys.first, accounts_path(downvoted: true, voters: voter.keys.first)
-        %br
+        - if @suggested_voters.any?
+          %strong Today's top downvoters:
+          - @suggested_voters.each do |voter|
+            = link_to voter.keys.first, accounts_path(downvoted: true, voters: voter.keys.first), class: 'btn btn-secondary btn-xs'
+          %br
 
         %div.float-right
           = form_tag accounts_path, method: :get do
