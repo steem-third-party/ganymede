@@ -21,7 +21,7 @@
         %br
 
         - if @accounts.any?
-          %h3 Downvoted Accounts
+          %h3 Downvoted #{pluralize @accounts.size, 'Account'}
 
           %code= @accounts.join(' ')
           

@@ -1,2 +1,3 @@
 %ul.nav.nav-tabs
+  %li.nav-item= link_to 'Upvoted', accounts_url(upvoted: true), class: account_active_class(:upvoted, ['nav-link'])
   %li.nav-item= link_to 'Downvoted', accounts_url(downvoted: true), class: account_active_class(:downvoted, ['nav-link'])
