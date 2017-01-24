@@ -5,6 +5,7 @@ class DiscussionsController < ApplicationController
     @trending_flagged = params[:trending_flagged].presence || 'false'
     @trending_ignored = params[:trending_ignored].presence || 'false'
     @vote_ready = params[:vote_ready].presence || 'false'
+    @flagwar = params[:flagwar].presence || 'false'
     @limit = params[:limit].presence || '2000'
     @tag = params[:tag].presence || nil
     @min_reputation = (params[:min_reputation].presence || '25').to_i
@@ -17,6 +18,7 @@ class DiscussionsController < ApplicationController
     trending_flagged if @trending_flagged == 'true'
     trending_ignored if @trending_ignored == 'true'
     vote_ready if @vote_ready == 'true'
+    flagwar if @flagwar == 'true'
   end
 private
   def other_promoted
@@ -264,6 +266,91 @@ private
       format.text { send_urls('vote_ready') }
     end
   end
+  
+  def flagwar
+    by_cashout = []
+    options = {
+      limit: 25
+    }
+
+    if !!@tag
+      options[:tag] = @tag
+      response = api_execute(:get_discussions_by_cashout, options)
+      by_cashout += response.result
+    else
+      # since we're querying the top 100 tags, limit to n*n results each
+      options[:limit] = 10
+      response = api_execute(:get_discussions_by_cashout, options)
+      by_cashout += response.result
+
+      @tags_data = api_execute(:get_trending_tags, nil, 100).result
+      
+      @tags_data.first(options[:limit]).each do |tag|
+        options[:tag] = if tag.respond_to? :tag
+          tag.tag # golos style
+        elsif tag.respond_to? :name
+          tag.name # steem style
+        else
+          raise "Unknown tag style: #{tag}"
+        end
+
+        response = api_execute(:get_discussions_by_cashout, options)
+        by_cashout += response.result
+      end
+    end
+    
+    by_cashout = by_cashout.uniq
+    
+    @discussions = by_cashout.map do |comment|
+      next unless comment.children > 0 # nobody bothered to comment, don't care
+      next if base_value(comment.max_accepted_payout) == 0 # payout declined, don't care
+      next if (base_total_pending_payout_value = base_value(comment.total_pending_payout_value)) < 0.001 # no payout, don't care
+      
+      votes = comment.active_votes
+      upvotes = votes.map do |vote|
+        vote if vote.percent > 0
+      end.reject(&:nil?)
+      downvotes = votes.map do |vote|
+        vote if vote.percent < 0
+      end.reject(&:nil?)
+      unvotes = votes.map do |vote|
+        vote if vote.percent == 0
+      end.reject(&:nil?)
+      
+      next if upvotes.none? # no upvotes, don't care
+      next if downvotes.none? # no downvotes, don't care
+
+      # Looking up downvotes that qualify.
+      qualified_downvotes = votes.map do |vote|
+        vote if vote.percent < 0 && commented_on?(author: vote.voter, parent_author: comment.author, parent_permlink: comment.permlink)
+      end.reject(&:nil?)
+
+      next if qualified_downvotes.none? # no qualified downvotes, don't care
+
+      {
+        symbol: symbol_value(comment.total_pending_payout_value),
+        amount: base_total_pending_payout_value,
+        url: comment.url,
+        from: comment.author,
+        slug: comment.url.split('@').last,
+        timestamp: Time.parse(comment.created + 'Z'),
+        votes: comment.active_votes.size,
+        upvotes: upvotes.size,
+        downvotes: downvotes.size,
+        unvotes: unvotes.size,
+        title: comment.title,
+        content: comment.body,
+        author_reputation: to_rep(comment.author_reputation)
+      }
+    end.reject(&:nil?)
+    
+    respond_to do |format|
+      format.html { render 'flagwar' }
+      format.atom { render layout: false }
+      format.rss { render layout: false }
+      format.text { send_urls('flagwar') }
+    end
+  end
 
   def to_rep(raw)
     raw = raw.to_i
@@ -288,6 +375,16 @@ private
     
     @@IGNORE_CACHE[author] ||= follow_api_execute(:get_followers, author, nil, 'ignore', 100).
       result.map(&:follower).reject(&:nil?)
+  end
+  
+  def commented_on?(options = {})
+    @content_replies ||= {}
+    key = [options[:parent_author], options[:parent_permlink]]
+    
+    response = api_execute(:get_content_replies, *key)
+    @content_replies[key] ||= response.result
+    
+    @content_replies[key].map(&:author).include? options[:author]
   end
   
   def send_urls(filename)

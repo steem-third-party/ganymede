@@ -1,0 +1,54 @@
+= content_for :head, auto_discovery_link_tag(:atom, discussions_url(flagwar: 'true', min_reputation: @min_reputation, format: :atom))
+= content_for :head, auto_discovery_link_tag(:rss, discussions_url(flagwar: 'true', min_reputation: @min_reputation, format: :rss))
+
+= render partial: 'nav'
+= @commented_on_calls
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
+
+        %div.float-right
+          = form_tag discussions_path, method: :get do
+            = hidden_field_tag :flagwar, true
+            Tag:
+            = select_tag :tag, tags_for_select(@tag)
+            = submit_tag 'Query', class: 'btn btn-primary'
+
+        %br
+        %br
+
+        .jumbotron
+          %h4 These posts are having a flag war and getting close to cashout time.  Only posts that have top level comments by the downvoter are considered.
+
+        %small
+          %ul
+            - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.last.last[:timestamp] }.each do |group|
+              - key = group.first
+              - duration = key.first
+              - discussion = group.last.last
+              - upvotes = discussion[:upvotes]
+              - downvotes = discussion[:downvotes]
+              - unvotes = discussion[:unvotes]
+              - author = discussion[:slug].split('/').first
+              - amount = discussion[:amount]
+              - symbol = discussion[:symbol]
+              %li
+                posted #{duration} ago (votes: up: #{upvotes}; down: #{downvotes}), potantal payout: #{amount} #{symbol}
+                - if group.last.size == 1
+                  \-
+                  = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+                  by
+                  = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
+                  %font.reputation= discussion[:author_reputation]
+                - else
+                  %ul
+                    - group.last.each do |discussion|
+                      %li
+                        = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+                        by
+                        = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
+                        %font.reputation= discussion[:author_reputation]
+
+        See:
+        =link_to 'How to Find Hidden Gems with Ruby', 'https://steemit.com/radiator/@inertia/how-to-find-hidden-gems-with-ruby'
