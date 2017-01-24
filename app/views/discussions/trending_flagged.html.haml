@@ -23,7 +23,7 @@
               - amount = key.last
               - discussion = group.last.last
               %li
-                #{pluralize from_size, 'flag'} by
+                #{pluralize from_size, 'flag'}:
                 %strong= from.to_sentence.html_safe
                 - if group.last.size == 1
                   \-
