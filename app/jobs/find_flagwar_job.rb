@@ -22,7 +22,7 @@ class FindFlagwarJob < ApplicationJob
       by_cashout += response.result
     else
       tags.each do |tag|
-        break if by_cashout.uniq.size > 500
+        break if by_cashout.uniq.size > 250
         
         begin
           options[:tag] = tag
