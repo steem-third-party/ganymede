@@ -96,4 +96,42 @@ module ApplicationHelper
     # E.g. from 2016/11/25: 1 MV = 1M VESTS = 459.680 STEEM = $50.147
     "1 MV = 1M VESTS = #{("%.3f" % steem_per_mvest)} STEEM = $#{("%.3f" % steem_per_usd)}"
   end
+  
+  def to_rep(raw)
+    raw = raw.to_i
+    neg = raw < 0
+    level = Math.log10(raw.abs)
+    level = [level - 9, 0].max
+    level = (neg ? -1 : 1) * level
+    level = (level * 9) + 25
+    level.to_i
+  end
+
+  def base_value(raw)
+    raw.split(' ').first.to_i
+  end
+
+  def symbol_value(raw)
+    raw.split(' ').last
+  end
+  
+  def ignoring_author(author)
+    @@IGNORE_CACHE ||= {}
+    
+    @@IGNORE_CACHE[author] ||= follow_api_execute(:get_followers, author, nil, 'ignore', 100).
+      result.map(&:follower).reject(&:nil?)
+  end
+  
+  def tags
+    @tags_data ||= api_execute(:get_trending_tags, nil, 100).result
+    @tags = @tags_data.map do |tag|
+      if tag.respond_to? :tag
+        tag.tag # golos style
+      elsif tag.respond_to? :name
+        tag.name # steem style
+      else
+        tag # unknown style
+      end
+    end
+  end
 end

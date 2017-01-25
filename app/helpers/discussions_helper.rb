@@ -53,18 +53,7 @@ module DiscussionsHelper
   end
   
   def tags_for_select(selected = '')
-    @tags_data ||= api_execute(:get_trending_tags, nil, 100).result
-    @tags = @tags_data.map do |tag|
-      if tag.respond_to? :tag
-        tag.tag # golos style
-      elsif tag.respond_to? :name
-        tag.name # steem style
-      else
-        tag # unknown style
-      end
-    end
-    
-    options_for_select @tags, @tag
+    options_for_select tags, @tag
   end
   
   def discussion_amounts_total

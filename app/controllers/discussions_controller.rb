@@ -272,81 +272,10 @@ private
   end
   
   def flagwar
-    by_cashout = []
-    options = {
-      limit: 25
-    }
-
-    if !!@tag
-      options[:tag] = @tag
-      response = api_execute(:get_discussions_by_cashout, options)
-      by_cashout += response.result
-    else
-      # since we're querying the top 100 tags, limit to n*n results each
-      options[:limit] = 15
-      response = api_execute(:get_discussions_by_cashout, options)
-      by_cashout += response.result
-
-      @tags_data = api_execute(:get_trending_tags, nil, 100).result
-      
-      @tags_data.first(5).each do |tag|
-        options[:tag] = if tag.respond_to? :tag
-          tag.tag # golos style
-        elsif tag.respond_to? :name
-          tag.name # steem style
-        else
-          raise "Unknown tag style: #{tag}"
-        end
-
-        response = api_execute(:get_discussions_by_cashout, options)
-        by_cashout += response.result
-      end
-    end
+    FindFlagwarJob.perform_later(tag: @tag)
     
-    by_cashout = by_cashout.uniq
-    
-    @discussions = by_cashout.map do |comment|
-      next unless comment.children > 0 # nobody bothered to comment, don't care
-      next if base_value(comment.max_accepted_payout) == 0 # payout declined, don't care
-      next if (base_total_pending_payout_value = base_value(comment.total_pending_payout_value)) < 0.001 # no payout, don't care
-      
-      votes = comment.active_votes
-      upvotes = votes.map do |vote|
-        vote if vote.percent > 0
-      end.reject(&:nil?)
-      downvotes = votes.map do |vote|
-        vote if vote.percent < 0
-      end.reject(&:nil?)
-      unvotes = votes.map do |vote|
-        vote if vote.percent == 0
-      end.reject(&:nil?)
-      
-      next if upvotes.none? # no upvotes, don't care
-      next if downvotes.none? # no downvotes, don't care
-
-      # Looking up downvotes that qualify.
-      qualified_downvotes = votes.map do |vote|
-        vote if vote.percent < 0 && commented_on?(author: vote.voter, parent_author: comment.author, parent_permlink: comment.permlink)
-      end.reject(&:nil?)
-
-      next if qualified_downvotes.none? # no qualified downvotes, don't care
-
-      {
-        symbol: symbol_value(comment.total_pending_payout_value),
-        amount: base_total_pending_payout_value,
-        url: comment.url,
-        from: comment.author,
-        slug: comment.url.split('@').last,
-        timestamp: Time.parse(comment.created + 'Z'),
-        votes: comment.active_votes.size,
-        upvotes: upvotes.size,
-        downvotes: downvotes.size,
-        unvotes: unvotes.size,
-        title: comment.title,
-        content: comment.body,
-        author_reputation: to_rep(comment.author_reputation)
-      }
-    end.reject(&:nil?)
+    # this will give us the discussions from lastest request
+    @discussions = FindFlagwarJob.discussions(@tag) || []
     
     respond_to do |format|
       format.html { render 'flagwar', layout: action_name != 'card' }
@@ -356,41 +285,6 @@ private
     end
   end
 
-  def to_rep(raw)
-    raw = raw.to_i
-    neg = raw < 0
-    level = Math.log10(raw.abs)
-    level = [level - 9, 0].max
-    level = (neg ? -1 : 1) * level
-    level = (level * 9) + 25
-    level.to_i
-  end
-
-  def base_value(raw)
-    raw.split(' ').first.to_i
-  end
-
-  def symbol_value(raw)
-    raw.split(' ').last
-  end
-  
-  def ignoring_author(author)
-    @@IGNORE_CACHE ||= {}
-    
-    @@IGNORE_CACHE[author] ||= follow_api_execute(:get_followers, author, nil, 'ignore', 100).
-      result.map(&:follower).reject(&:nil?)
-  end
-  
-  def commented_on?(options = {})
-    @content_replies ||= {}
-    key = [options[:parent_author], options[:parent_permlink]]
-    
-    response = api_execute(:get_content_replies, *key)
-    @content_replies[key] ||= response.result
-    
-    @content_replies[key].map(&:author).include? options[:author]
-  end
-  
   def send_urls(filename)
     urls = @discussions.map do |discussion|
       "#{site_prefix}#{discussion[:url]}"
