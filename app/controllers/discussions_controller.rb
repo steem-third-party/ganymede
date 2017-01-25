@@ -20,6 +20,10 @@ class DiscussionsController < ApplicationController
     vote_ready if @vote_ready == 'true'
     flagwar if @flagwar == 'true'
   end
+  
+  def card
+    index
+  end
 private
   def other_promoted
     @limit = @limit.to_i
@@ -76,7 +80,7 @@ private
     end
     
     respond_to do |format|
-      format.html { render 'other_promoted' }
+      format.html { render 'other_promoted', layout: action_name != 'card' }
       format.atom { render layout: false }
       format.rss { render layout: false }
       format.text { send_urls('other_promoted') }
@@ -110,7 +114,7 @@ private
       end
     end
     
-    render 'index' and return if data_items.empty?
+    render 'predicted', layout: action_name != 'card' and return if data_items.empty?
 
     data_set = Ai4r::Data::DataSet.new data_labels: data_labels, data_items: data_items
     id3 = Ai4r::Classifiers::ID3.new.build(data_set)
@@ -167,7 +171,7 @@ private
     end
     
     respond_to do |format|
-      format.html { render 'predicted' }
+      format.html { render 'predicted', layout: action_name != 'card' }
       format.atom { render layout: false }
       format.rss { render layout: false }
       format.text { send_urls('predicted') }
@@ -197,7 +201,7 @@ private
     end.reject(&:nil?)
     
     respond_to do |format|
-      format.html { render 'trending_flagged' }
+      format.html { render 'trending_flagged', layout: action_name != 'card' }
       format.atom { render layout: false }
       format.rss { render layout: false }
       format.text { send_urls('trending_flagged') }
@@ -225,7 +229,7 @@ private
     end.reject(&:nil?)
     
     respond_to do |format|
-      format.html { render 'trending_ignored' }
+      format.html { render 'trending_ignored', layout: action_name != 'card' }
       format.atom { render layout: false }
       format.rss { render layout: false }
       format.text { send_urls('trending_ignored') }
@@ -260,7 +264,7 @@ private
     end.reject(&:nil?)
     
     respond_to do |format|
-      format.html { render 'vote_ready' }
+      format.html { render 'vote_ready', layout: action_name != 'card' }
       format.atom { render layout: false }
       format.rss { render layout: false }
       format.text { send_urls('vote_ready') }
@@ -345,7 +349,7 @@ private
     end.reject(&:nil?)
     
     respond_to do |format|
-      format.html { render 'flagwar' }
+      format.html { render 'flagwar', layout: action_name != 'card' }
       format.atom { render layout: false }
       format.rss { render layout: false }
       format.text { send_urls('flagwar') }

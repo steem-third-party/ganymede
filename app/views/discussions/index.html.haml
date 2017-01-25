@@ -1,3 +1,6 @@
+= content_for :head, auto_discovery_link_tag(:atom, discussions_url(params, format: :atom))
+= content_for :head, auto_discovery_link_tag(:rss, discussions_url(params, format: :rss))
+
 = render partial: 'nav'
 
 .card.border-top-0{style: 'padding-top: 0'}

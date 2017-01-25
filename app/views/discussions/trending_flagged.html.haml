@@ -1,7 +1,7 @@
 = content_for :head, auto_discovery_link_tag(:atom, discussions_url(trending_flagged: 'true', format: :atom))
 = content_for :head, auto_discovery_link_tag(:rss, discussions_url(trending_flagged: 'true', format: :rss))
 
-= render partial: 'nav'
+= render partial: 'nav' unless action_name == 'card'
 
 .card.border-top-0{style: 'padding-top: 0'}
   .card-block
