@@ -1,5 +1,5 @@
-= content_for :head, auto_discovery_link_tag(:atom, discussions_url(other_promoted: 'true', format: :atom))
-= content_for :head, auto_discovery_link_tag(:rss, discussions_url(other_promoted: 'true', format: :rss))
+= content_for :head, auto_discovery_link_tag(:atom, discussions_url(other_promoted: 'true', min_promotion_amount: @min_promotion_amount, format: :atom))
+= content_for :head, auto_discovery_link_tag(:rss, discussions_url(other_promoted: 'true', min_promotion_amount: @min_promotion_amount, format: :rss))
 
 = render partial: 'nav' unless action_name == 'card'
 
@@ -7,6 +7,17 @@
   .card-block
     .row
       .col-md-12
+
+        %div.float-right
+          = form_tag discussions_path, method: :get, class: 'form-inline' do
+            = hidden_field_tag :other_promoted, true
+            .row
+              .form-group
+                %label{for: :min_promotion_amount} Minimum Amount:
+                = number_field_tag :min_promotion_amount, @min_promotion_amount, class: 'form-control form-control-sm', style: 'width: 96px'
+                &nbsp;&nbsp;&nbsp;
+              .form-group
+                = submit_tag 'Query', class: 'btn btn-primary'
 
         %br
         %br
