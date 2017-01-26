@@ -50,6 +50,7 @@ class FindFlagwarJob < ApplicationJob
     @@DISCUSSIONS_CACHE[tag] = by_cashout.map do |comment|
       next unless comment.children > 0 # nobody bothered to comment, don't care
       next if base_value(comment.max_accepted_payout) == 0 # payout declined, don't care
+      next if (pending_payout_value = base_value(comment.pending_payout_value)) < 0.001 # no author payout, don't care
       next if (base_total_pending_payout_value = base_value(comment.total_pending_payout_value)) < 0.001 # no payout, don't care
       
       votes = comment.active_votes
