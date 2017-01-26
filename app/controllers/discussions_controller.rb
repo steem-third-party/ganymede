@@ -8,6 +8,8 @@ class DiscussionsController < ApplicationController
     @flagwar = params[:flagwar].presence || 'false'
     @limit = params[:limit].presence || '2000'
     @tag = params[:tag].presence || nil
+    @max_votes = (params[:max_votes].presence || '10').to_i
+    @min_age_in_minutes = (params[:min_age_in_minutes].presence || '30').to_i
     @min_reputation = (params[:min_reputation].presence || '25').to_i
     @min_promotion_amount = (params[:min_promotion_amount].presence || '0.001').to_f
 
@@ -247,8 +249,8 @@ private
     
     @discussions += response.result.map do |comment|
       next if (author_reputation = to_rep comment.author_reputation) < @min_reputation
-      next if comment.active_votes.size > 9
-      next if (created = Time.parse(comment.created + 'Z')) > 30.minutes.ago
+      next unless comment.active_votes.size <= @max_votes
+      next if (created = Time.parse(comment.created + 'Z')) > @min_age_in_minutes.minutes.ago
       
       {
         symbol: symbol_value(comment.total_pending_payout_value),
