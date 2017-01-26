@@ -1,5 +1,5 @@
-= content_for :head, auto_discovery_link_tag(:atom, discussions_url(trending_by_reputation: 'true', format: :atom))
-= content_for :head, auto_discovery_link_tag(:rss, discussions_url(trending_trending_by_reputation: 'true', format: :rss))
+= content_for :head, auto_discovery_link_tag(:atom, discussions_url(trending_by_reputation: 'true', min_reputation: @min_reputation, max_reputation: @max_reputation, format: :atom))
+= content_for :head, auto_discovery_link_tag(:rss, discussions_url(trending_by_reputation: 'true', min_reputation: @min_reputation, max_reputation: @max_reputation, format: :rss))
 
 = render partial: 'nav' unless action_name == 'card'
 
