@@ -37,6 +37,8 @@ private
     history = response.result
 
     @discussions += history.map do |entry|
+      next unless entry.last.op.first == 'transfer'
+      
       timestamp = Time.parse(entry.last.timestamp + 'Z')
       op = entry.last.op.last
       from = op.from
