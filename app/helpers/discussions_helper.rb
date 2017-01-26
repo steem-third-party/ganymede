@@ -6,6 +6,8 @@ module DiscussionsHelper
       'Promoted by Third Parties'
     elsif @predicted == 'true'
       'Predicted to Trend'
+    elsif @trending_by_reputation == 'true'
+      'Reputation on Trending'
     elsif @trending_flagged == 'true'
       'Flagged on Trending'
     elsif @trending_ignored == 'true'
@@ -26,7 +28,7 @@ module DiscussionsHelper
     when :predicted
       'active' if @predicted == 'true'
     when :trending
-      'active' if @trending_flagged == 'true' || @trending_ignored == 'true'
+      'active' if @trending_by_reputation == 'true' || @trending_flagged == 'true' || @trending_ignored == 'true'
     when :vote_ready
       'active' if @vote_ready == 'true'
     when :flagwar
@@ -41,6 +43,8 @@ module DiscussionsHelper
       [time_ago_in_words(discussion[:timestamp]), discussion[:from], discussion[:amount]]
     elsif @predicted == 'true'
       [time_ago_in_words(discussion[:timestamp]), discussion[:amount]]
+    elsif @trending_by_reputation == 'true'
+      [discussion[:author_reputation]]
     elsif @trending_flagged == 'true' || @trending_ignored == 'true'
       [discussion[:from].size, discussion[:from]]
     elsif @vote_ready == 'true'
