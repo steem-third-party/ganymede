@@ -1,37 +1,57 @@
 %div.float-right
   = form_tag follows_path, method: :get do
-    = select_tag :op, options_for_select([['Followers:', 'followers'], ['Following:', 'followings'], ['Ignored by:', 'ignores'], ['Ignoring:', 'ignoring']], @op)
+    = select_tag :op, options_for_select([['Followed by:', 'followings'], ['Following:', 'followers'], ['Ignored by:', 'ignores'], ['Ignoring:', 'ignoring']], @op)
     = text_field_tag :account, @account, placeholder: 'User Name'
+    = select_tag :activity_after, activity_options_for_select('activity after', params[:activity_after])
+    = select_tag :activity_before, activity_options_for_select('activity before', params[:activity_before])
     = submit_tag 'Query', class: 'btn btn-primary'
 %br
 %hr
 
-- if @op == 'followers'
   .jumbotron
     %h4
-      #{pluralize(@follows.size, 'users')} followed by
-      = @account
-- elsif @op == 'followings'
-  .jumbotron
-    %h4
-      #{pluralize(@follows.size, 'users')} following
-      = @account
-- elsif @op == 'ignores'
-  .jumbotron
-    %h4
-      #{pluralize(@follows.size, 'users')} ignored by
-      = @account
-- elsif @op == 'ignoring'
-  .jumbotron
-    %h4
-      #{pluralize(@follows.size, 'users')} ignoring
-      = @account
+      #{pluralize(@follows.size, 'users')} 
+      - if @op == 'followings'
+        followed by
+        = @account
+      - elsif @op == 'followers'
+        following
+        = @account
+      - elsif @op == 'ignores'
+        ignored by
+        = @account
+      - elsif @op == 'ignoring'
+        ignoring
+        = @account
+      - if !!params[:activity_after].presence
+        having activity after
+        = time_ago_in_words @activity_after
+        ago
+      - if !!params[:activity_before].presence
+        having activity before
+        = time_ago_in_words @activity_before
+        ago
 
 - if !!@follows
   %small
     %ul
       - @follows.each do |follow|
-        %li= link_to follow, "#{site_prefix}/@#{follow}"
+        %li
+          = link_to follow, "#{site_prefix}/@#{follow}"
+          \-
+          %strong Last Post:
+          - if @accounts[follow].last_post == '1970-01-01T00:00:00'
+            %i never,
+          - else
+            = time_ago_in_words Time.parse(@accounts[follow].last_post + 'Z')
+            ago,
+          %strong Last Vote:
+          - if @accounts[follow].last_vote_time == '1970-01-01T00:00:00'
+            %i never
+          - else
+            = time_ago_in_words Time.parse(@accounts[follow].last_vote_time + 'Z')
+            ago
+          
 
 - if @op == 'followers' || @op == 'followings'
   See:

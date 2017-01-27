@@ -40,7 +40,7 @@ module ApplicationHelper
   
   def timeout(exception = nil)
     @timeout ||= INITIAL_TIMEOUT
-    raise exception if @timeout > MAX_TIMEOUT
+    raise exception || "Timeout Reached: #{@timeout} > #{MAX_TIMEOUT}" if @timeout > MAX_TIMEOUT
     
     sleep(@timeout += 2)
   end
@@ -70,11 +70,11 @@ module ApplicationHelper
       begin
         response = follow_api.send(m, *options)
         break if !!response
-      rescue
+      rescue => e
         Rails.logger.warn "Radiator::FollowApi Falling back to: #{fallback_api_url}"
         @follow_api = nil
         follow_api(fallback_api_url)
-        timeout
+        timeout e
       end
     end
     
