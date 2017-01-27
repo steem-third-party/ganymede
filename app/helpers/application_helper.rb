@@ -23,7 +23,7 @@ module ApplicationHelper
   end
   
   def rshares_json_url
-    ENV['UPVOTES_JSON_URL'] || 'https://steemdb.com/api/rshares'
+    ENV['RSHARES_JSON_URL'] || 'https://steemdb.com/api/rshares'
   end
 
   def downvotes_json_url
