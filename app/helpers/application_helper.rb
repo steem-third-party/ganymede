@@ -22,9 +22,9 @@ module ApplicationHelper
     ENV['FALLBACK_API_URL'] || 'https://this.piston.rocks:443'
   end
   
-  # def upvotes_json_url
-  #   ENV['UPVOTES_JSON_URL'] || 'https://steemdb.com/api/upvotes'
-  # end
+  def rshares_json_url
+    ENV['UPVOTES_JSON_URL'] || 'https://steemdb.com/api/rshares'
+  end
 
   def downvotes_json_url
     ENV['DOWNVOTES_JSON_URL'] || 'https://steemdb.com/api/downvotes'

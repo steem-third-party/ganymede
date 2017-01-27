@@ -12,13 +12,13 @@ class AccountsController < ApplicationController
   end
   
   def upvoted
-    # @@UPVOTES_JSON = JSON[open(upvotes_json_url).read]
-    # @suggested_voters = @@DOWNVOTES_JSON.last["accounts"].map do |account|
-    #   voter = account.last
-    #   {voter["voter"] => voter["votes"]}
-    # end.sort_by do |voter|
-    #   voter["votes"]
-    # end
+    @@RSHARES_JSON = JSON[open(rshares_json_url).read]
+    @suggested_voters = @@RSHARES_JSON.last["voters"].map do |account|
+      voter = account.last
+      {voter["voter"] => voter["votes"]}
+    end.sort_by do |voter|
+      voter["votes"]
+    end
     
     render 'upvoted' and return if @voters.empty?
     
