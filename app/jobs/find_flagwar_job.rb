@@ -109,7 +109,7 @@ class FindFlagwarJob < ApplicationJob
       if account.name == author && account.post_count > 0
         # Author reputation is above 25, meaning their comments are not being
         # consistently flagged.
-        if to_rep account.reputation > 25
+        if to_rep(account.reputation) > 25
           author
         end
       end
