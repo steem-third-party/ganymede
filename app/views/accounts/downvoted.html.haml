@@ -15,14 +15,21 @@
           = form_tag accounts_path, method: :get do
             = hidden_field_tag :downvoted, true
             Downvoters:
-            = text_field_tag :voters, @voters, size: 100
+            = text_field_tag :voters, @voters, size: 50
             = submit_tag 'Query', class: 'btn btn-primary'
 
         %br
         %br
 
         - if @accounts.any?
-          %h3 Downvoted #{pluralize @accounts.size, 'Account'}
+          %h3
+            Downvoted #{pluralize @accounts.size, 'Account'}
+            - if !!@oldest_vote
+              = surround '(', ')' do
+                since
+                = time_ago_in_words @oldest_vote
+                ago
+
 
           %code= @accounts.join(' ')
           

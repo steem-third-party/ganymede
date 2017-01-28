@@ -6,6 +6,7 @@ class AccountsController < ApplicationController
     @upvoted = params[:upvoted].presence || 'false'
     @downvoted = params[:downvoted].presence || 'false'
     @accounts = []
+    @oldest_vote = nil
     
     upvoted if @upvoted == 'true'
     downvoted if @downvoted == 'true'
@@ -30,6 +31,8 @@ class AccountsController < ApplicationController
       next if response.result.nil?
       
       @accounts << response.result.map do |vote|
+        @oldest_vote ||= Time.parse(vote.time + 'Z')
+        @oldest_vote = [@oldest_vote, Time.parse(vote.time + 'Z')].min
         vote.authorperm.split('/').first if vote.percent > 0
       end
     end
@@ -63,6 +66,8 @@ class AccountsController < ApplicationController
       next if response.result.nil?
       
       @accounts << response.result.map do |vote|
+        @oldest_vote ||= Time.parse(vote.time + 'Z')
+        @oldest_vote = [@oldest_vote, Time.parse(vote.time + 'Z')].min
         vote.authorperm.split('/').first if vote.percent < 0
       end
     end
