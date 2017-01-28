@@ -94,7 +94,11 @@ module ApplicationHelper
     steem_per_usd = (base / quote) * steem_per_mvest
 
     # E.g. from 2016/11/25: 1 MV = 1M VESTS = 459.680 STEEM = $50.147
-    "1 MV = 1M VESTS = #{("%.3f" % steem_per_mvest)} STEEM = $#{("%.3f" % steem_per_usd)}"
+    if site_prefix =~ /golos/
+      "1 MG = 1M GESTS = #{("%.3f" % steem_per_mvest)} GOLOS = #{("%.3f" % steem_per_usd)} GBG"
+    else
+      "1 MV = 1M VESTS = #{("%.3f" % steem_per_mvest)} STEEM = $#{("%.3f" % steem_per_usd)}"
+    end
   end
   
   def to_rep(raw)
