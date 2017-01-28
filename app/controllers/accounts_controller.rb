@@ -49,7 +49,7 @@ class AccountsController < ApplicationController
   
   def downvoted
     @@DOWNVOTES_JSON = JSON[open(downvotes_json_url).read]
-    @suggested_voters = @@DOWNVOTES_JSON.last["accounts"].map do |account|
+    @suggested_voters = @@DOWNVOTES_JSON.last["accounts"].sort_by { |a| a.last["votes"].to_i }.reverse.map do |account|
       voter = account.last
       {voter["voter"] => voter["votes"]}
     end.sort_by do |voter|
