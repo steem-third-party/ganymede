@@ -2,6 +2,7 @@
   %li.nav-item= link_to 'Vote Ready', discussions_url(vote_ready: true), class: discussion_active_class(:vote_ready, ['nav-link'])
   %li.nav-item= link_to 'Promoted by Third Parties', discussions_url(other_promoted: true), class: discussion_active_class(:other_promoted, ['nav-link'])
   %li.nav-item= link_to 'Predicted to Trend', discussions_url(predicted: true), class: discussion_active_class(:predicted, ['nav-link'])
+  %li.nav-item= link_to 'Flag War', discussions_url(flagwar: true), class: discussion_active_class(:flagwar, ['nav-link'])
   %li.nav-item.dropdown
     %a.nav-link{data: { toggle: "dropdown" }, href: "#", role: "button", aria: { haspopup: "true", expanded: "false"}, class: discussion_active_class(:trending, ['dropdown dropdown-toggle'])} On Trending
     .dropdown-menu

@@ -6,6 +6,8 @@ module DiscussionsHelper
       'Promoted by Third Parties'
     elsif @predicted == 'true'
       'Predicted to Trend'
+    elsif @flagwar == 'true'
+      'Flagwar'
     elsif @trending_by_reputation == 'true'
       'Reputation on Trending'
     elsif @trending_flagged == 'true'
@@ -27,6 +29,8 @@ module DiscussionsHelper
       'active' if @other_promoted == 'true'
     when :predicted
       'active' if @predicted == 'true'
+    when :flagwar
+      'active' if @flagwar == 'true'
     when :trending
       'active' if @trending_by_reputation == 'true' || @trending_flagged == 'true' || @trending_ignored == 'true'
     when :vote_ready
