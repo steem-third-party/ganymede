@@ -105,7 +105,14 @@ class FindFlagwarJob < ApplicationJob
   
   def commented_any?(author)
     downvoter_accounts.map do |account|
-      author if account.name == author && account.post_count > 0
+      # Author has made at least one post (thus exposed to flag).
+      if account.name == author && account.post_count > 0
+        # Author reputation is above 25, meaning their comments are not being
+        # consistently flagged.
+        if to_rep account.reputation > 25
+          author
+        end
+      end
     end.reject(&:nil?).include? author
   end
   
