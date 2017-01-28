@@ -13,7 +13,7 @@ class AccountsController < ApplicationController
   
   def upvoted
     @@RSHARES_JSON = JSON[open(rshares_json_url).read]
-    @suggested_voters = @@RSHARES_JSON.last["voters"].map do |account|
+    @suggested_voters = @@RSHARES_JSON.last["voters"].sort_by { |a| a.last["votes"].to_i }.reverse.map do |account|
       voter = account.last
       {voter["voter"] => voter["votes"]}
     end.sort_by do |voter|

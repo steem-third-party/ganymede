@@ -6,7 +6,7 @@
       .col-md-12
 
         - if @suggested_voters.any?
-          %strong Today's top voters (by rshares):
+          %strong Today's top voters (by nominal votes):
           - @suggested_voters.each do |voter|
             = link_to voter.keys.first, accounts_path(upvoted: true, voters: voter.keys.first), class: 'btn btn-secondary btn-xs'
           %br
