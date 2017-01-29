@@ -19,7 +19,7 @@ class TransfersController < ApplicationController
         }
         
         respond_to do |format|
-          format.html { render 'index', layout: action_name != 'card' }
+          format.html { }
           format.atom { render layout: false }
           format.rss { render layout: false }
         end
