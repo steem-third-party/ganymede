@@ -1,3 +1,7 @@
+- if !!@account
+  = content_for :head, auto_discovery_link_tag(:atom, transfers_url(account: @account, format: :atom))
+  = content_for :head, auto_discovery_link_tag(:rss, transfers_url(account: @account, format: :rss))
+
 %div.float-right
   = form_tag transfers_path, method: :get do
     = text_field_tag :account, @account, placeholder: 'User Name'
