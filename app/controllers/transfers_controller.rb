@@ -4,7 +4,7 @@ class TransfersController < ApplicationController
     @transfers = []
     
     if @account.nil?
-      redirect_to transfers_url, notice: "Please provide a user to check #{@op}." and return
+      redirect_to transfers_url, notice: "Please provide a user to check transactions." and return
     end
     
     response = api_execute(:get_account_history, @account, 2000, 2000)
