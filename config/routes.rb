@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   end
   resources :follows, only: :index
   resources :accounts, only: :index
+  resources :transfers, only: :index
 end

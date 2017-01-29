@@ -1,0 +1,29 @@
+%div.float-right
+  = form_tag follows_path, method: :get do
+    = text_field_tag :account, @account, placeholder: 'User Name'
+    = submit_tag 'Query', class: 'btn btn-primary'
+%br
+%hr
+
+  .jumbotron
+    %h4 Transfers
+
+- if !!@transfers && @transfers.any?
+  %table.table-sm.table-striped.table-bordered
+    %thead
+      %tr
+        %th ID
+        %th To
+        %th Time
+        %th Amount
+        %th Memo
+    %tbody
+      - @transfers.each do |transfer|
+        %tr
+          %td= transfer[:trx_id]
+          %td= link_to transfer[:to], "#{site_prefix}/@#{transfer[:to]}"
+          %td
+            = time_ago_in_words transfer[:timestamp]
+            ago
+          %td= transfer[:amount]
+          %td= transfer[:memo]
