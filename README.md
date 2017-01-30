@@ -17,18 +17,17 @@ This project also serves to demonstrate a Ruby on Rails project that can access 
 
 ---
 
-### Installation
+### Installation (standalone)
 
 ```bash
 $ git clone git@github.com:steem-third-party/ganymede.git
 $ cd ganymede
 $ bundle install
-$ rails s
+$ npm install
+$ npm start
 ```
 
-Once the server is running locally, browse to:
-
-[http://localhost:3000/](http://localhost:3000/)
+If you get an error doing `npm install`, try `sudo npm install` instead.
 
 ## Get in touch!
 
