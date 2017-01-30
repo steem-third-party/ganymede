@@ -41,7 +41,7 @@ class FindFlagwarJob < ApplicationJob
     # prefetch all of the downvoter accounts.
     by_cashout.each do |comment|
       downvotes = comment.active_votes.each do |vote|
-        if vote.percent < 0
+        if vote.percent < -500
           @downvoter_names << vote.voter
         end
       end
@@ -58,7 +58,7 @@ class FindFlagwarJob < ApplicationJob
         vote if vote.percent > 0
       end.reject(&:nil?)
       downvotes = votes.map do |vote|
-        vote if vote.percent < 0
+        vote if vote.percent < -500
       end.reject(&:nil?)
       unvotes = votes.map do |vote|
         vote if vote.percent == 0
@@ -69,7 +69,7 @@ class FindFlagwarJob < ApplicationJob
 
       # Looking up downvotes that qualify.
       qualified_downvotes = votes.map do |vote|
-        vote if vote.percent < 0 && commented_on?(author: vote.voter, parent_author: comment.author, parent_permlink: comment.permlink)
+        vote if vote.percent < -500 && commented_on?(author: vote.voter, parent_author: comment.author, parent_permlink: comment.permlink)
       end.reject(&:nil?)
       
       next if qualified_downvotes.none? # no qualified downvotes, don't care
