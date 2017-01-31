@@ -34,7 +34,7 @@ function createWindow (railsApp, railsAddr) {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
-  var railsApp = require('child_process').spawn('rails', ['s']);
+  var railsApp = require('child_process').spawn('rails', ['s', '-e', 'production']);
   var rp = require('request-promise');
 
   function start() {
