@@ -5,6 +5,8 @@
 #= require turbolinks
 #= require angular
 #= require angular-flash-alert
+#= require angular-ui-bootstrap
+#= require angular-ui-bootstrap-tpls
 #= require nprogress
 #= require main
 #= require_tree .

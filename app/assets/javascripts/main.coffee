@@ -1,5 +1,5 @@
 if document.app == undefined
-  document.app = angular.module('Ganymede', ['flash'])
+  document.app = angular.module('Ganymede', ['flash', 'ui.bootstrap'])
   
 document.app.
 config(['$httpProvider', ($httpProvider) ->
