@@ -8,7 +8,8 @@
         - if @suggested_voters.any?
           %strong Today's top downvoters (by nominal votes):
           - @suggested_voters.each do |voter|
-            = link_to voter.keys.first, accounts_path(downvoted: true, voters: voter.keys.first), class: 'btn btn-secondary btn-xs'
+            - tip = pluralize(voter.values.last, 'vote')
+            = link_to voter.keys.first, accounts_path(downvoted: true, voters: voter.keys.first), class: 'btn btn-secondary btn-xs', uib_tooltip: tip, title: tip
           %br
 
         %div.float-right
@@ -29,7 +30,11 @@
                 since
                 = time_ago_in_words @oldest_vote
                 ago
-
+          - if @votes_today.any?
+            %small
+              = @votes_today.join('; ')
+              today
+              %br
 
           %code= @accounts.join(' ')
           
