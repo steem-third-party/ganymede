@@ -53,6 +53,7 @@ GEM
     bootstrap-glyphicons (0.0.1)
       railties (>= 3.0)
       sass (>= 3.2)
+    bson (4.2.1)
     builder (3.2.3)
     byebug (9.0.6)
     coffee-rails (4.2.1)
@@ -93,6 +94,11 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
+    mongo (2.4.1)
+      bson (>= 4.2.1, < 5.0.0)
+    mongoid (6.0.3)
+      activemodel (~> 5.0)
+      mongo (~> 2.3)
     multi_json (1.12.1)
     net-http-persistent (2.9.4)
     nio4r (1.2.1)
@@ -190,6 +196,7 @@ DEPENDENCIES
   haml
   jbuilder (~> 2.5)
   listen
+  mongoid (~> 6.0.0)
   puma (~> 3.0)
   radiator!
   rails (~> 5.0.1)
@@ -210,4 +217,4 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 BUNDLED WITH
-   1.13.7
+   1.14.3
