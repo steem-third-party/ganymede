@@ -5,11 +5,14 @@ class AccountsController < ApplicationController
     @voters = params[:voters].presence || ''
     @upvoted = params[:upvoted].presence || 'false'
     @downvoted = params[:downvoted].presence || 'false'
+    @account_names = params[:account_names].presence || 'false'
+    @metadata = params[:metadata].presence || 'false'
     @accounts = []
     @oldest_vote = nil
     
     upvoted if @upvoted == 'true'
     downvoted if @downvoted == 'true'
+    metadata if @metadata == 'true'
   end
   
   def upvoted
@@ -78,6 +81,17 @@ class AccountsController < ApplicationController
       format.html { render 'downvoted' }
       format.text {
         send_data @accounts.join("\n"), filename: 'downvoted.txt', content_type: 'text/plain', disposition: :attachment
+      }
+    end
+  end
+  
+  def metadata
+    @accounts = api_execute(:get_accounts, @account_names.split(' ')).result
+    
+    respond_to do |format|
+      format.html { render 'metadata' }
+      format.text {
+        send_data @accounts.join("\n"), filename: 'metadata.txt', content_type: 'text/plain', disposition: :attachment
       }
     end
   end
