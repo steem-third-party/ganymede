@@ -46,6 +46,8 @@ gem 'rdiscount'
 #Assets
 
 gem 'bootstrap-glyphicons', '~> 0.0.1'
+# Wraps the Angular.js UI Bootstrap library.
+gem 'angular-ui-bootstrap-rails'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap', '~> 4.0.0.alpha.6'
