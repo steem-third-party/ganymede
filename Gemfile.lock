@@ -76,6 +76,7 @@ GEM
     capybara-screenshot (1.0.14)
       capybara (>= 1.0, < 3)
       launchy
+    cliver (0.3.2)
     coderay (1.1.1)
     coffee-rails (4.2.1)
       coffee-script (>= 2.2.0)
@@ -131,6 +132,10 @@ GEM
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
     phantomjs (2.1.1.0)
+    poltergeist (1.13.0)
+      capybara (~> 2.1)
+      cliver (~> 0.3.1)
+      websocket-driver (>= 0.2.0)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -249,6 +254,7 @@ DEPENDENCIES
   minitest
   minitest-line
   phantomjs
+  poltergeist
   pry-rails
   puma (~> 3.0)
   rack-mini-profiler

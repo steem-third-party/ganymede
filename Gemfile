@@ -83,6 +83,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 group :test do
   gem 'capybara-angular'
   gem 'capybara-screenshot'
+  gem 'poltergeist'
   gem 'phantomjs', require: 'phantomjs/poltergeist'
   gem 'minitest'
   gem 'minitest-line'
