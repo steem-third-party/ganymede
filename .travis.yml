@@ -3,6 +3,8 @@ rvm:
   - "2.3.1"
 script: TESTOPTS="--verbose" bundle exec rake test
 addons:
+  code_climate:
+    repo_token: 7a2cc23fc8e8b9c442387ac14ebcc4fdb8098e696816126376d9ae60ef06e8e0
 notifications:
   email: false
   irc: "chat.freenode.net#galacticaactual"

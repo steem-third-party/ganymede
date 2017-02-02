@@ -89,4 +89,5 @@ group :test do
   gem 'minitest-line'
   gem 'simplecov', require: false
   gem 'webmock', require: false
+  gem 'codeclimate-test-reporter'
 end

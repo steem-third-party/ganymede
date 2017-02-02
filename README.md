@@ -1,4 +1,10 @@
-# ganymede
+ganymede
+========
+
+[![Build Status](https://travis-ci.org/steem-third-party/ganymede.svg?branch=master)](https://travis-ci.org/steem-third-party/ganymede)
+[![Code Climate](https://codeclimate.com/github/steem-third-party/ganymede/badges/gpa.svg)](https://codeclimate.com/github/steem-third-party/ganymede)
+[![Test Coverage](https://codeclimate.com/github/steem-third-party/ganymede/badges/coverage.svg)](https://codeclimate.com/github/steem-third-party/ganymede/coverage)
+[![Issue Count](https://codeclimate.com/github/steem-third-party/ganymede/badges/issue_count.svg)](https://codeclimate.com/github/steem-third-party/ganymede)
 
 [Ganymede](https://github.com/steem-third-party/ganymede) is a collection of web implementations exploring various ruby scripts and api calls posted on the STEEM blockchain, see:
 

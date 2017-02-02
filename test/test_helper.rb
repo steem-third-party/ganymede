@@ -1,8 +1,14 @@
 ENV['RAILS_ENV'] ||= 'test'
 
-require 'simplecov'
-SimpleCov.start 'rails'
-SimpleCov.merge_timeout 3600
+if ENV["HELL_ENABLED"] || ENV['CODECLIMATE_REPO_TOKEN']
+  require 'simplecov'
+  if ENV['CODECLIMATE_REPO_TOKEN']
+    SimpleCov.start CodeClimate::TestReporter.configuration.profile
+  else
+    SimpleCov.start
+  end
+  SimpleCov.merge_timeout 3600
+end
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
