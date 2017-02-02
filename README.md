@@ -22,14 +22,8 @@ This project also serves to demonstrate a Ruby on Rails project that can access 
 ```bash
 $ git clone git@github.com:steem-third-party/ganymede.git
 $ cd ganymede
-$ bundle install
-$ rake assets:precompile
-$ export SECRET_KEY_BASE=`rake secret`
-$ npm install
-$ npm start
+$ ./bin/electron-shell.sh
 ```
-
-If you get an error doing `npm install`, try `sudo npm install` instead.
 
 ## Get in touch!
 
