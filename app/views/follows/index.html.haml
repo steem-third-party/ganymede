@@ -32,27 +32,44 @@
         = time_ago_in_words @activity_before
         ago
 
-- if !!@follows
-  %small
-    %ul
+- if !!@follows && @follows.any?
+  %table.table-sm.table-striped.table-bordered
+    %thead
+      %tr
+      %th ID
+      %th Last Post
+      %th Last Vote
+      - if (include_created_at = @accounts.map { |a| a.last.json_metadata['created_at'] }.reject(&:nil?).any?)
+        %th Created At
+      - if (include_ico = @accounts.map { |a| a.last.json_metadata['ico_address'] }.reject(&:nil?).any?)
+        %th ICO
+      - if (include_profile = @accounts.map { |a| a.last.json_metadata['profile'] }.reject(&:nil?).any?)
+        %th Has Profile
+    %tbody
       - @follows.each do |follow|
-        %li
-          = link_to follow, "#{site_prefix}/@#{follow}"
-          \-
-          %strong Last Post:
-          - if @accounts[follow].last_post == '1970-01-01T00:00:00'
-            %i never,
-          - else
-            = time_ago_in_words Time.parse(@accounts[follow].last_post + 'Z')
-            ago,
-          %strong Last Vote:
-          - if @accounts[follow].last_vote_time == '1970-01-01T00:00:00'
-            %i never
-          - else
-            = time_ago_in_words Time.parse(@accounts[follow].last_vote_time + 'Z')
-            ago
+        - account = @accounts[follow]
+        - json_metadata = account.json_metadata.present? ? JSON[account.json_metadata] : {} rescue {}
+        %tr
+          %td= link_to follow, "#{site_prefix}/@#{follow}"
+          %td
+            - if account.last_post == '1970-01-01T00:00:00'
+              %i never
+            - else
+              = time_ago_in_words Time.parse(account.last_post + 'Z')
+              ago
+          %td
+            - if account.last_vote_time == '1970-01-01T00:00:00'
+              %i never
+            - else
+              = time_ago_in_words Time.parse(account.last_vote_time + 'Z')
+              ago
+          - if include_created_at
+            %td= json_metadata['created_at']
+          - if include_created_at
+            %td= !!json_metadata['ico_address'] ? '√' : ''
+          - if include_profile
+            %td= !!json_metadata['profile'] ? '√' : ''
           
-
 - if @op == 'followers' || @op == 'followings'
   See:
   = link_to 'How to List All Followers in Ruby', 'https://steemit.com/radiator/@inertia/how-to-list-all-followers-in-ruby'

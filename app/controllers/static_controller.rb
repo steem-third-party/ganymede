@@ -7,4 +7,8 @@ class StaticController < ApplicationController
     
     send_file favicon, type: 'image/svg', disposition: 'inline'
   end
+  
+  def mvests
+    render text: MvestsLookupJob.new.perform
+  end
 end

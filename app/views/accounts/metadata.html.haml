@@ -1,0 +1,21 @@
+= render partial: 'nav'
+
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
+
+        %div.float-right
+          = form_tag accounts_path, method: :get do
+            = hidden_field_tag :metadata, true
+            = text_field_tag :account_names, @account_names, size: 50
+            = submit_tag 'Query', class: 'btn btn-primary'
+
+        %br
+        %br
+
+        %ul
+          - @accounts.each do |account|
+            %li
+              %code= account.json_metadata
+          
