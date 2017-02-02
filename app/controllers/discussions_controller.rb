@@ -9,7 +9,7 @@ class DiscussionsController < ApplicationController
     @flagwar = params[:flagwar].presence || 'false'
     @limit = params[:limit].presence || '2000'
     @tag = params[:tag].presence || nil
-    @exclude_tag = params[:exclude_tag].presence || nil
+    @exclude_tags = params[:exclude_tags].presence || ''
     @max_votes = (params[:max_votes].presence || '10').to_i
     @min_age_in_minutes = (params[:min_age_in_minutes].presence || '30').to_i
     @min_reputation = (params[:min_reputation].presence || '25').to_i
@@ -288,7 +288,7 @@ private
       next if (created = Time.parse(comment.created + 'Z')) > @min_age_in_minutes.minutes.ago
       
       comment_tags = JSON[comment.json_metadata]["tags"] rescue []
-      exclude_tags = [@exclude_tag].flatten
+      exclude_tags = [@exclude_tags.split(' ')].flatten
       next if (comment_tags & exclude_tags).any?
       
       {
