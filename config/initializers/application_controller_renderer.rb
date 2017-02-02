@@ -4,3 +4,5 @@
 #   http_host: 'example.org',
 #   https: false
 # )
+
+MvestsLookupJob.perform_later

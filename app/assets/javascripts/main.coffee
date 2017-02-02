@@ -62,6 +62,16 @@ directive('splatnit', ['$parse', ($parse) ->
       $(element).val()
     
     $parse(field).assign(scope, value)
+]).
+directive('mvests', ['$http', '$compile', ($http, $compile) ->
+  restrict: 'E'
+  controller: ['$scope', '$element', ($scope, $element) ->
+    config = {cache: true}
+    $http.get('/mvests', config).then (response) ->
+      data = response.data
+      if !!data
+        $element.html $compile("<code>#{data}</code>")($scope)
+  ]
 ])
 
 $(document).on 'ready page:load', -> angular.bootstrap 'body', ['Ganymede']
