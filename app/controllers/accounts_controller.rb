@@ -5,6 +5,7 @@ class AccountsController < ApplicationController
     @voters = params[:voters].presence || ''
     @upvoted = params[:upvoted].presence || 'false'
     @downvoted = params[:downvoted].presence || 'false'
+    @unvoted = params[:unvoted].presence || 'false'
     @account_names = params[:account_names].presence || 'false'
     @metadata = params[:metadata].presence || 'false'
     @accounts = []
@@ -12,32 +13,16 @@ class AccountsController < ApplicationController
     
     upvoted if @upvoted == 'true'
     downvoted if @downvoted == 'true'
+    unvoted if @unvoted == 'true'
     metadata if @metadata == 'true'
   end
-  
+private
   def upvoted
-    @suggested_voters = AccountsController.rshares_json(rshares_json_url).last["voters"].sort_by { |a| a.last["votes"].to_i }.reverse.map do |account|
-      voter = account.last
-      {voter["voter"] => voter["votes"]}
-    end.sort_by do |voter|
-      voter["votes"]
-    end
+    @suggested_voters = suggested_voters AccountsController.rshares_json(rshares_json_url).last["voters"]
     
     render 'upvoted' and return if @voters.empty?
     
-    @voters.split(' ').each do |voter|
-      response = api_execute(:get_account_votes, voter)
-    
-      next if response.result.nil?
-      
-      @accounts << response.result.map do |vote|
-        @oldest_vote ||= Time.parse(vote.time + 'Z')
-        @oldest_vote = [@oldest_vote, Time.parse(vote.time + 'Z')].min
-        vote.authorperm.split('/').first if vote.percent > 0
-      end
-    end
-    
-    @accounts = @accounts.flatten.reject(&:nil?).uniq
+    @accounts = voters :up, @voters.split(' ')
     votes_today
 
     respond_to do |format|
@@ -49,34 +34,30 @@ class AccountsController < ApplicationController
   end
   
   def downvoted
-    @suggested_voters = AccountsController.downvotes_json(downvotes_json_url).last["accounts"].sort_by { |a| a.last["votes"].to_i }.reverse.map do |account|
-      voter = account.last
-      {voter["voter"] => voter["votes"]}
-    end.sort_by do |voter|
-      voter["votes"]
-    end
+    @suggested_voters = suggested_voters AccountsController.downvotes_json(downvotes_json_url).last["accounts"]
     
     render 'downvoted' and return if @voters.empty?
     
-    @voters.split(' ').each do |voter|
-      response = api_execute(:get_account_votes, voter)
-    
-      next if response.result.nil?
-      
-      @accounts << response.result.map do |vote|
-        @oldest_vote ||= Time.parse(vote.time + 'Z')
-        @oldest_vote = [@oldest_vote, Time.parse(vote.time + 'Z')].min
-        vote.authorperm.split('/').first if vote.percent < 0
-      end
-    end
-    
-    @accounts = @accounts.flatten.reject(&:nil?).uniq
+    @accounts = voters :down, @voters.split(' ')
     votes_today
 
     respond_to do |format|
       format.html { render 'downvoted' }
       format.text {
         send_data @accounts.join("\n"), filename: 'downvoted.txt', content_type: 'text/plain', disposition: :attachment
+      }
+    end
+  end
+  
+  def unvoted
+    render 'unvoted' and return if @voters.empty?
+    
+    @accounts = voters :un, @voters.split(' ')
+
+    respond_to do |format|
+      format.html { render 'unvoted' }
+      format.text {
+        send_data @accounts.join("\n"), filename: 'unvoted.txt', content_type: 'text/plain', disposition: :attachment
       }
     end
   end
@@ -91,7 +72,39 @@ class AccountsController < ApplicationController
       }
     end
   end
-private
+  
+  def suggested_voters(voters)
+    voters.sort_by do |a|
+      a.last["votes"].to_i
+    end.reverse.map do |account|
+      voter = account.last
+      {voter["voter"] => voter["votes"]}
+    end
+  end
+  
+  def voters(type, voters)
+    votes = []
+    
+    voters.each do |voter|
+      response = api_execute(:get_account_votes, voter)
+      next unless !!response.result
+      
+      votes += response.result.map do |vote|
+        voted = vote.authorperm.split('/').first
+        
+        case type
+        when :up; next unless vote.percent > 0
+        when :down; next unless vote.percent < 0
+        when :un; next unless vote.percent == 0
+        end
+        
+        voted
+      end
+    end
+    
+    votes.compact.uniq
+  end
+  
   def self.rshares_json(rshares_json_url)
     @@RSHARES_JSON ||= JSON[open(rshares_json_url).read]
   end
@@ -110,6 +123,6 @@ private
       end
     end
     
-    @votes_today = @votes_today.flatten.reject(&:nil?)
+    @votes_today = @votes_today.flatten.compact
   end
 end

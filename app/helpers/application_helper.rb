@@ -15,7 +15,11 @@ module ApplicationHelper
   end
 
   def api_url
-    ENV['API_URL'] || 'https://node.steem.ws:443'
+    if Rails.env.test?
+      'https://this.piston.rocks:443'
+    else
+      ENV['API_URL'] || 'https://node.steem.ws:443'
+    end
   end
 
   def fallback_api_url

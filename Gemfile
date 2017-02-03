@@ -90,4 +90,7 @@ group :test do
   gem 'simplecov', require: false
   gem 'webmock', require: false
   gem 'codeclimate-test-reporter'
+  # See: https://github.com/myronmarston/vcr
+  gem 'vcr'
+  gem 'rails-controller-testing'
 end

@@ -5,6 +5,8 @@ module AccountsHelper
       'active' if @upvoted == 'true'
     when :downvoted
       'active' if @downvoted == 'true'
+    when :unvoted
+      'active' if @unvoted == 'true'
     end
     
     classes.join(' ')
