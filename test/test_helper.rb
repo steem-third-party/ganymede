@@ -25,6 +25,14 @@ end
 
 WebMock.disable_net_connect!(allow_localhost: true, allow: 'codeclimate.com:443')
 
+VCR.configure do |c|
+  c.cassette_library_dir = 'test/fixtures/vcr_cassettes'
+  c.hook_into :webmock
+  c.ignore_request do |request|
+    URI(request.uri).path == '/__identify__'
+  end
+end
+
 phantomjs_logger = if ENV['TESTOPTS'].to_s.include?('--verbose')
   $stdout
 else
@@ -52,8 +60,6 @@ Capybara.default_max_wait_time = 15
 Capybara::Screenshot.prune_strategy = { keep: 20 }
 
 class ActiveSupport::TestCase
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  # fixtures :all
 end
 
 class ActionDispatch::IntegrationTest
