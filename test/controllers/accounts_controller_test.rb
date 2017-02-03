@@ -85,7 +85,7 @@ class AccountsControllerTest < ActionController::TestCase
   
   def test_metadata
     VCR.use_cassette('accounts_controller') do
-      process :index, method: :get, params: {metadata: 'true', account_name: 'inertia'}
+      process :index, method: :get, params: {metadata: 'true', account_names: 'inertia'}
     end
 
     accounts = assigns :accounts
@@ -98,7 +98,7 @@ class AccountsControllerTest < ActionController::TestCase
   
   def test_metadata_download
     VCR.use_cassette('accounts_controller') do
-      process :index, method: :get, params: {metadata: 'true', account_name: 'inertia'}, format: 'text'
+      process :index, method: :get, params: {metadata: 'true', account_names: 'inertia'}, format: 'text'
     end
     
     assert_response :success

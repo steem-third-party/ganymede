@@ -5,9 +5,9 @@
     .row
       .col-md-12
 
-        - if @suggested_voters.any?
+        - if suggested_voters.any?
           %strong Today's top downvoters (by nominal votes):
-          - @suggested_voters.each do |voter|
+          - suggested_voters.each do |voter|
             - tip = pluralize(voter.values.last, 'vote')
             = link_to voter.keys.first, accounts_path(downvoted: true, voters: voter.keys.first), class: 'btn btn-secondary btn-xs', uib_tooltip: tip, title: tip
           %br
@@ -30,9 +30,9 @@
                 since
                 = time_ago_in_words @oldest_vote
                 ago
-          - if @votes_today.any?
+          - if votes_today.any?
             %small
-              = @votes_today.join('; ')
+              = votes_today.join('; ')
               today
               %br
 
