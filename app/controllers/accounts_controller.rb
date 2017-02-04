@@ -65,16 +65,18 @@ private
     end
   end
   
-  def suggested_voters
-    return @suggested_voters if !!@suggested_voters
-    
-    voters = if @upvoted == 'true'
+  def fetch_voters
+    if @upvoted == 'true'
       AccountsController.rshares_json(rshares_json_url).last["voters"]
     else
       AccountsController.downvotes_json(downvotes_json_url).last["accounts"]
     end
+  end
+  
+  def suggested_voters
+    return @suggested_voters if !!@suggested_voters
     
-    @suggested_voters = voters.sort_by do |a|
+    @suggested_voters = fetch_voters.sort_by do |a|
       a.last["votes"].to_i
     end.reverse.map do |account|
       voter = account.last
