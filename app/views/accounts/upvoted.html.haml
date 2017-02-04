@@ -22,9 +22,9 @@
         %br
         %br
 
-        - if @accounts.any?
+        - if accounts.any?
           %h3
-            Upvoted #{pluralize @accounts.size, 'Account'}
+            Upvoted #{pluralize accounts.size, 'Account'}
             - if !!@oldest_vote
               = surround '(', ')' do
                 since
@@ -36,7 +36,7 @@
               today
               %br
 
-          %code= @accounts.join(' ')
+          %code= accounts.join(' ')
           
           %br
           

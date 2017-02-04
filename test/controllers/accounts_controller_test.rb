@@ -7,6 +7,12 @@ class AccountsControllerTest < ActionController::TestCase
   
   def test_upvoted
     VCR.use_cassette('accounts_controller') do
+      process :index, method: :get, params: {upvoted: 'true'}
+    end
+  end
+  
+  def test_upvoted_voter
+    VCR.use_cassette('accounts_controller') do
       process :index, method: :get, params: {upvoted: 'true', voters: 'inertia'}
     end
     
@@ -31,13 +37,16 @@ class AccountsControllerTest < ActionController::TestCase
       process :index, method: :get, params: {upvoted: 'true', voters: 'steemed'}
     end
     
-    votes_today = assigns :votes_today
-    assert votes_today.any?
-    
     assert_response :success
   end
   
   def test_downvoted
+    VCR.use_cassette('accounts_controller') do
+      process :index, method: :get, params: {downvoted: 'true'}
+    end
+  end
+  
+  def test_downvoted_voter
     VCR.use_cassette('accounts_controller') do
       process :index, method: :get, params: {downvoted: 'true', voters: 'inertia'}
     end
@@ -52,6 +61,14 @@ class AccountsControllerTest < ActionController::TestCase
     assert_response :success
   end
   
+  def test_upvoted_with_downvotes
+    VCR.use_cassette('accounts_controller') do
+      process :index, method: :get, params: {upvoted: 'true', voters: 'abit'}
+    end
+    
+    assert_response :success
+  end
+  
   def test_downvoted_download
     VCR.use_cassette('accounts_controller') do
       process :index, method: :get, params: {downvoted: 'true', voters: 'inertia'}, format: 'text'
@@ -61,6 +78,10 @@ class AccountsControllerTest < ActionController::TestCase
   end
   
   def test_unvoted
+    process :index, method: :get, params: {unvoted: 'true'}
+  end
+  
+  def test_unvoted_voter
     VCR.use_cassette('accounts_controller') do
       process :index, method: :get, params: {unvoted: 'true', voters: 'inertia'}
     end
@@ -84,6 +105,10 @@ class AccountsControllerTest < ActionController::TestCase
   end
   
   def test_metadata
+    process :index, method: :get, params: {metadata: 'true'}
+  end
+    
+  def test_metadata_account_name
     VCR.use_cassette('accounts_controller') do
       process :index, method: :get, params: {metadata: 'true', account_names: 'inertia'}
     end

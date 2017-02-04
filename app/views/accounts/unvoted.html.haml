@@ -18,16 +18,16 @@
         .jumbotron
           %h4 An "unvote" is when someone votes then later removes their vote.
 
-        - if @accounts.any?
+        - if accounts.any?
           %h3
-            Unvoted #{pluralize @accounts.size, 'Account'}
+            Unvoted #{pluralize accounts.size, 'Account'}
             - if !!@oldest_vote
               = surround '(', ')' do
                 since
                 = time_ago_in_words @oldest_vote
                 ago
 
-          %code= @accounts.join(' ')
+          %code= accounts.join(' ')
           
           %br
           
