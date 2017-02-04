@@ -87,15 +87,18 @@ private
       result = api_execute(:get_account_votes, voter).result or next
       
       result.map do |vote|
-        case type
-        when :up; next unless vote.percent > 0
-        when :down; next unless vote.percent < 0
-        when :un; next unless vote.percent == 0
-        end
-        
-        vote.authorperm.split('/').first
+        vote.authorperm.split('/').first if vote_match? type, vote
       end
     end.flatten.compact.uniq
+  end
+  
+  def vote_match?(type, vote)
+    case type
+    when :up then vote.percent > 0
+    when :down then vote.percent < 0
+    when :un then vote.percent == 0
+    else; true
+    end
   end
   
   def votes_today
