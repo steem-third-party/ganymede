@@ -23,7 +23,7 @@ else
   require "minitest/pride"
 end
 
-WebMock.disable_net_connect!(allow_localhost: true, allow: 'codeclimate.com:443')
+WebMock.disable_net_connect!(allow_localhost: true)
 
 VCR.configure do |c|
   c.cassette_library_dir = 'test/fixtures/vcr_cassettes'
