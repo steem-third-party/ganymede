@@ -1,0 +1,9 @@
+%h1 Tickers
+
+%ul
+  - @tickers.each do |ticker|
+    - pair = ticker.first
+    - data = ticker.last
+    %li
+      = link_to pair, ticker_path(pair)
+      = data

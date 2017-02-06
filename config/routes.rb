@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   resources :follows, only: :index
   resources :accounts, only: :index
   resources :transfers, only: :index
+  resources :tickers, param: :pair, only: [:index, :show]
 end

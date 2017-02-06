@@ -1,0 +1,19 @@
+%h1= @pair
+
+%h3 Asks
+
+%ul
+  - @ticker["asks"].each do |ask|
+    %li
+      = ask.first
+      = ask.last
+    
+%hr
+
+%h3 Bids
+
+%ul
+  - @ticker["bids"].each do |bid|
+    %li
+      = bid.first
+      = bid.last
