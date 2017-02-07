@@ -1,5 +1,5 @@
 = content_for :head do
-  %meta{property: 'og:image', content: ticker_url(@pair, format: :png), data: {reactid: 10}}
+  %meta{property: 'og:image', content: ticker_url(@pair, md5: md5_title, format: :png), data: {reactid: 10}}
 
 %h1= @pair
 
@@ -21,4 +21,4 @@
       = bid.first
       = bid.last
 
-= image_tag ticker_url(@pair, format: :png)
+= image_tag ticker_url(@pair, md5: md5_title, format: :png)
