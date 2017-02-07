@@ -1,3 +1,6 @@
+= content_for :head do
+  %meta{property: 'og:image', content: ticker_url(@pair, format: :png), data: { reactid: 0}}
+
 %h1= @pair
 
 %h3 Asks
