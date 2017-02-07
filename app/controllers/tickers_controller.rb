@@ -39,8 +39,10 @@ private
   
   def capture_steem_chart
     fmt = params[:format]
-    base_href = 'http://www.steemchart.com'
-    steem_chart = "#{base_href}/Steemchart_USD.html?md5=#{md5_title}"
+    base_href = "https://www.worldcoinindex.com"
+    steem_btc = "#{base_href}/widget/renderWidget?size=small&from=STEEM&to=BTC&clearstyle=true"
+    btc_usd = "#{base_href}/widget/renderWidget?size=small&from=BTC&to=usd&clearstyle=true"
+    sbd_btc = "#{base_href}/widget/renderWidget?size=small&from=SBD&to=BTC&clearstyle=true"
   
     filename = "#{md5_title}.#{fmt}"
     fh = "#{Rails.root.join('tmp')}/#{filename}"
@@ -54,15 +56,15 @@ private
     scale_factor = 4
     raster_options[:cache_dir] = Rails.root.join('tmp')
     raster_options[:quality] = 50
-    raster_options[:crop_x] = (24 * scale_factor)
-    raster_options[:crop_y] = (36 * scale_factor)
-    raster_options[:crop_w] = (968 * scale_factor)
-    raster_options[:crop_h] = (354 * scale_factor)
     raster_options[:zoom] = scale_factor
     raster_options[:encoding] = 'UTF-8'
   
     content = "<base href=\"#{base_href}/\" />"
-    content << open(steem_chart).read
+    content << "<table><tr>"
+    content << "<td>#{open(steem_btc).read}</td>"
+    content << "<td>#{open(btc_usd).read}</td>"
+    content << "<td>#{open(sbd_btc).read}</td>"
+    content << "</td></tr></table>"
     content = content.force_encoding("UTF-8")
     kit = IMGKit.new(content, raster_options)
     filename = "content.#{fmt}" unless filename.present?

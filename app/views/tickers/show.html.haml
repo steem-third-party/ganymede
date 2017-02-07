@@ -1,10 +1,5 @@
 = content_for :head do
-  %meta{property: 'og:type', content: 'article', data: { reactid: 8}}
-  %meta{property: 'og:image:width', content: 952}
-  %meta{property: 'og:image:height', content: 354}
   %meta{property: 'og:image', content: ticker_url(@pair, format: :png), data: {reactid: 10}}
-  %meta{property: 'twitter:card', content: 'summary_large_image', data: { reactid: 16}}
-  %meta{property: 'twitter:image', content: ticker_url(@pair, format: :png), data: {reactid: 20}}
 
 %h1= @pair
 
@@ -26,4 +21,4 @@
       = bid.first
       = bid.last
 
-= image_tag ticker_url(@pair, format: :png), width: 952, height: 354
+= image_tag ticker_url(@pair, format: :png)
