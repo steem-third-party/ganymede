@@ -1,5 +1,8 @@
 = content_for :head do
-  %meta{property: 'og:image', content: ticker_url(@pair, format: :png), data: { reactid: 0}}
+  %meta{property: 'og:type', content: 'article', data: { reactid: 8}}
+  %meta{property: 'og:image', content: ticker_url(@pair, format: :png), data: {reactid: 10}}
+  %meta{property: 'twitter:card', content: 'summary_large_image', data: { reactid: 16}}
+  %meta{property: 'twitter:image', content: ticker_url(@pair, format: :png), data: {reactid: 20}}
 
 %h1= @pair
 
