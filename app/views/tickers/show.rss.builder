@@ -1,13 +1,13 @@
 #encoding: UTF-8
 
-cache [expires_in: 1.hour] do
+cache ["ticker-rss-#{@pair}", expires_in: 1.hour] do
   xml.instruct! :xml, :version => "1.0"
   xml.rss :version => "2.0" do
     xml.channel do
       xml.title @pair
       xml.updated Time.now
 
-      cache ['atom-ticker', full_title] do
+      cache ["ticker-rss-#{@pair}", full_title] do
         xml.item do
           xml.title full_title
           xml.pubDate Time.now
