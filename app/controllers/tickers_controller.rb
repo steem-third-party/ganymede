@@ -55,6 +55,7 @@ private
   
     raster_options[:cache_dir] = Rails.root.join('tmp')
     raster_options[:quality] = 50
+    raster_options[:zoom] = 4
     raster_options[:encoding] = 'UTF-8'
   
     content = "<base href=\"#{base_href}/\" />"
