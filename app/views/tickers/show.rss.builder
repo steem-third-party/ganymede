@@ -10,6 +10,7 @@ cache ['main-atom-ticker', expires_in: 1.hour] do
         xml.item do
           xml.title full_title
           xml.guid md5_title
+          xml.link ticker_url(@pair, md5: md5_title)
           xml.description adaptive_media_single_photo(ticker_url(@pair, md5: md5_title, format: :png))
         end
       end
