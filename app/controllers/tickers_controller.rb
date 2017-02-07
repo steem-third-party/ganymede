@@ -53,10 +53,8 @@ private
   
     render_options, raster_options = {}, {}
   
-    scale_factor = 4
     raster_options[:cache_dir] = Rails.root.join('tmp')
     raster_options[:quality] = 50
-    raster_options[:zoom] = scale_factor
     raster_options[:encoding] = 'UTF-8'
   
     content = "<base href=\"#{base_href}/\" />"
