@@ -29,4 +29,10 @@ class TickersControllerTest < ActionController::TestCase
       process :show, method: :get, params: {pair: 'BTC_STEEM'}, format: :atom
     end
   end
+  
+  def test_show_png
+    VCR.use_cassette('tickers_controller') do
+      process :show, method: :get, params: {pair: 'BTC_STEEM'}, format: :png
+    end
+  end
 end
