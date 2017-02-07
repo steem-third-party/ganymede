@@ -53,7 +53,7 @@ private
   
     render_options, raster_options = {}, {}
   
-    scale_factor = 4
+    scale_factor = 2
     raster_options[:cache_dir] = Rails.root.join('tmp')
     raster_options[:quality] = 50
     raster_options[:zoom] = scale_factor
