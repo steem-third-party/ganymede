@@ -1,6 +1,6 @@
 #encoding: UTF-8
 
-cache ['main-atom-ticker', expires_in: 1.hour] do
+cache [expires_in: 1.hour] do
   xml.instruct! :xml, :version => "1.0"
   xml.rss :version => "2.0" do
     xml.channel do

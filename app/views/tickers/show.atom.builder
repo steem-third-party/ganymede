@@ -1,4 +1,4 @@
-cache ['main-rss-ticker', expires_in: 1.hour] do
+cache [expires_in: 1.hour] do
   atom_feed do |feed|
     feed.body @pair
       
