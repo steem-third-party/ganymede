@@ -40,9 +40,9 @@ private
   def capture_steem_chart
     fmt = params[:format]
     base_href = "https://www.worldcoinindex.com"
-    steem_btc = "#{base_href}/widget/renderWidget?size=small&from=STEEM&to=BTC&clearstyle=true"
-    btc_usd = "#{base_href}/widget/renderWidget?size=small&from=BTC&to=usd&clearstyle=true"
-    sbd_btc = "#{base_href}/widget/renderWidget?size=small&from=SBD&to=BTC&clearstyle=true"
+    steem_btc = "#{base_href}/widget/renderWidget?size=large&from=STEEM&to=usd&clearstyle=true&ms5=#{md5_title}"
+    btc_usd = "#{base_href}/widget/renderWidget?size=large&from=BTC&to=usd&clearstyle=true&ms5=#{md5_title}"
+    sbd_btc = "#{base_href}/widget/renderWidget?size=large&from=SBD&to=usd&clearstyle=true&ms5=#{md5_title}"
   
     filename = "#{md5_title}.#{fmt}"
     fh = "#{Rails.root.join('tmp')}/#{filename}"
@@ -55,7 +55,6 @@ private
   
     raster_options[:cache_dir] = Rails.root.join('tmp')
     raster_options[:quality] = 50
-    raster_options[:zoom] = 4
     raster_options[:encoding] = 'UTF-8'
   
     content = "<base href=\"#{base_href}/\" />"
