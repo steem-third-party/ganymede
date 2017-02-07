@@ -21,8 +21,8 @@ class TickersController < ApplicationController
     
     respond_to do |format|
       format.html { }
-      format.png { capture_steem_chart }
-      format.jpeg { capture_steem_chart }
+      format.png { capture_chart(@pair) }
+      format.jpeg { capture_chart(@pair) }
       format.json { render json: @ticker }
       format.atom { render layout: false }
       format.rss { render layout: false }
@@ -37,12 +37,10 @@ private
     JSON[open("https://poloniex.com/public?command=returnOrderBook&currencyPair=#{pair}&depth=#{depth}").read]
   end
   
-  def capture_steem_chart
+  def capture_chart(pair)
     fmt = params[:format]
     base_href = "https://www.worldcoinindex.com"
-    steem_btc = "#{base_href}/widget/renderWidget?size=large&from=STEEM&to=usd&clearstyle=true&ms5=#{md5_title}"
     btc_usd = "#{base_href}/widget/renderWidget?size=large&from=BTC&to=usd&clearstyle=true&ms5=#{md5_title}"
-    sbd_btc = "#{base_href}/widget/renderWidget?size=large&from=SBD&to=usd&clearstyle=true&ms5=#{md5_title}"
   
     filename = "#{md5_title}.#{fmt}"
     fh = "#{Rails.root.join('tmp')}/#{filename}"
@@ -60,9 +58,21 @@ private
   
     content = "<base href=\"#{base_href}/\" />"
     content << "<table><tr>"
-    content << "<td>#{open(steem_btc).read}</td>"
-    content << "<td>#{open(btc_usd).read}</td>"
-    content << "<td>#{open(sbd_btc).read}</td>"
+    
+    case pair
+    when 'BTC_STEEM'
+      steem_btc = "#{base_href}/widget/renderWidget?size=large&from=STEEM&to=usd&clearstyle=true&ms5=#{md5_title}"
+      sbd_btc = "#{base_href}/widget/renderWidget?size=large&from=SBD&to=usd&clearstyle=true&ms5=#{md5_title}"
+      content << "<td>#{open(steem_btc).read}</td>"
+      content << "<td>#{open(btc_usd).read}</td>"
+      content << "<td>#{open(sbd_btc).read}</td>"
+    when 'BTC_GOLOS'
+      golos_btc = "#{base_href}/widget/renderWidget?size=large&from=GOLOS&to=usd&clearstyle=true&ms5=#{md5_title}"
+      content << "<td>#{open(golos_btc).read}</td>"
+      content << "<td>#{open(btc_usd).read}</td>"
+    else
+      head 404 and return
+    end
     content << "</td></tr></table>"
     content = content.force_encoding("UTF-8")
     kit = IMGKit.new(content, raster_options)

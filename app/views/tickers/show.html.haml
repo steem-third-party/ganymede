@@ -7,22 +7,24 @@
 
 %h1= @pair
 
-%h3 Asks
+- if !!@ticker["asks"]
+  %h3 Asks
 
-%ul
-  - @ticker["asks"].each do |ask|
-    %li
-      = ask.first
-      = ask.last
-    
-%hr
+  %ul
+    - @ticker["asks"].each do |ask|
+      %li
+        = ask.first
+        = ask.last
+      
+- if !!@ticker["bids"]
+  %hr
 
-%h3 Bids
+  %h3 Bids
 
-%ul
-  - @ticker["bids"].each do |bid|
-    %li
-      = bid.first
-      = bid.last
+  %ul
+    - @ticker["bids"].each do |bid|
+      %li
+        = bid.first
+        = bid.last
 
 = adaptive_media_single_photo(ticker_url(@pair, md5: md5_title, format: :png))

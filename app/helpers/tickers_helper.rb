@@ -1,5 +1,7 @@
 module TickersHelper
   def full_title
+    return @pair if @details.nil?
+    
     "#{@pair} - last: #{@details['last']}, " +
     "lowest ask: #{@details['lowestAsk']}, " +
     "highest bid: #{@details['highestBid']}, " +
