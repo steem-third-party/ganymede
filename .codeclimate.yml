@@ -20,9 +20,6 @@ engines:
     enabled: true
   rubocop:
     enabled: true
-    checks:
-      Rubocop/Lint/EndAlignment:
-        AlignWith: start_of_line
 ratings:
   paths:
   - Gemfile.lock
