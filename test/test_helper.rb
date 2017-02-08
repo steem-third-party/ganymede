@@ -3,9 +3,11 @@ ENV['RAILS_ENV'] ||= 'test'
 if ENV["HELL_ENABLED"] || ENV['CODECLIMATE_REPO_TOKEN']
   require 'simplecov'
   if ENV['CODECLIMATE_REPO_TOKEN']
-    SimpleCov.start CodeClimate::TestReporter.configuration.profile
+    SimpleCov.start 'rails' do
+      CodeClimate::TestReporter.configuration.profile
+    end
   else
-    SimpleCov.start
+    SimpleCov.start 'rails'
   end
   SimpleCov.merge_timeout 3600
 end
