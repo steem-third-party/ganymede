@@ -675,4 +675,346 @@ http_interactions:
         eT4KPC9odG1sPgoKCg==
     http_version: 
   recorded_at: Tue, 07 Feb 2017 01:16:59 GMT
+- request:
+    method: get
+    uri: https://www.worldcoinindex.com/widget/renderWidget?clearstyle=true&from=STEEM&ms5=7023f0e9f36f380f452782bfa72c461e2fc3dc045dca65a618dce3409da83edb&size=large&to=usd
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - text/html; charset=utf-8
+      Vary:
+      - Accept-Encoding
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - ASP.NET_SessionId=vgqllqfmq41t0fosu01g3ucf; path=/; HttpOnly
+      X-Aspnetmvc-Version:
+      - '4.0'
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Wed, 08 Feb 2017 09:24:16 GMT
+      Content-Length:
+      - '1950'
+    body:
+      encoding: ASCII-8BIT
+      string: "\r\n<html>\r\n<head>\r\n    <title></title>\r\n    <link rel=\"stylesheet\"
+        type=\"text/css\" href=\"https://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin\">\r\n
+        \   <link rel=\"stylesheet\" type=\"text/css\" href=\"/content/css/bootstrap.min.css\">\r\n
+        \       <link rel=\"stylesheet\" type=\"text/css\" href=\"/content/widgets/css/widget_large.css\">\r\n
+        \   <script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"
+        type=\"text/javascript\"></script>\r\n    <script src=\"/Content/jquery.flot.js\"
+        type=\"text/javascript\"></script>\r\n    <script src=\"/Content/jquery.flot.time.js\"
+        type=\"text/javascript\"></script>\r\n</head>\r\n<body>\r\n    <div class=\"container\">\r\n
+        \       <div class=\"content\">\r\n\r\n                   <div class=\"header\">\r\n
+        \                   <table>\r\n                            <tr>\r\n                                <td
+        class=\"image\"> <img src=\"https://www.worldcoinindex.com/Content/img/coins/v-504911268000000000/Steem.png\"
+        width=\"45\"/></td>\r\n                                 <td class=\"primaryname\"><span>steem</span></td>\r\n
+        \                                <td class=\"primarycode\"><span>STEEM</span></td>\r\n
+        \                           </tr>\r\n                        </table>\r\n
+        \               </div>\r\n                 <div style=\"overflow: hidden;
+        margin-bottom: 5px\">\r\n                    <div class=\"name\" style=\"margin-top:6px;\"><span>Last
+        price</span></div>\r\n                    <div class=\"price\"><span>$ </span><span>0.1507626</span></div>\r\n
+        \               </div>\r\n                <div style=\"overflow: hidden; margin-bottom:
+        5px\">\r\n                    <div class=\"name\" style=\"margin-top:6px;\"><span>%</span></div>\r\n
+        \                   <div class=\"percentage-col\">\r\n                            <span
+        class=\"percentage\" style=\"color: red\"><span>-1.68%</span></span>\r\n                    </div>\r\n
+        \               </div>\r\n            <div class=\"graph\" style=\"width:
+        299px; margin-bottom: 10px; margin-left:-10px\">\r\n                    <div
+        class=\"demo-container container1 \" style=\"height: 75px\">\r\n                        <div
+        id=\"placeholder\" class=\"demo-placeholder\" style=\"height: 75px\"></div>\r\n
+        \                       <div id=\"tooltip\" style=\"position: absolute; border:
+        1px solid rgb(255, 221, 221); padding: 2px; opacity: 0.8; top: 217px; left:
+        727px; display: none; background-color: rgb(255, 238, 238); z-index: 100000;\">sin(x)
+        of 2.50 = 0.60</div>\r\n                    </div>\r\n\r\n                </div>
+        \    \r\n             <div style=\"overflow: hidden; margin-bottom: 5px\">\r\n
+        \                    <div class=\"name\">\r\n                        <span>24h
+        High</span> \r\n                    </div>\r\n                    <div class=\"price-small\">\r\n
+        \                       <span><span>$ </span>0.1572478</span>\r\n                    </div>\r\n
+        \               </div>  \r\n            <div style=\"overflow: hidden; margin-bottom:
+        5px\">\r\n                    <div class=\"name\">\r\n                        <span>24h
+        Low</span> \r\n                    </div>\r\n                    <div class=\"price-small\">\r\n
+        \                       <span><span>$ </span>0.1439156</span>\r\n                    </div>\r\n
+        \               </div>  \r\n                <div style=\"overflow: hidden;
+        margin-bottom: 5px\">\r\n                    <div class=\"name\"><span>24h
+        volume</span></div>\r\n                    <div class=\"price-small\"><span>$
+        </span><span>112,057</span></div>\r\n                </div>\r\n\r\n        </div>\r\n
+        \       <div class=\"footer\">\r\n            <div><a target=\"_parent\" href=\"https://www.worldcoinindex.com\"><span>Powered
+        by WorldCoinIndex.com</span></a></div>      \r\n        </div>       \r\n
+        \   </div>\r\n    <style>\r\n        .legend {\r\n            display: none;\r\n
+        \       }\r\n    </style>\r\n    <script defer type=\"text/javascript\">\r\n
+        \       $(function () {\r\n            var coinnaam = \"Steem\";\r\n            var
+        koersdata = \"\";\r\n            GetData(1);\r\n\r\n            function GetData(days)
+        {\r\n                $('#placeholder').html('');\r\n                $.ajax({\r\n
+        \                   type: \"POST\",\r\n                    url: \"/common/GetWidgetGraph\",\r\n
+        \                   dataType: \"json\",\r\n                    data: { marketid:
+        coinnaam, days: days, to: 'usd' },\r\n                    success: function
+        (data) {\r\n                        createGraph(data);\r\n                    },\r\n
+        \                   error: function () { }\r\n                });\r\n            }\r\n\r\n
+        \           function generate(data) {\r\n                var d = [];\r\n                $.each(data,
+        function (i, item) {              \r\n                        d.push([item.Time.replace(\"/Date(\",
+        \"\").replace(\")/\", \"\"), item.Price])\r\n                });\r\n                return
+        d;\r\n            }\r\n\r\n            function createGraph(data) {\r\n                $('#placeholder').html('');\r\n\r\n
+        \               var data1;\r\n                var startdata = [];\r\n                startdata.push([data.list.Start.Time.replace(\"/Date(\",
+        \"\").replace(\")/\", \"\"), data.list.Start.Price])\r\n           \r\n                data1
+        = [{ label: \"test\" + \"/\", data: generate(data.list.Data) }, { data: startdata
+        }];\r\n\r\n                var plot = $.plot(\"#placeholder\", data1, {\r\n
+        \                   grid: {\r\n                        hoverable: true,\r\n
+        \                       show: false,\r\n                        backgroundColor:
+        \"white\",\r\n                    },\r\n                    lines: {\r\n                        lineWidth:
+        1\r\n                    },\r\n                });  \r\n\r\n                $(\"#placeholder\").bind(\"plothover\",
+        function (event, pos, item) {\r\n                    if (item) {\r\n                        var
+        x = item.datapoint[0],\r\n                            y = item.datapoint[1];\r\n
+        \                       $(\"#tooltip\").html('$' + \" \" + y)\r\n                            .css({
+        top: 125, left: 120 })\r\n                            .fadeIn(200);\r\n                    }
+        else {\r\n                        $(\"#tooltip\").hide();\r\n                    }\r\n
+        \               });\r\n            }\r\n        });\r\n\r\n    </script>\r\n
+        \   \r\n \r\n</body>\r\n</html>\r\n\r\n\r\n\r\n"
+    http_version: 
+  recorded_at: Wed, 08 Feb 2017 09:24:17 GMT
+- request:
+    method: get
+    uri: https://www.worldcoinindex.com/widget/renderWidget?clearstyle=true&from=BTC&ms5=7023f0e9f36f380f452782bfa72c461e2fc3dc045dca65a618dce3409da83edb&size=large&to=usd
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - text/html; charset=utf-8
+      Vary:
+      - Accept-Encoding
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - ASP.NET_SessionId=h2n3kawegn2wm4g0cxbf15f2; path=/; HttpOnly
+      X-Aspnetmvc-Version:
+      - '4.0'
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Wed, 08 Feb 2017 09:24:21 GMT
+      Content-Length:
+      - '1949'
+    body:
+      encoding: ASCII-8BIT
+      string: "\r\n<html>\r\n<head>\r\n    <title></title>\r\n    <link rel=\"stylesheet\"
+        type=\"text/css\" href=\"https://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin\">\r\n
+        \   <link rel=\"stylesheet\" type=\"text/css\" href=\"/content/css/bootstrap.min.css\">\r\n
+        \       <link rel=\"stylesheet\" type=\"text/css\" href=\"/content/widgets/css/widget_large.css\">\r\n
+        \   <script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"
+        type=\"text/javascript\"></script>\r\n    <script src=\"/Content/jquery.flot.js\"
+        type=\"text/javascript\"></script>\r\n    <script src=\"/Content/jquery.flot.time.js\"
+        type=\"text/javascript\"></script>\r\n</head>\r\n<body>\r\n    <div class=\"container\">\r\n
+        \       <div class=\"content\">\r\n\r\n                   <div class=\"header\">\r\n
+        \                   <table>\r\n                            <tr>\r\n                                <td
+        class=\"image\"> <img src=\"https://www.worldcoinindex.com/Content/img/coins/v-504911268000000000/Bitcoin.png\"
+        width=\"45\"/></td>\r\n                                 <td class=\"primaryname\"><span>bitcoin</span></td>\r\n
+        \                                <td class=\"primarycode\"><span>BTC</span></td>\r\n
+        \                           </tr>\r\n                        </table>\r\n
+        \               </div>\r\n                 <div style=\"overflow: hidden;
+        margin-bottom: 5px\">\r\n                    <div class=\"name\" style=\"margin-top:6px;\"><span>Last
+        price</span></div>\r\n                    <div class=\"price\"><span>$ </span><span>1,026.97</span></div>\r\n
+        \               </div>\r\n                <div style=\"overflow: hidden; margin-bottom:
+        5px\">\r\n                    <div class=\"name\" style=\"margin-top:6px;\"><span>%</span></div>\r\n
+        \                   <div class=\"percentage-col\">\r\n                            <span
+        class=\"percentage\" style=\"color: red\"><span>-2.14%</span></span>\r\n                    </div>\r\n
+        \               </div>\r\n            <div class=\"graph\" style=\"width:
+        299px; margin-bottom: 10px; margin-left:-10px\">\r\n                    <div
+        class=\"demo-container container1 \" style=\"height: 75px\">\r\n                        <div
+        id=\"placeholder\" class=\"demo-placeholder\" style=\"height: 75px\"></div>\r\n
+        \                       <div id=\"tooltip\" style=\"position: absolute; border:
+        1px solid rgb(255, 221, 221); padding: 2px; opacity: 0.8; top: 217px; left:
+        727px; display: none; background-color: rgb(255, 238, 238); z-index: 100000;\">sin(x)
+        of 2.50 = 0.60</div>\r\n                    </div>\r\n\r\n                </div>
+        \    \r\n             <div style=\"overflow: hidden; margin-bottom: 5px\">\r\n
+        \                    <div class=\"name\">\r\n                        <span>24h
+        High</span> \r\n                    </div>\r\n                    <div class=\"price-small\">\r\n
+        \                       <span><span>$ </span>1,065.60</span>\r\n                    </div>\r\n
+        \               </div>  \r\n            <div style=\"overflow: hidden; margin-bottom:
+        5px\">\r\n                    <div class=\"name\">\r\n                        <span>24h
+        Low</span> \r\n                    </div>\r\n                    <div class=\"price-small\">\r\n
+        \                       <span><span>$ </span>1,020.03</span>\r\n                    </div>\r\n
+        \               </div>  \r\n                <div style=\"overflow: hidden;
+        margin-bottom: 5px\">\r\n                    <div class=\"name\"><span>24h
+        volume</span></div>\r\n                    <div class=\"price-small\"><span>$
+        </span><span>65,499,946</span></div>\r\n                </div>\r\n\r\n        </div>\r\n
+        \       <div class=\"footer\">\r\n            <div><a target=\"_parent\" href=\"https://www.worldcoinindex.com\"><span>Powered
+        by WorldCoinIndex.com</span></a></div>      \r\n        </div>       \r\n
+        \   </div>\r\n    <style>\r\n        .legend {\r\n            display: none;\r\n
+        \       }\r\n    </style>\r\n    <script defer type=\"text/javascript\">\r\n
+        \       $(function () {\r\n            var coinnaam = \"Bitcoin\";\r\n            var
+        koersdata = \"\";\r\n            GetData(1);\r\n\r\n            function GetData(days)
+        {\r\n                $('#placeholder').html('');\r\n                $.ajax({\r\n
+        \                   type: \"POST\",\r\n                    url: \"/common/GetWidgetGraph\",\r\n
+        \                   dataType: \"json\",\r\n                    data: { marketid:
+        coinnaam, days: days, to: 'usd' },\r\n                    success: function
+        (data) {\r\n                        createGraph(data);\r\n                    },\r\n
+        \                   error: function () { }\r\n                });\r\n            }\r\n\r\n
+        \           function generate(data) {\r\n                var d = [];\r\n                $.each(data,
+        function (i, item) {              \r\n                        d.push([item.Time.replace(\"/Date(\",
+        \"\").replace(\")/\", \"\"), item.Price])\r\n                });\r\n                return
+        d;\r\n            }\r\n\r\n            function createGraph(data) {\r\n                $('#placeholder').html('');\r\n\r\n
+        \               var data1;\r\n                var startdata = [];\r\n                startdata.push([data.list.Start.Time.replace(\"/Date(\",
+        \"\").replace(\")/\", \"\"), data.list.Start.Price])\r\n           \r\n                data1
+        = [{ label: \"test\" + \"/\", data: generate(data.list.Data) }, { data: startdata
+        }];\r\n\r\n                var plot = $.plot(\"#placeholder\", data1, {\r\n
+        \                   grid: {\r\n                        hoverable: true,\r\n
+        \                       show: false,\r\n                        backgroundColor:
+        \"white\",\r\n                    },\r\n                    lines: {\r\n                        lineWidth:
+        1\r\n                    },\r\n                });  \r\n\r\n                $(\"#placeholder\").bind(\"plothover\",
+        function (event, pos, item) {\r\n                    if (item) {\r\n                        var
+        x = item.datapoint[0],\r\n                            y = item.datapoint[1];\r\n
+        \                       $(\"#tooltip\").html('$' + \" \" + y)\r\n                            .css({
+        top: 125, left: 120 })\r\n                            .fadeIn(200);\r\n                    }
+        else {\r\n                        $(\"#tooltip\").hide();\r\n                    }\r\n
+        \               });\r\n            }\r\n        });\r\n\r\n    </script>\r\n
+        \   \r\n \r\n</body>\r\n</html>\r\n\r\n\r\n\r\n"
+    http_version: 
+  recorded_at: Wed, 08 Feb 2017 09:24:21 GMT
+- request:
+    method: get
+    uri: https://www.worldcoinindex.com/widget/renderWidget?clearstyle=true&from=SBD&ms5=7023f0e9f36f380f452782bfa72c461e2fc3dc045dca65a618dce3409da83edb&size=large&to=usd
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - text/html; charset=utf-8
+      Vary:
+      - Accept-Encoding
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - ASP.NET_SessionId=tmk0kxtv1dscvcfimubmvrto; path=/; HttpOnly
+      X-Aspnetmvc-Version:
+      - '4.0'
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Wed, 08 Feb 2017 09:24:23 GMT
+      Content-Length:
+      - '1957'
+    body:
+      encoding: ASCII-8BIT
+      string: "\r\n<html>\r\n<head>\r\n    <title></title>\r\n    <link rel=\"stylesheet\"
+        type=\"text/css\" href=\"https://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin\">\r\n
+        \   <link rel=\"stylesheet\" type=\"text/css\" href=\"/content/css/bootstrap.min.css\">\r\n
+        \       <link rel=\"stylesheet\" type=\"text/css\" href=\"/content/widgets/css/widget_large.css\">\r\n
+        \   <script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"
+        type=\"text/javascript\"></script>\r\n    <script src=\"/Content/jquery.flot.js\"
+        type=\"text/javascript\"></script>\r\n    <script src=\"/Content/jquery.flot.time.js\"
+        type=\"text/javascript\"></script>\r\n</head>\r\n<body>\r\n    <div class=\"container\">\r\n
+        \       <div class=\"content\">\r\n\r\n                   <div class=\"header\">\r\n
+        \                   <table>\r\n                            <tr>\r\n                                <td
+        class=\"image\"> <img src=\"https://www.worldcoinindex.com/Content/img/coins/v-504911268000000000/Steemdollars.png\"
+        width=\"45\"/></td>\r\n                                 <td class=\"primaryname\"><span>steemdollars</span></td>\r\n
+        \                                <td class=\"primarycode\"><span>SBD</span></td>\r\n
+        \                           </tr>\r\n                        </table>\r\n
+        \               </div>\r\n                 <div style=\"overflow: hidden;
+        margin-bottom: 5px\">\r\n                    <div class=\"name\" style=\"margin-top:6px;\"><span>Last
+        price</span></div>\r\n                    <div class=\"price\"><span>$ </span><span>0.9942378</span></div>\r\n
+        \               </div>\r\n                <div style=\"overflow: hidden; margin-bottom:
+        5px\">\r\n                    <div class=\"name\" style=\"margin-top:6px;\"><span>%</span></div>\r\n
+        \                   <div class=\"percentage-col\">\r\n                            <span
+        class=\"percentage\" style=\"color: red\"><span>-0.26%</span></span>\r\n                    </div>\r\n
+        \               </div>\r\n            <div class=\"graph\" style=\"width:
+        299px; margin-bottom: 10px; margin-left:-10px\">\r\n                    <div
+        class=\"demo-container container1 \" style=\"height: 75px\">\r\n                        <div
+        id=\"placeholder\" class=\"demo-placeholder\" style=\"height: 75px\"></div>\r\n
+        \                       <div id=\"tooltip\" style=\"position: absolute; border:
+        1px solid rgb(255, 221, 221); padding: 2px; opacity: 0.8; top: 217px; left:
+        727px; display: none; background-color: rgb(255, 238, 238); z-index: 100000;\">sin(x)
+        of 2.50 = 0.60</div>\r\n                    </div>\r\n\r\n                </div>
+        \    \r\n             <div style=\"overflow: hidden; margin-bottom: 5px\">\r\n
+        \                    <div class=\"name\">\r\n                        <span>24h
+        High</span> \r\n                    </div>\r\n                    <div class=\"price-small\">\r\n
+        \                       <span><span>$ </span>1.0108961</span>\r\n                    </div>\r\n
+        \               </div>  \r\n            <div style=\"overflow: hidden; margin-bottom:
+        5px\">\r\n                    <div class=\"name\">\r\n                        <span>24h
+        Low</span> \r\n                    </div>\r\n                    <div class=\"price-small\">\r\n
+        \                       <span><span>$ </span>0.9578207</span>\r\n                    </div>\r\n
+        \               </div>  \r\n                <div style=\"overflow: hidden;
+        margin-bottom: 5px\">\r\n                    <div class=\"name\"><span>24h
+        volume</span></div>\r\n                    <div class=\"price-small\"><span>$
+        </span><span>6,214</span></div>\r\n                </div>\r\n\r\n        </div>\r\n
+        \       <div class=\"footer\">\r\n            <div><a target=\"_parent\" href=\"https://www.worldcoinindex.com\"><span>Powered
+        by WorldCoinIndex.com</span></a></div>      \r\n        </div>       \r\n
+        \   </div>\r\n    <style>\r\n        .legend {\r\n            display: none;\r\n
+        \       }\r\n    </style>\r\n    <script defer type=\"text/javascript\">\r\n
+        \       $(function () {\r\n            var coinnaam = \"Steemdollars\";\r\n
+        \           var koersdata = \"\";\r\n            GetData(1);\r\n\r\n            function
+        GetData(days) {\r\n                $('#placeholder').html('');\r\n                $.ajax({\r\n
+        \                   type: \"POST\",\r\n                    url: \"/common/GetWidgetGraph\",\r\n
+        \                   dataType: \"json\",\r\n                    data: { marketid:
+        coinnaam, days: days, to: 'usd' },\r\n                    success: function
+        (data) {\r\n                        createGraph(data);\r\n                    },\r\n
+        \                   error: function () { }\r\n                });\r\n            }\r\n\r\n
+        \           function generate(data) {\r\n                var d = [];\r\n                $.each(data,
+        function (i, item) {              \r\n                        d.push([item.Time.replace(\"/Date(\",
+        \"\").replace(\")/\", \"\"), item.Price])\r\n                });\r\n                return
+        d;\r\n            }\r\n\r\n            function createGraph(data) {\r\n                $('#placeholder').html('');\r\n\r\n
+        \               var data1;\r\n                var startdata = [];\r\n                startdata.push([data.list.Start.Time.replace(\"/Date(\",
+        \"\").replace(\")/\", \"\"), data.list.Start.Price])\r\n           \r\n                data1
+        = [{ label: \"test\" + \"/\", data: generate(data.list.Data) }, { data: startdata
+        }];\r\n\r\n                var plot = $.plot(\"#placeholder\", data1, {\r\n
+        \                   grid: {\r\n                        hoverable: true,\r\n
+        \                       show: false,\r\n                        backgroundColor:
+        \"white\",\r\n                    },\r\n                    lines: {\r\n                        lineWidth:
+        1\r\n                    },\r\n                });  \r\n\r\n                $(\"#placeholder\").bind(\"plothover\",
+        function (event, pos, item) {\r\n                    if (item) {\r\n                        var
+        x = item.datapoint[0],\r\n                            y = item.datapoint[1];\r\n
+        \                       $(\"#tooltip\").html('$' + \" \" + y)\r\n                            .css({
+        top: 125, left: 120 })\r\n                            .fadeIn(200);\r\n                    }
+        else {\r\n                        $(\"#tooltip\").hide();\r\n                    }\r\n
+        \               });\r\n            }\r\n        });\r\n\r\n    </script>\r\n
+        \   \r\n \r\n</body>\r\n</html>\r\n\r\n\r\n\r\n"
+    http_version: 
+  recorded_at: Wed, 08 Feb 2017 09:24:24 GMT
 recorded_with: VCR 3.0.3
