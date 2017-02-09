@@ -1,15 +1,14 @@
 module AccountsHelper
+  TRUE_STRING = 'true'.freeze
+  
   def account_active_class(current_tab, classes = [])
-    classes << case current_tab
-    when :upvoted
-      'active' if @upvoted == 'true'
-    when :downvoted
-      'active' if @downvoted == 'true'
-    when :unvoted
-      'active' if @unvoted == 'true'
+    classes << case [current_tab, TRUE_STRING]
+    when [:upvoted, @upvoted] then 'active'
+    when [:downvoted, @downvoted] then 'active'
+    when [:unvoted, @unvoted] then 'active'
     end
     
-    classes.join(' ')
+    classes.join(' ').strip
   end
   
   def activity_options_for_select(prefix, selected = '')
