@@ -85,7 +85,10 @@ private
   end
   
   def voters(type, voters)
-    voters.map do |voter|
+    @@VOTERS_CACHE ||= {}
+    Rails.logger.info "Voters cache size: #{@@VOTERS_CACHE.map { |key, value| {key => value.size} }}"
+    
+    @@VOTERS_CACHE[{type => voters}] ||= voters.map do |voter|
       result = api_execute(:get_account_votes, voter).result or next
       
       result.map do |vote|
