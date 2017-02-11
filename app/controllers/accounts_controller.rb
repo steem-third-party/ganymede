@@ -11,12 +11,13 @@ class AccountsController < ApplicationController
     downvoted if @downvoted == 'true'
     unvoted if @unvoted == 'true'
     metadata if @metadata == 'true'
+    voting if @voting == 'true'
   end
 private
   def init_params
     {
       voters: nil, account_names: nil, upvoted: 'false', downvoted: 'false',
-      unvoted: 'false', metadata: 'false'
+      unvoted: 'false', metadata: 'false', voting: 'true'
     }.each do |k, v|
       instance_variable_set("@#{k}", params[k].presence || v)
     end
@@ -54,6 +55,16 @@ private
   def metadata
     @accounts = api_execute(:get_accounts, @account_names.split(' ')).result unless @account_names.nil?
     render_accounts(:metadata)
+  end
+  
+  def voting
+    @accounts = {}
+    
+    @account_names.split(' ').each do |account|
+      @accounts[account] = api_execute(:get_account_votes, account).result or next
+    end
+    
+    render_accounts(:voting)
   end
   
   def render_accounts(type)
