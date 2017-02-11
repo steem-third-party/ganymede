@@ -5,4 +5,6 @@
 #   https: false
 # )
 
-MvestsLookupJob.perform_later
+unless Rails.env.test?
+  MvestsLookupJob.perform_later
+end
