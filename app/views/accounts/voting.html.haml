@@ -26,13 +26,13 @@
               %tr
                 %td= name
                 %td
-                  = link_to accounts_path upvoted: true, voters: name do
+                  = link_to accounts_path upvoted: true, account_names: name do
                     = votes.map{ |v| v if v.percent > 0 }.compact.size
                 %td
-                  = link_to accounts_path downvoted: true, voters: name do
+                  = link_to accounts_path downvoted: true, account_names: name do
                     = votes.map{ |v| v if v.percent < 0 }.compact.size
                 %td
-                  = link_to accounts_path unvoted: true, voters: name do
+                  = link_to accounts_path unvoted: true, account_names: name do
                     = votes.map{ |v| v if v.percent == 0 }.compact.size
                 %td
                   = time_ago_in_words Time.parse(votes.first.time + 'Z')

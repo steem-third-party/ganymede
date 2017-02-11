@@ -16,7 +16,7 @@ class AccountsController < ApplicationController
 private
   def init_params
     {
-      voters: nil, account_names: nil, upvoted: 'false', downvoted: 'false',
+      account_names: nil, upvoted: 'false', downvoted: 'false',
       unvoted: 'false', metadata: 'false', voting: 'false'
     }.each do |k, v|
       instance_variable_set("@#{k}", params[k].presence || v)
@@ -32,7 +32,7 @@ private
   end
   
   def accounts
-    @accounts ||= !!@voters ? voters(@type, @voters.split(' ')) : []
+    @accounts ||= !!@account_names ? voters(@type, @account_names.split(' ')) : []
   end
   
   def upvoted
@@ -120,7 +120,7 @@ private
   end
   
   def votes_today
-    (@voters || []).split(' ').map do |voter|
+    (@account_names || []).split(' ').map do |voter|
       suggested_voters.map do |v|
         next unless v.keys.first == voter
         "#{voter}: #{view_context.pluralize(v.values.last, 'vote')}"

@@ -13,7 +13,7 @@ class AccountsControllerTest < ActionController::TestCase
   
   def test_upvoted_voter
     VCR.use_cassette('accounts_controller') do
-      process :index, method: :get, params: {upvoted: 'true', voters: 'inertia'}
+      process :index, method: :get, params: {upvoted: 'true', account_names: 'inertia'}
     end
     
     suggested_voters = assigns :suggested_voters
@@ -28,13 +28,13 @@ class AccountsControllerTest < ActionController::TestCase
   
   def test_upvoted_download
     VCR.use_cassette('accounts_controller') do
-      process :index, method: :get, params: {upvoted: 'true', voters: 'inertia'}, format: 'text'
+      process :index, method: :get, params: {upvoted: 'true', account_names: 'inertia'}, format: 'text'
     end
   end
   
   def test_upvoted_with_rshares
     VCR.use_cassette('accounts_controller') do
-      process :index, method: :get, params: {upvoted: 'true', voters: 'steemed'}
+      process :index, method: :get, params: {upvoted: 'true', account_names: 'steemed'}
     end
     
     assert_response :success
@@ -48,7 +48,7 @@ class AccountsControllerTest < ActionController::TestCase
   
   def test_downvoted_voter
     VCR.use_cassette('accounts_controller') do
-      process :index, method: :get, params: {downvoted: 'true', voters: 'inertia'}
+      process :index, method: :get, params: {downvoted: 'true', account_names: 'inertia'}
     end
     
     suggested_voters = assigns :suggested_voters
@@ -63,7 +63,7 @@ class AccountsControllerTest < ActionController::TestCase
   
   def test_upvoted_with_downvotes
     VCR.use_cassette('accounts_controller') do
-      process :index, method: :get, params: {upvoted: 'true', voters: 'abit'}
+      process :index, method: :get, params: {upvoted: 'true', account_names: 'abit'}
     end
     
     assert_response :success
@@ -71,7 +71,7 @@ class AccountsControllerTest < ActionController::TestCase
   
   def test_downvoted_download
     VCR.use_cassette('accounts_controller') do
-      process :index, method: :get, params: {downvoted: 'true', voters: 'inertia'}, format: 'text'
+      process :index, method: :get, params: {downvoted: 'true', account_names: 'inertia'}, format: 'text'
     end
     
     assert_response :success
@@ -83,7 +83,7 @@ class AccountsControllerTest < ActionController::TestCase
   
   def test_unvoted_voter
     VCR.use_cassette('accounts_controller') do
-      process :index, method: :get, params: {unvoted: 'true', voters: 'inertia'}
+      process :index, method: :get, params: {unvoted: 'true', account_names: 'inertia'}
     end
     
     suggested_voters = assigns :suggested_voters
@@ -98,7 +98,7 @@ class AccountsControllerTest < ActionController::TestCase
   
   def test_unvoted_download
     VCR.use_cassette('accounts_controller') do
-      process :index, method: :get, params: {unvoted: 'true', voters: 'inertia'}, format: 'text'
+      process :index, method: :get, params: {unvoted: 'true', account_names: 'inertia'}, format: 'text'
     end
     
     assert_response :success
