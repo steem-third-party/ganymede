@@ -60,8 +60,10 @@ private
   def voting
     @accounts = {}
     
-    @account_names.split(' ').each do |account|
-      @accounts[account] = api_execute(:get_account_votes, account).result or next
+    if !!@account_names
+      @account_names.split(' ').each do |account|
+        @accounts[account] = api_execute(:get_account_votes, account).result or next
+      end
     end
     
     render_accounts(:voting)
