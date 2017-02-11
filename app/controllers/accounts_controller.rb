@@ -62,7 +62,7 @@ private
     
     if !!@account_names
       @account_names.split(' ').each do |account|
-        @accounts[account] = api_execute(:get_account_votes, account).result or next
+        @accounts[account] = account_votes(account) or next
       end
     end
     
@@ -102,7 +102,7 @@ private
     Rails.logger.info "Voters cache size: #{@@VOTERS_CACHE.map { |key, value| {key => value.size} }}"
     
     @@VOTERS_CACHE[{type => voters}] ||= voters.map do |voter|
-      result = api_execute(:get_account_votes, voter).result or next
+      result = account_votes(voter) or next
       
       result.map do |vote|
         vote.authorperm.split('/').first if vote_match? type, vote
@@ -126,5 +126,10 @@ private
         "#{voter}: #{view_context.pluralize(v.values.last, 'vote')}"
       end
     end.flatten.compact
+  end
+  
+  def account_votes(voter)
+    @@ACCOUNT_VOTES_CACHE ||= {}
+    @@ACCOUNT_VOTES_CACHE[voter] ||= api_execute(:get_account_votes, voter).result
   end
 end
