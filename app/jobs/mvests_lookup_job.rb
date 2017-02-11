@@ -4,7 +4,7 @@ class MvestsLookupJob < ApplicationJob
   
   @@LATEST_MVESTS = nil
 
-  def perform(*args)
+  def perform(*_args)
     feed_history = api_execute(:get_feed_history).result
     steem_per_mvest = api_execute(:steem_per_mvest)
 

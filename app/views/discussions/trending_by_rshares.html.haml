@@ -1,0 +1,56 @@
+= content_for :head, auto_discovery_link_tag(:atom, discussions_url(trending_by_rshares: 'true', min_rshares: @min_rshares, max_rshares: @max_rshares, format: :atom))
+= content_for :head, auto_discovery_link_tag(:rss, discussions_url(trending_by_rshares: 'true', min_rshares: @min_rshares, max_rshares: @max_rshares, format: :rss))
+
+= render partial: 'nav' unless action_name == 'card'
+
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
+
+        %div.float-right
+          = form_tag discussions_path, method: :get, class: 'form-inline' do
+            = hidden_field_tag :trending_by_rshares, true
+            .row
+              .form-group
+                %label{for: :min_rshares} Minimum Rshares:
+                = number_field_tag :min_rshares, @min_rshares, class: 'form-control form-control-sm', style: 'width: 240px'
+                &nbsp;&nbsp;&nbsp;
+              .form-group
+                %label{for: :max_rshares} Maximum Rshares:
+                = number_field_tag :max_rshares, @max_rshares, class: 'form-control form-control-sm', style: 'width: 240px'
+                &nbsp;&nbsp;&nbsp;
+              .form-group
+                = submit_tag 'Query', class: 'btn btn-primary'
+        %br
+        %br
+
+        .jumbotron
+          %h4
+            Trending authors with a minimum voter rshares of
+            %font.rshares= @min_rshares
+            and max voter rshares of
+            %font.rshares= @max_rshares
+            &hellip;
+
+        %small
+          %ul
+            - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.first }.reverse.each do |group|
+              - key = group.first
+              - rshares = key.last
+              - discussion = group.last.last
+              %li
+                rshares
+                %font.rshares= discussion[:max_rshares]
+                - if group.last.size == 1
+                  \-
+                  = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+                  by
+                  = link_to discussion[:author], "#{site_prefix}/@#{discussion[:author]}"
+                - else
+                  %ul
+                    - group.last.each do |discussion|
+                      %li
+                        = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+                        by
+                        = link_to discussion[:author], "#{site_prefix}/@#{discussion[:author]}"

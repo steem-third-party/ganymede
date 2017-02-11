@@ -5,7 +5,18 @@
     = csrf_meta_tags
 
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    :javascript
+      /*
+       * Deals with Electron: jQuery is not defined
+       * See: http://stackoverflow.com/questions/32621988/electron-jquery-is-not-defined
+       */
+      if ( typeof module === 'object' ) {
+        window.module = module;
+        module = undefined;
+      }
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    :javascript
+      if ( window.module ) module = window.module;
     = favicon_link_tag 'ganymede.svg', type: 'image/svg'
     = favicon_link_tag 'ganymede.svg', rel: 'apple-touch-icon', type: 'image/svg'
     = yield :head

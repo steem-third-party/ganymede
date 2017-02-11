@@ -1,0 +1,37 @@
+= render partial: 'nav'
+
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
+
+        %div.float-right
+          = form_tag accounts_path, method: :get do
+            = hidden_field_tag :unvoted, true
+            Unvoters:
+            = text_field_tag :account_names, @account_names, size: 50
+            = submit_tag 'Query', class: 'btn btn-primary'
+
+        %br
+        %br
+
+        .jumbotron
+          %h4 An "unvote" is when someone votes then later removes their vote.
+
+        - if accounts.any?
+          %h3
+            Unvoted #{pluralize accounts.size, 'Account'}
+            - if !!@oldest_vote
+              = surround '(', ')' do
+                since
+                = time_ago_in_words @oldest_vote
+                ago
+
+          %code= accounts.join(' ')
+          
+          %br
+          
+          = link_to 'Download List', accounts_path(unvoted: true, account_names: @account_names, format: :text), class: 'btn btn-primary'
+          
+    See:
+    =link_to 'How to Get Voting Lists with Ruby', 'https://steemit.com/radiator/@inertia/how-to-get-voting-lists-with-ruby'

@@ -15,7 +15,11 @@ module ApplicationHelper
   end
 
   def api_url
-    ENV['API_URL'] || 'https://node.steem.ws:443'
+    if Rails.env.test?
+      'https://this.piston.rocks:443'
+    else
+      ENV['API_URL'] || 'https://node.steem.ws:443'
+    end
   end
 
   def fallback_api_url
@@ -121,5 +125,20 @@ module ApplicationHelper
         tag # unknown style
       end
     end
+  end
+  
+  def adaptive_media_single_photo(photo_url)
+    content = <<-DONE
+    <div class="AdaptiveMedia-singlePhoto">
+    <div
+      class="AdaptiveMedia-photoContainer js-adaptive-photo"
+      data-image-url="#{photo_url}"
+      data-element-context="platform_photo_card">
+      <img data-aria-label-part src="#{photo_url}"
+        alt="" style="width: 100%; top: -0px;" />
+    </div>
+    DONE
+    
+    content.html_safe
   end
 end

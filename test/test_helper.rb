@@ -1,8 +1,16 @@
 ENV['RAILS_ENV'] ||= 'test'
 
-require 'simplecov'
-SimpleCov.start 'rails'
-SimpleCov.merge_timeout 3600
+if ENV["HELL_ENABLED"] || ENV['CODECLIMATE_REPO_TOKEN']
+  require 'simplecov'
+  if ENV['CODECLIMATE_REPO_TOKEN']
+    SimpleCov.start 'rails' do
+      CodeClimate::TestReporter.configuration.profile
+    end
+  else
+    SimpleCov.start 'rails'
+  end
+  SimpleCov.merge_timeout 3600
+end
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -17,7 +25,15 @@ else
   require "minitest/pride"
 end
 
-WebMock.disable_net_connect!(allow_localhost: true, allow: 'codeclimate.com:443')
+WebMock.disable_net_connect!(allow_localhost: true)
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'test/fixtures/vcr_cassettes'
+  c.hook_into :webmock
+  c.ignore_request do |request|
+    URI(request.uri).path == '/__identify__'
+  end
+end
 
 phantomjs_logger = if ENV['TESTOPTS'].to_s.include?('--verbose')
   $stdout
@@ -46,6 +62,10 @@ Capybara.default_max_wait_time = 15
 Capybara::Screenshot.prune_strategy = { keep: 20 }
 
 class ActiveSupport::TestCase
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  # fixtures :all
+end
+
+class ActionDispatch::IntegrationTest
+  include Capybara::DSL
+  include Capybara::Angular::DSL
+  include Capybara::Screenshot::MiniTestPlugin
 end

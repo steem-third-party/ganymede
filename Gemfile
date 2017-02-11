@@ -63,6 +63,10 @@ end
 
 gem 'listen'
 
+# Capture pages for feeds.
+gem 'imgkit'
+gem 'wkhtmltoimage-binary'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -73,6 +77,8 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller', require: false
   gem 'rack-mini-profiler', require: false
+  gem 'flamegraph', require: false
+  gem 'fast_stack', require: false
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
@@ -84,9 +90,14 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 group :test do
   gem 'capybara-angular'
   gem 'capybara-screenshot'
+  gem 'poltergeist'
   gem 'phantomjs', require: 'phantomjs/poltergeist'
   gem 'minitest'
   gem 'minitest-line'
   gem 'simplecov', require: false
   gem 'webmock', require: false
+  gem 'codeclimate-test-reporter'
+  # See: https://github.com/myronmarston/vcr
+  gem 'vcr'
+  gem 'rails-controller-testing'
 end

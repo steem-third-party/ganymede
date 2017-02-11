@@ -5,6 +5,7 @@ class DiscussionsController < ApplicationController
     @trending_flagged = params[:trending_flagged].presence || 'false'
     @trending_by_reputation = params[:trending_by_reputation].presence || 'false'
     @trending_ignored = params[:trending_ignored].presence || 'false'
+    @trending_by_rshares = params[:trending_by_rshares].presence || 'false'
     @vote_ready = params[:vote_ready].presence || 'false'
     @flagwar = params[:flagwar].presence || 'false'
     @limit = params[:limit].presence || '2000'
@@ -15,6 +16,8 @@ class DiscussionsController < ApplicationController
     @min_reputation = (params[:min_reputation].presence || '25').to_i
     @max_reputation = (params[:max_reputation].presence || '99').to_i
     @min_promotion_amount = (params[:min_promotion_amount].presence || '0.001').to_f
+    @min_rshares = (params[:min_rshares].presence || '25000000000000').to_i
+    @max_rshares = (params[:max_rshares].presence || '99999999999999').to_i
 
     @discussions = []
     
@@ -23,6 +26,7 @@ class DiscussionsController < ApplicationController
     trending_flagged if @trending_flagged == 'true'
     trending_by_reputation if @trending_by_reputation == 'true'
     trending_ignored if @trending_ignored == 'true'
+    trending_by_rshares if @trending_by_rshares == 'true'
     vote_ready if @vote_ready == 'true'
     flagwar if @flagwar == 'true'
   end
@@ -213,7 +217,34 @@ private
       format.text { send_urls('trending_by_reputation') }
     end
   end
-
+  
+  def trending_by_rshares
+    response = api_execute(:get_discussions_by_trending, limit: 100)
+    
+    @discussions += response.result.map do |comment|
+      next if (max_rshares = comment.active_votes.map(&:rshares).map(&:to_i).max) > @max_rshares
+      next if max_rshares < @min_rshares
+      
+      {
+        symbol: symbol_value(comment.total_pending_payout_value),
+        url: comment.url,
+        slug: comment.url.split('@').last,
+        timestamp: comment.cashout_time,
+        votes: comment.active_votes.size,
+        title: comment.title,
+        content: comment.body,
+        author: comment.author,
+        max_rshares: max_rshares
+      }
+    end.reject(&:nil?)
+    
+    respond_to do |format|
+      format.html { render 'trending_by_rshares', layout: action_name != 'card' }
+      format.atom { render layout: false }
+      format.rss { render layout: false }
+      format.text { send_urls('trending_by_rshares') }
+    end
+  end
   
   def trending_flagged
     response = api_execute(:get_discussions_by_trending, limit: 100)

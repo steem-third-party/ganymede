@@ -14,8 +14,8 @@
         %br
         %br
 
-        %ul
-          - @accounts.each do |account|
-            %li
-              %code= account.json_metadata
-          
+        - if !!@accounts
+          %ul
+            - @accounts.each do |account|
+              %li
+                %code= account.json_metadata

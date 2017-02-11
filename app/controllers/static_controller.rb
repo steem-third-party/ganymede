@@ -9,6 +9,6 @@ class StaticController < ApplicationController
   end
   
   def mvests
-    render text: MvestsLookupJob.new.perform
+    render plain: MvestsLookupJob.new.perform
   end
 end

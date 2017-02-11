@@ -1,59 +1,56 @@
 module DiscussionsHelper
+  TRUE_STRING = 'true'.freeze
+
   def discussion_title
     title = 'Gamymede - '
     
-    title << if @other_promoted == 'true'
-      'Promoted by Third Parties'
-    elsif @predicted == 'true'
-      'Predicted to Trend'
-    elsif @flagwar == 'true'
-      'Flagwar'
-    elsif @trending_by_reputation == 'true'
-      'Reputation on Trending'
-    elsif @trending_flagged == 'true'
-      'Flagged on Trending'
-    elsif @trending_ignored == 'true'
-      'Ignored on Trending'
-    elsif @vote_ready == 'true'
-      'Vote Ready'
-    elsif @flagwar == 'true'
-      'Flag War'
-    else
-      'Untitled'
+    title << case TRUE_STRING
+    when @other_promoted then 'Promoted by Third Parties'
+    when @predicted then 'Predicted to Trend'
+    when @flagwar then 'Flagwar'
+    when @trending_by_reputation then 'Reputation on Trending'
+    when @trending_by_rshares then 'Rshares on Trending'
+    when @trending_flagged then 'Flagged on Trending'
+    when @trending_ignored then 'Ignored on Trending'
+    when @vote_ready then 'Vote Ready'
+    when @flagwar then 'Flag War'
+    else; 'Untitled'
     end
   end
   
   def discussion_active_class(current_tab, classes = [])
-    classes << case current_tab
-    when :other_promoted
-      'active' if @other_promoted == 'true'
-    when :predicted
-      'active' if @predicted == 'true'
-    when :flagwar
-      'active' if @flagwar == 'true'
-    when :trending
-      'active' if @trending_by_reputation == 'true' || @trending_flagged == 'true' || @trending_ignored == 'true'
-    when :vote_ready
-      'active' if @vote_ready == 'true'
-    when :flagwar
-      'active' if @flagwar == 'true'
+    classes << case [current_tab, TRUE_STRING]
+    when [:other_promoted, @other_promoted] then 'active'
+    when [:predicted, @predicted] then 'active'
+    when [:flagwar, @flagwar] then 'active'
+    when [:trending, @trending_by_reputation] then 'active'
+    when [:trending, @trending_flagged] then 'active'
+    when [:trending, @trending_ignored] then 'active'
+    when [:trending, @trending_by_rshares] then 'active'
+    when [:vote_ready, @vote_ready] then 'active'
+    when [:flagwar, @flagwar] then 'active'
     end
     
-    classes.join(' ')
+    classes.join(' ').strip
   end
   
   def group_pattern(discussion)
-    if @other_promoted == 'true'
+    case TRUE_STRING
+    when @other_promoted
       [time_ago_in_words(discussion[:timestamp]), discussion[:from], discussion[:amount]]
-    elsif @predicted == 'true'
+    when @predicted
       [time_ago_in_words(discussion[:timestamp]), discussion[:amount]]
-    elsif @trending_by_reputation == 'true'
+    when @trending_by_reputation
       [discussion[:author_reputation]]
-    elsif @trending_flagged == 'true' || @trending_ignored == 'true'
+    when @trending_by_rshares
+      [discussion[:max_rshares]]
+    when @trending_flagged
       [discussion[:from].size, discussion[:from]]
-    elsif @vote_ready == 'true'
+    when @trending_ignored
+      [discussion[:from].size, discussion[:from]]
+    when @vote_ready
       [time_ago_in_words(discussion[:timestamp]), discussion[:votes]]
-    elsif @flagwar == 'true'
+    when @flagwar
       [time_ago_in_words(discussion[:timestamp]), discussion[:upvotes], discussion[:downvotes]]
     else
       [time_ago_in_words(discussion[:timestamp]), discussion[:amount]]
@@ -61,7 +58,7 @@ module DiscussionsHelper
   end
   
   def tags_for_select(selected = '')
-    options_for_select tags, @tag
+    options_for_select tags, selected
   end
   
   def discussion_amounts_total

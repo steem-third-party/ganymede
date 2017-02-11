@@ -1,0 +1,30 @@
+= content_for :head do
+  %meta{property: 'og:type', content: 'article'}
+  %meta{property: 'og:image', content: ticker_url(@pair, md5: md5_title, format: :png)}
+  %meta{property: 'og:image:width', content: 1200}
+  %meta{property: 'twitter:card', content: 'summary_large_image'}
+  %meta{property: 'twitter:image', content: ticker_url(@pair, md5: md5_title, format: :png)}
+
+%h1= @pair
+
+- if !!@ticker["asks"]
+  %h3 Asks
+
+  %ul
+    - @ticker["asks"].each do |ask|
+      %li
+        = ask.first
+        = ask.last
+      
+- if !!@ticker["bids"]
+  %hr
+
+  %h3 Bids
+
+  %ul
+    - @ticker["bids"].each do |bid|
+      %li
+        = bid.first
+        = bid.last
+
+= adaptive_media_single_photo(ticker_url(@pair, md5: md5_title, format: :png))
