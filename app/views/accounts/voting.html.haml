@@ -1,26 +1,39 @@
--# = render partial: 'nav'
+= render partial: 'nav'
 
 .card.border-top-0{style: 'padding-top: 0'}
   .card-block
     .row
       .col-md-12
       
+        %div.float-right
+          = form_tag accounts_path, method: :get do
+            = hidden_field_tag :voting, true
+            Accounts:
+            = text_field_tag :account_names, @account_names, size: 50
+            = submit_tag 'Query', class: 'btn btn-primary'
+            
         %table.table-sm.table-striped.table-bordered
           %thead
             %tr
               %th Name
-              %th Up
-              %th Down
-              %th Un
-              %th First
-              %th Last
+              %th Upvotes
+              %th Downvotes
+              %th Unvotes
+              %th First Vote
+              %th Last Vote
           %tbody
             - @accounts.each do |name, votes|
               %tr
                 %td= name
-                %td= votes.map{ |v| v if v.percent > 0 }.compact.size
-                %td= votes.map{ |v| v if v.percent < 0 }.compact.size
-                %td= votes.map{ |v| v if v.percent == 0 }.compact.size
+                %td
+                  = link_to accounts_path upvoted: true, voters: name do
+                    = votes.map{ |v| v if v.percent > 0 }.compact.size
+                %td
+                  = link_to accounts_path downvoted: true, voters: name do
+                    = votes.map{ |v| v if v.percent < 0 }.compact.size
+                %td
+                  = link_to accounts_path unvoted: true, voters: name do
+                    = votes.map{ |v| v if v.percent == 0 }.compact.size
                 %td
                   = time_ago_in_words Time.parse(votes.first.time + 'Z')
                   ago

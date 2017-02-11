@@ -6,6 +6,7 @@ module AccountsHelper
     when [:upvoted, @upvoted] then 'active'
     when [:downvoted, @downvoted] then 'active'
     when [:unvoted, @unvoted] then 'active'
+    when [:voting, @voting] then 'active'
     end
     
     classes.join(' ').strip

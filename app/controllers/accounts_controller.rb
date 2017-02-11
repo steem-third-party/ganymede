@@ -17,7 +17,7 @@ private
   def init_params
     {
       voters: nil, account_names: nil, upvoted: 'false', downvoted: 'false',
-      unvoted: 'false', metadata: 'false', voting: 'true'
+      unvoted: 'false', metadata: 'false', voting: 'false'
     }.each do |k, v|
       instance_variable_set("@#{k}", params[k].presence || v)
     end
