@@ -62,7 +62,9 @@ private
     
     if !!@account_names
       @account_names.split(' ').each do |account|
-        @accounts[account] = account_votes(account) or next
+        if !!(votes = account_votes(account))
+          @accounts[account] = votes
+        end
       end
     end
     
