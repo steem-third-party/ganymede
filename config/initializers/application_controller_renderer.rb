@@ -4,7 +4,3 @@
 #   http_host: 'example.org',
 #   https: false
 # )
-
-unless Rails.env.test?
-  @@MVESTS ||= MvestsLookupJob.perform_later
-end
