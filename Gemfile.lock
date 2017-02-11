@@ -94,7 +94,9 @@ GEM
     docile (1.1.5)
     erubis (2.7.0)
     execjs (2.7.0)
+    fast_stack (0.2.0)
     ffi (1.9.17)
+    flamegraph (0.9.5)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     haml (4.0.7)
@@ -258,6 +260,8 @@ DEPENDENCIES
   capybara-screenshot
   codeclimate-test-reporter
   coffee-rails (~> 4.2)
+  fast_stack
+  flamegraph
   haml
   imgkit
   jbuilder (~> 2.5)

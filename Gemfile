@@ -76,6 +76,8 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller', require: false
   gem 'rack-mini-profiler', require: false
+  gem 'flamegraph', require: false
+  gem 'fast_stack', require: false
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
