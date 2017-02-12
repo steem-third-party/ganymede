@@ -36,8 +36,8 @@
                   = link_to accounts_path unvoted: true, account_names: name do
                     = votes.map{ |v| v if v[:vote].weight == 0 }.compact.size
                 %td
-                  = time_ago_in_words Time.parse(votes.first[:timestamp] + 'Z')
+                  = time_ago_in_words votes.first[:timestamp]
                   ago
                 %td
-                  = time_ago_in_words Time.parse(votes.last[:timestamp] + 'Z')
+                  = time_ago_in_words votes.last[:timestamp]
                   ago

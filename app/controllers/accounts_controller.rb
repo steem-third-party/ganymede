@@ -107,7 +107,7 @@ private
     @@VOTERS_CACHE[{type => voters}] ||= voters.map do |voter|
       result = account_votes(voter) or next
       
-      @oldest_vote = Time.parse(result.first[:timestamp] + 'Z')
+      @oldest_vote = result.first[:timestamp]
       
       result.map do |vote|
         vote[:vote].author if vote_match? type, vote
@@ -140,7 +140,7 @@ private
       type = op.first
       next unless type == 'vote'
       
-      {vote: op.last, timestamp: history.timestamp}
+      {vote: op.last, timestamp: Time.parse(history.timestamp + 'Z')}
     end.compact
   end
   
@@ -151,9 +151,7 @@ private
     @@ACCOUNT_VOTES_CACHE.reject! do |name, votes|
       return true if votes.empty?
       
-      last_vote = Time.parse(votes.last[:timestamp] + 'Z')
-      
-      last_vote > 15.minutes.ago
+      votes.last[:timestamp] > 15.minutes.ago
     end
   end
 end
