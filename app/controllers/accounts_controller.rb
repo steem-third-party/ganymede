@@ -106,8 +106,10 @@ private
     @@VOTERS_CACHE[{type => voters}] ||= voters.map do |voter|
       result = account_votes(voter) or next
       
+      @oldest_vote = Time.parse(result.first[:timestamp] + 'Z')
+      
       result.map do |vote|
-        vote[:vote].permlink.split('/').first if vote_match? type, vote
+        vote[:vote].author if vote_match? type, vote
       end
     end.flatten.compact.uniq
   end
