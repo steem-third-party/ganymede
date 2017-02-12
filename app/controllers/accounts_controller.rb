@@ -148,7 +148,7 @@ private
     return unless defined? @@ACCOUNT_VOTES_CACHE
     return if @@ACCOUNT_VOTES_CACHE.nil?
     
-    @@ACCOUNT_VOTES_CACHE.reject do |name, votes|
+    @@ACCOUNT_VOTES_CACHE.reject! do |name, votes|
       return true if votes.empty?
       
       last_vote = Time.parse(votes.last[:timestamp] + 'Z')
