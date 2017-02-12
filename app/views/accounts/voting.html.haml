@@ -23,20 +23,21 @@
               %th Last Vote
           %tbody
             - @accounts.each do |name, votes|
+              - next if votes.empty?
               %tr
                 %td= name
                 %td
                   = link_to accounts_path upvoted: true, account_names: name do
-                    = votes.map{ |v| v if v.percent > 0 }.compact.size
+                    = votes.map{ |v| v if v[:vote].weight > 0 }.compact.size
                 %td
                   = link_to accounts_path downvoted: true, account_names: name do
-                    = votes.map{ |v| v if v.percent < 0 }.compact.size
+                    = votes.map{ |v| v if v[:vote].weight < 0 }.compact.size
                 %td
                   = link_to accounts_path unvoted: true, account_names: name do
-                    = votes.map{ |v| v if v.percent == 0 }.compact.size
+                    = votes.map{ |v| v if v[:vote].weight == 0 }.compact.size
                 %td
-                  = time_ago_in_words Time.parse(votes.first.time + 'Z')
+                  = time_ago_in_words Time.parse(votes.first[:timestamp] + 'Z')
                   ago
                 %td
-                  = time_ago_in_words Time.parse(votes.last.time + 'Z')
+                  = time_ago_in_words Time.parse(votes.last[:timestamp] + 'Z')
                   ago

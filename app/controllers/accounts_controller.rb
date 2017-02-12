@@ -107,16 +107,16 @@ private
       result = account_votes(voter) or next
       
       result.map do |vote|
-        vote.authorperm.split('/').first if vote_match? type, vote
+        vote[:vote].permlink.split('/').first if vote_match? type, vote
       end
     end.flatten.compact.uniq
   end
   
   def vote_match?(type, vote)
     case type
-    when :up then vote.percent > 0
-    when :down then vote.percent < 0
-    when :un then vote.percent == 0
+    when :up then vote[:vote].weight > 0
+    when :down then vote[:vote].weight < 0
+    when :un then vote[:vote].weight == 0
     else; true
     end
   end
@@ -132,6 +132,12 @@ private
   
   def account_votes(voter)
     @@ACCOUNT_VOTES_CACHE ||= {}
-    @@ACCOUNT_VOTES_CACHE[voter] ||= api_execute(:get_account_votes, voter).result
+    @@ACCOUNT_VOTES_CACHE[voter] ||= api_execute(:get_account_history, voter, -1, 200).result.map do |index, history|
+      op = history.op
+      type = op.first
+      next unless type == 'vote'
+      
+      {vote: op.last, timestamp: history.timestamp}
+    end.compact
   end
 end
