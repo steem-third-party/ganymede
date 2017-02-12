@@ -1,6 +1,7 @@
 require 'open-uri'
 
 class AccountsController < ApplicationController
+  before_filter :prune_account_votes_cache
   helper_method :suggested_voters, :votes_today, :accounts
   
   def index
@@ -141,5 +142,18 @@ private
       
       {vote: op.last, timestamp: history.timestamp}
     end.compact
+  end
+  
+  def prune_account_votes_cache
+    return unless defined? @@ACCOUNT_VOTES_CACHE
+    return if @@ACCOUNT_VOTES_CACHE.nil?
+    
+    @@ACCOUNT_VOTES_CACHE.reject do |name, votes|
+      return true if votes.empty?
+      
+      last_vote = Time.parse(votes.last[:timestamp] + 'Z')
+      
+      last_vote > 15.minutes.ago
+    end
   end
 end
