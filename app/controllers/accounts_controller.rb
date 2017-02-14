@@ -1,7 +1,7 @@
 require 'open-uri'
 
 class AccountsController < ApplicationController
-  before_filter :prune_account_votes_cache
+  before_action :prune_account_votes_cache
   helper_method :suggested_voters, :votes_today, :accounts
   
   def index
