@@ -6,7 +6,7 @@ atom_feed do |feed|
     cache ['atom-discussion', d] do
       feed.entry(d, url: "#{site_prefix}#{d[:url]}", published: d[:timestamp], updated: d[:timestamp], id: d[:slug]) do |entry|
         entry.title d[:title]
-        entry.content markdown(d[:content])
+        entry.content "<p>#{markdown(d[:content])}</p>"
         entry.author do |author|
           author.name "@#{d[:from]}"
           author.blog "#{site_prefix}/@#{d[:from]}"
