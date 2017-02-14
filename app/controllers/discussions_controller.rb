@@ -361,7 +361,7 @@ private
   
   def first_post
     options = {
-      limit: 100
+      limit: 50
     }
 
     options[:tag] = @tag if !!@tag
