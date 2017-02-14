@@ -360,40 +360,10 @@ private
   end
   
   def first_post
-    options = {
-      limit: 50
-    }
-
-    options[:tag] = @tag if !!@tag
+    FindFirstPostJob.perform_later(tag: @tag, min_reputation: @min_reputation, exclude_tags: @exclude_tags)
     
-    response = api_execute(:get_discussions_by_created, options)
-    comments = response.result
-    
-    authors = api_execute(:get_accounts, comments.map(&:author).uniq).result
-    
-    @discussions += comments.map do |comment|
-      next if (author_reputation = to_rep comment.author_reputation) < @min_reputation
-      
-      next unless authors.map do |author|
-        author.name == comment.author && author.post_count == 1
-      end.compact.include? true
-      
-      comment_tags = JSON[comment.json_metadata]["tags"] rescue []
-      exclude_tags = [@exclude_tags.split(' ')].flatten
-      next if (comment_tags & exclude_tags).any?
-      
-      {
-        symbol: symbol_value(comment.total_pending_payout_value),
-        url: comment.url,
-        from: comment.author,
-        slug: comment.url.split('@').last,
-        timestamp: created = Time.parse(comment.created + 'Z'),
-        votes: comment.active_votes.size,
-        title: comment.title,
-        content: comment.body,
-        author_reputation: author_reputation
-      }
-    end.reject(&:nil?)
+    # this will give us the discussions from lastest request
+    @discussions = FindFirstPostJob.discussions(@tag) || []
     
     respond_to do |format|
       format.html { render 'first_post', layout: action_name != 'card' }

@@ -1,7 +1,7 @@
 class FindFlagwarJob < ApplicationJob
   include ApplicationHelper
   
-  @@DISCUSSIONS_CACHE = {}
+  @@DISCUSSIONS = {}
 
   queue_as :default
 
@@ -16,7 +16,7 @@ class FindFlagwarJob < ApplicationJob
 
     prefetch_downvoters(by_cashout)
     
-    @@DISCUSSIONS_CACHE[tag] = by_cashout.map do |comment|
+    @@DISCUSSIONS[tag] = by_cashout.map do |comment|
       next if skip_discussion? comment
       
       upvotes, downvotes, unvotes = extract_votes comment
@@ -145,10 +145,10 @@ class FindFlagwarJob < ApplicationJob
   end
   
   def self.discussions_keys
-    @@DISCUSSIONS_CACHE.keys
+    @@DISCUSSIONS.keys
   end
   
   def self.discussions(tag = nil)
-    @@DISCUSSIONS_CACHE[tag]
+    @@DISCUSSIONS[tag]
   end
 end
