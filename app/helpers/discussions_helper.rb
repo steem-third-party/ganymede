@@ -7,13 +7,13 @@ module DiscussionsHelper
     title << case TRUE_STRING
     when @other_promoted then 'Promoted by Third Parties'
     when @predicted then 'Predicted to Trend'
-    when @flagwar then 'Flagwar'
     when @trending_by_reputation then 'Reputation on Trending'
     when @trending_by_rshares then 'Rshares on Trending'
     when @trending_flagged then 'Flagged on Trending'
     when @trending_ignored then 'Ignored on Trending'
     when @vote_ready then 'Vote Ready'
     when @flagwar then 'Flag War'
+    when @first_post then 'First Post'
     else; 'Untitled'
     end
   end
@@ -22,13 +22,13 @@ module DiscussionsHelper
     classes << case [current_tab, TRUE_STRING]
     when [:other_promoted, @other_promoted] then 'active'
     when [:predicted, @predicted] then 'active'
-    when [:flagwar, @flagwar] then 'active'
     when [:trending, @trending_by_reputation] then 'active'
     when [:trending, @trending_flagged] then 'active'
     when [:trending, @trending_ignored] then 'active'
     when [:trending, @trending_by_rshares] then 'active'
     when [:vote_ready, @vote_ready] then 'active'
     when [:flagwar, @flagwar] then 'active'
+    when [:first_post, @first_post] then 'active'
     end
     
     classes.join(' ').strip
@@ -52,6 +52,8 @@ module DiscussionsHelper
       [time_ago_in_words(discussion[:timestamp]), discussion[:votes]]
     when @flagwar
       [time_ago_in_words(discussion[:timestamp]), discussion[:upvotes], discussion[:downvotes]]
+    when @first_post
+      [time_ago_in_words(discussion[:timestamp])]
     else
       [time_ago_in_words(discussion[:timestamp]), discussion[:amount]]
     end

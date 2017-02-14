@@ -1,0 +1,55 @@
+= content_for :head, auto_discovery_link_tag(:atom, discussions_url(first_post: 'true', min_reputation: @min_reputation, tag: @tag, exclude_tags: @exclude_tags, format: :atom))
+= content_for :head, auto_discovery_link_tag(:rss, discussions_url(first_post: 'true', min_reputation: @min_reputation, tag: @tag, exclude_tags: @exclude_tags, format: :rss))
+
+= render partial: 'nav' unless action_name == 'card'
+
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
+
+        %div.float-right
+          = form_tag discussions_path, method: :get, class: 'form-inline' do
+            = hidden_field_tag :first_post, true
+            .row
+              .form-group
+                %label{for: :min_reputation} Minimum Reputation:
+                = number_field_tag :min_reputation, @min_reputation, class: 'form-control form-control-sm', style: 'width: 48px'
+                &nbsp;&nbsp;&nbsp;
+              .form-group
+                %label{for: :tag} Tag:
+                = select_tag :tag, tags_for_select(@tag), class: 'form-control form-control-sm'
+                = submit_tag 'Query', class: 'btn btn-primary'
+
+        %br
+        %br
+
+        .jumbotron
+          %h4 First posts written by the author.
+
+        %small
+          %ul
+            - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.last.last[:timestamp] }.each do |group|
+              - key = group.first
+              - duration = key.first
+              - discussion = group.last.last
+              - author = discussion[:slug].split('/').first
+              %li
+                posted #{duration} ago
+                - if group.last.size == 1
+                  \-
+                  = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+                  by
+                  = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
+                  %font.reputation= discussion[:author_reputation]
+                - else
+                  %ul
+                    - group.last.each do |discussion|
+                      %li
+                        = link_to discussion[:title], "#{site_prefix}#{discussion[:url]}"
+                        by
+                        = link_to discussion[:from], "#{site_prefix}/@#{discussion[:from]}"
+                        %font.reputation= discussion[:author_reputation]
+
+        -# See:
+        -# =link_to 'How to Find First Posts with Ruby', ''

@@ -8,6 +8,7 @@ class DiscussionsController < ApplicationController
     @trending_by_rshares = params[:trending_by_rshares].presence || 'false'
     @vote_ready = params[:vote_ready].presence || 'false'
     @flagwar = params[:flagwar].presence || 'false'
+    @first_post = params[:first_post].presence || 'false'
     @limit = params[:limit].presence || '2000'
     @tag = params[:tag].presence || nil
     @exclude_tags = params[:exclude_tags].presence || ''
@@ -29,6 +30,7 @@ class DiscussionsController < ApplicationController
     trending_by_rshares if @trending_by_rshares == 'true'
     vote_ready if @vote_ready == 'true'
     flagwar if @flagwar == 'true'
+    first_post if @first_post == 'true'
   end
   
   def card
@@ -356,7 +358,51 @@ private
       format.text { send_urls('flagwar') }
     end
   end
+  
+  def first_post
+    options = {
+      limit: 100
+    }
 
+    options[:tag] = @tag if !!@tag
+    
+    response = api_execute(:get_discussions_by_created, options)
+    comments = response.result
+    
+    authors = api_execute(:get_accounts, comments.map(&:author).uniq).result
+    
+    @discussions += comments.map do |comment|
+      next if (author_reputation = to_rep comment.author_reputation) < @min_reputation
+      
+      next unless authors.map do |author|
+        author.name == comment.author && author.post_count == 1
+      end.compact.include? true
+      
+      comment_tags = JSON[comment.json_metadata]["tags"] rescue []
+      exclude_tags = [@exclude_tags.split(' ')].flatten
+      next if (comment_tags & exclude_tags).any?
+      
+      {
+        symbol: symbol_value(comment.total_pending_payout_value),
+        url: comment.url,
+        from: comment.author,
+        slug: comment.url.split('@').last,
+        timestamp: created = Time.parse(comment.created + 'Z'),
+        votes: comment.active_votes.size,
+        title: comment.title,
+        content: comment.body,
+        author_reputation: author_reputation
+      }
+    end.reject(&:nil?)
+    
+    respond_to do |format|
+      format.html { render 'first_post', layout: action_name != 'card' }
+      format.atom { render layout: false }
+      format.rss { render layout: false }
+      format.text { send_urls('first_post') }
+    end
+  end
+  
   def send_urls(filename)
     urls = @discussions.map do |discussion|
       "#{site_prefix}#{discussion[:url]}"
