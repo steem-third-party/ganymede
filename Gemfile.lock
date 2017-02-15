@@ -133,6 +133,7 @@ GEM
       minitest (~> 5.0)
     multi_json (1.12.1)
     net-http-persistent (2.9.4)
+    newrelic_rpm (3.9.3.241)
     nio4r (1.2.1)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
@@ -268,6 +269,7 @@ DEPENDENCIES
   listen
   minitest
   minitest-line
+  newrelic_rpm
   phantomjs
   poltergeist
   pry-rails
