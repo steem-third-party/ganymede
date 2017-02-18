@@ -346,9 +346,12 @@ private
   end
   
   def flagwar
-    FindFlagwarJob.perform_later(tag: @tag)
-    
-    # this will give us the discussions from lastest request
+    if !!FindFlagwarJob.discussions(@tag)
+      FindFlagwarJob.perform_later(tag: @tag)
+    else
+      FindFlagwarJob.perform_now(tag: @tag)
+    end
+
     @discussions = FindFlagwarJob.discussions(@tag) || []
     
     respond_to do |format|
@@ -360,7 +363,13 @@ private
   end
   
   def first_post
-    FindFirstPostJob.perform_later(tag: @tag, min_reputation: @min_reputation, exclude_tags: @exclude_tags)
+    options = {tag: @tag, min_reputation: @min_reputation, exclude_tags: @exclude_tags}
+    
+    if !!FindFirstPostJob.discussions(@tag)
+      FindFirstPostJob.perform_now(options)
+    else
+      FindFirstPostJob.perform_later(options)
+    end
     
     # this will give us the discussions from lastest request
     @discussions = FindFirstPostJob.discussions(@tag) || []
