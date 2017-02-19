@@ -6,13 +6,13 @@ class AccountsControllerTest < ActionController::TestCase
   end
   
   def test_upvoted
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {upvoted: 'true'}
     end
   end
   
   def test_upvoted_voter
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {upvoted: 'true', account_names: 'inertia'}
     end
     
@@ -27,13 +27,13 @@ class AccountsControllerTest < ActionController::TestCase
   end
   
   def test_upvoted_download
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {upvoted: 'true', account_names: 'inertia'}, format: 'text'
     end
   end
   
   def test_upvoted_with_rshares
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {upvoted: 'true', account_names: 'steemed'}
     end
     
@@ -41,13 +41,13 @@ class AccountsControllerTest < ActionController::TestCase
   end
   
   def test_downvoted
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {downvoted: 'true'}
     end
   end
   
   def test_downvoted_voter
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {downvoted: 'true', account_names: 'inertia'}
     end
     
@@ -62,7 +62,7 @@ class AccountsControllerTest < ActionController::TestCase
   end
   
   def test_upvoted_with_downvotes
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {upvoted: 'true', account_names: 'abit'}
     end
     
@@ -70,7 +70,7 @@ class AccountsControllerTest < ActionController::TestCase
   end
   
   def test_downvoted_download
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {downvoted: 'true', account_names: 'inertia'}, format: 'text'
     end
     
@@ -82,7 +82,7 @@ class AccountsControllerTest < ActionController::TestCase
   end
   
   def test_unvoted_voter
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {unvoted: 'true', account_names: 'inertia'}
     end
     
@@ -97,7 +97,7 @@ class AccountsControllerTest < ActionController::TestCase
   end
   
   def test_unvoted_download
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {unvoted: 'true', account_names: 'inertia'}, format: 'text'
     end
     
@@ -109,7 +109,7 @@ class AccountsControllerTest < ActionController::TestCase
   end
     
   def test_metadata_account_name
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {metadata: 'true', account_names: 'inertia'}
     end
 
@@ -122,7 +122,7 @@ class AccountsControllerTest < ActionController::TestCase
   end
   
   def test_metadata_download
-    VCR.use_cassette('accounts_controller') do
+    VCR.use_cassette('accounts_controller', record: RECORD_MODE) do
       process :index, method: :get, params: {metadata: 'true', account_names: 'inertia'}, format: 'text'
     end
     
