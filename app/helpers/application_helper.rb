@@ -16,7 +16,9 @@ module ApplicationHelper
 
   def api_url
     if Rails.env.test?
-      'https://this.piston.rocks:443'
+      'https://steemd.steemit.com'
+    elsif Rails.env.development?
+      'https://steemd.steemit.com'
     else
       ENV['API_URL'] || 'https://node.steem.ws:443'
     end
