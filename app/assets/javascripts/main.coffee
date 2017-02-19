@@ -67,10 +67,27 @@ directive('mvests', ['$http', '$compile', ($http, $compile) ->
   restrict: 'E'
   controller: ['$scope', '$element', ($scope, $element) ->
     config = {cache: true}
-    $http.get('/mvests', config).then (response) ->
+    success = (response) ->
       data = response.data
       if !!data
         $element.html $compile("<code>#{data}</code>")($scope)
+    error = (response) ->
+      status = response.status
+      statusText = response.statusText
+      data = response.data
+      template = """
+        <code>Unable to get MVESTS.</code>
+        <button class="btn btn-sm btn-danger" type="button" data-toggle="collapse" data-target="#collapseError" aria-expanded="false" aria-controls="collapseError">
+          #{status} - #{statusText} ...
+        </button>
+        <div class="collapse" id="collapseError">
+          <div class="card card-block">
+            #{data}
+          </div>
+        </div>
+      """
+      $element.html $compile(template)($scope)
+    $http.get('/mvests', config).then success, error
   ]
 ])
 
