@@ -19,6 +19,7 @@ class DiscussionsController < ApplicationController
     @min_promotion_amount = (params[:min_promotion_amount].presence || '0.001').to_f
     @min_rshares = (params[:min_rshares].presence || '25000000000000').to_i
     @max_rshares = (params[:max_rshares].presence || '99999999999999').to_i
+    @flagged_by = params[:flagged_by].presence || ''
 
     @discussions = []
     
@@ -249,11 +250,16 @@ private
   end
   
   def trending_flagged
+    flagged_by = @flagged_by.split(' ') if !!@flagged_by
     response = api_execute(:get_discussions_by_trending, limit: 100)
     
     @discussions += response.result.map do |comment|
       next unless (flaggers = comment.active_votes.map do |vote|
-        vote.voter if vote.percent < 0
+        if !!flagged_by
+          vote.voter if vote.percent < 0 && flagged_by.include?(vote.voter)
+        else
+          vote.voter if vote.percent < 0
+        end
       end.reject(&:nil?)).any?
       
       {
