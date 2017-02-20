@@ -300,7 +300,8 @@ private
         title: comment.title,
         content: comment.body,
         author: comment.author,
-        author_reputation: to_rep(comment.author_reputation)
+        author_reputation: to_rep(comment.author_reputation),
+        ignoring_vests: total_author_vests(ignoring)
       }
     end.reject(&:nil?)
     

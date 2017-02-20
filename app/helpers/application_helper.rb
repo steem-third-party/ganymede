@@ -116,6 +116,14 @@ module ApplicationHelper
       result.map(&:follower).reject(&:nil?)
   end
   
+  def total_author_vests(authors)
+    response = api_execute(:get_accounts, authors)
+    
+    response.result.map do |author|
+      author.vesting_shares.split(' ').first.to_i
+    end.sum
+  end
+  
   def tags
     @tags_data ||= api_execute(:get_trending_tags, nil, 100).result
     @tags = @tags_data.map do |tag|
