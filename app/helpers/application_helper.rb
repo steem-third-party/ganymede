@@ -87,8 +87,24 @@ module ApplicationHelper
     response
   end
   
+  def steemit?
+    site_prefix =~ /steemit/
+  end
+  
+  def golos?
+    site_prefix =~ /golos/
+  end
+  
   def mvests
-    MvestsLookupJob.latest_mvests(site_prefix)
+    placeholder = if golos?
+      "Looking up MGESTS ..."
+    elsif steemit?
+      "Looking up MVESTS ..."
+    else
+      "Looking up MTESTS ..."
+    end
+
+    MvestsLookupJob.latest_mvests(placeholder)
   end
   
   def to_rep(raw)

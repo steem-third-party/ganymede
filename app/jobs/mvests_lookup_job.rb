@@ -15,22 +15,20 @@ class MvestsLookupJob < ApplicationJob
     quote = quote.split(' ').first.to_f
 
     steem_per_usd = (base / quote) * steem_per_mvest
-
+    
     # E.g. from 2016/11/25: 1 MV = 1M VESTS = 459.680 STEEM = $50.147
-    @@LATEST_MVESTS = if site_prefix =~ /golos/
+    @@LATEST_MVESTS = if golos?
       "1 MG = 1M GESTS = #{("%.3f" % steem_per_mvest)} GOLOS = #{("%.3f" % steem_per_usd)} GBG"
-    else
+    elsif steemit?
       "1 MV = 1M VESTS = #{("%.3f" % steem_per_mvest)} STEEM = $#{("%.3f" % steem_per_usd)}"
+    else
+      "1 MT = 1M TESTS = #{("%.3f" % steem_per_mvest)} STEEM = $#{("%.3f" % steem_per_usd)}"
     end
   end
   
-  def self.latest_mvests(site_prefix)
+  def self.latest_mvests(placeholder)
     return @@LATEST_MVESTS if !!@@LATEST_MVESTS
     
-    if site_prefix =~ /golos/
-     "Looking up MGESTS ..."
-   else
-     "Looking up MVESTS ..."
-   end
+    placeholder
   end
 end
