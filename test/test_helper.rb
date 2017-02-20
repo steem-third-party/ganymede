@@ -62,7 +62,7 @@ Capybara.default_max_wait_time = 15
 Capybara::Screenshot.prune_strategy = { keep: 20 }
 
 class ActiveSupport::TestCase
-  RECORD_MODE = :new_episodes
+  RECORD_MODE = :once
 end
 
 class ActionDispatch::IntegrationTest
