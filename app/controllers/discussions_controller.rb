@@ -250,31 +250,15 @@ private
   end
   
   def trending_flagged
-    flagged_by = @flagged_by.split(' ') if !!@flagged_by
-    response = api_execute(:get_discussions_by_trending, limit: 100)
+    @flagged_by = @flagged_by.split(' ')
     
-    @discussions += response.result.map do |comment|
-      next unless (flaggers = comment.active_votes.map do |vote|
-        if !!flagged_by
-          vote.voter if vote.percent < 0 && flagged_by.include?(vote.voter)
-        else
-          vote.voter if vote.percent < 0
-        end
-      end.reject(&:nil?)).any?
-      
-      {
-        symbol: symbol_value(comment.total_pending_payout_value),
-        url: comment.url,
-        from: flaggers.map { |f| "<a href=\"#{site_prefix}/@#{f}\">#{f}</a>" },
-        slug: comment.url.split('@').last,
-        timestamp: comment.cashout_time,
-        votes: comment.active_votes.size,
-        title: comment.title,
-        content: comment.body,
-        author: comment.author,
-        author_reputation: to_rep(comment.author_reputation)
-      }
-    end.reject(&:nil?)
+    if !!FindTrendingFlaggedJob.discussions(@tag)
+      FindTrendingFlaggedJob.perform_later(tag: @tag, flagged_by: @flagged_by)
+    else
+      FindTrendingFlaggedJob.perform_now(tag: @tag, flagged_by: @flagged_by)
+    end
+
+    @discussions = FindTrendingFlaggedJob.discussions(@tag) || []
     
     respond_to do |format|
       format.html { render 'trending_flagged', layout: action_name != 'card' }
