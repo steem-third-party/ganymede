@@ -270,25 +270,13 @@ private
   end
 
   def trending_ignored
-    response = api_execute(:get_discussions_by_trending, limit: 25)
-    
-    @discussions += response.result.map do |comment|
-      next unless (ignoring = ignoring_author(comment.author)).any?
-      
-      {
-        symbol: symbol_value(comment.total_pending_payout_value),
-        url: comment.url,
-        from: ignoring.map { |f| "<a href=\"#{site_prefix}/@#{f}\">#{f}</a>" },
-        slug: comment.url.split('@').last,
-        timestamp: comment.cashout_time,
-        votes: comment.active_votes.size,
-        title: comment.title,
-        content: comment.body,
-        author: comment.author,
-        author_reputation: to_rep(comment.author_reputation),
-        ignoring_vests: total_author_vests(ignoring)
-      }
-    end.reject(&:nil?)
+    if !!FindTrendingIgnoredJob.discussions(@tag)
+      FindTrendingIgnoredJob.perform_later(tag: @tag)
+    else
+      FindTrendingIgnoredJob.perform_now(tag: @tag)
+    end
+
+    @discussions = FindTrendingIgnoredJob.discussions(@tag) || []
     
     respond_to do |format|
       format.html { render 'trending_ignored', layout: action_name != 'card' }

@@ -123,11 +123,17 @@ module ApplicationHelper
   end
   
   def total_author_vests(authors)
-    response = api_execute(:get_accounts, authors)
+    @TOTAL_AUTHOR_VESTS_CACHE ||= {}
     
-    response.result.map do |author|
-      author.vesting_shares.split(' ').first.to_i
-    end.sum
+    unless !!@TOTAL_AUTHOR_VESTS_CACHE[authors]
+      response = api_execute(:get_accounts, authors)
+      
+      @TOTAL_AUTHOR_VESTS_CACHE[authors] = response.result.map do |author|
+        author.vesting_shares.split(' ').first.to_i
+      end.sum
+    end
+    
+    @TOTAL_AUTHOR_VESTS_CACHE[authors]
   end
   
   def tags

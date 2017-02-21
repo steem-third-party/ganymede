@@ -1,5 +1,5 @@
-= content_for :head, auto_discovery_link_tag(:atom, discussions_url(trending_ignored: 'true', format: :atom))
-= content_for :head, auto_discovery_link_tag(:rss, discussions_url(trending_ignored: 'true', format: :rss))
+= content_for :head, auto_discovery_link_tag(:atom, discussions_url(trending_ignored: 'true', tag: @tag, format: :atom))
+= content_for :head, auto_discovery_link_tag(:rss, discussions_url(trending_ignored: 'true', tag: @tag, format: :rss))
 
 = render partial: 'nav' unless action_name == 'card'
 
@@ -8,11 +8,20 @@
     .row
       .col-md-12
 
+        %div.float-right
+          = form_tag discussions_path, method: :get, class: 'form-inline' do
+            = hidden_field_tag :trending_ignored, true
+            .row
+              .form-group
+                Tag:
+                = select_tag 'tag', tags_for_select(@tag)
+              .form-group
+                = submit_tag 'Query', class: 'btn btn-primary'
         %br
         %br
 
         .jumbotron
-          %h4 Up to the top 25 posts that have been ignored (muted) on trending &hellip;
+          %h4 These posts have been ignored on trending#{!!@tag ? "/#{@tag}" : ''} ...
 
         %small
           %ul
@@ -45,6 +54,6 @@
           
           - if @discussions.any?
             - if @order_by == 'ignoring_vests'
-              = link_to "Sort by votes", discussions_url(trending_ignored: 'true')
+              = link_to "Sort by votes", discussions_url(trending_ignored: 'true', tag: @tag)
             - else
-              = link_to "Sort by MVESTS", discussions_url(trending_ignored: 'true', order_by: 'ignoring_vests')
+              = link_to "Sort by MVESTS", discussions_url(trending_ignored: 'true', tag: @tag, order_by: 'ignoring_vests')
