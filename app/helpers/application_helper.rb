@@ -52,34 +52,24 @@ module ApplicationHelper
   end
   
   def api_execute (m, *options)
-    response = nil
-    
-    loop do
-      begin
-        response = api.send(m, *options)
-        break if !!response
-      rescue => e
-        Rails.logger.warn "Radiator::Api falling back to: #{fallback_api_url}"
-        @api = nil
-        api(fallback_api_url)
-        timeout e
-      end
-    end
-    
-    response
+    _api_execute(:api, m, *options)
   end
   
   def follow_api_execute (m, *options)
+    _api_execute(:follow_api, m, *options)
+  end
+  
+  def _api_execute (a, m, *options)
     response = nil
     
     loop do
       begin
-        response = follow_api.send(m, *options)
+        response = send(a).send(m, *options)
         break if !!response
       rescue => e
-        Rails.logger.warn "Radiator::FollowApi Falling back to: #{fallback_api_url}"
-        @follow_api = nil
-        follow_api(fallback_api_url)
+        Rails.logger.warn "Falling back to: #{fallback_api_url}"
+        instance_variable_set "@#{a}", nil
+        send(a, fallback_api_url)
         timeout e
       end
     end
