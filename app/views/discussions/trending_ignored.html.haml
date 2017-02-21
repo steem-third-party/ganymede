@@ -44,4 +44,7 @@
                         %font.reputation= discussion[:author_reputation]
           
           - if @discussions.any?
-            = link_to "Sort by MVESTS", discussions_url(trending_ignored: 'true', order_by: 'ignoring_vests')
+            - if @order_by == 'ignoring_vests'
+              = link_to "Sort by votes", discussions_url(trending_ignored: 'true')
+            - else
+              = link_to "Sort by MVESTS", discussions_url(trending_ignored: 'true', order_by: 'ignoring_vests')
