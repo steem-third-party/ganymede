@@ -16,7 +16,7 @@
 
         %small
           %ul
-            - @discussions.group_by{ |d| group_pattern(d) }.sort_by{ |d| d.first }.reverse.each do |group|
+            - @discussions.group_by{ |d| group_pattern(d) }.sort_by { |d| @order_by == 'ignoring_vests' ? d.last.last[:ignoring_vests] : d.first }.reverse.each do |group|
               - key = group.first
               - from_size = key.first
               - from = key.second
@@ -42,3 +42,6 @@
                         by
                         = link_to discussion[:author], "#{site_prefix}/@#{discussion[:author]}"
                         %font.reputation= discussion[:author_reputation]
+          
+          - if @discussions.any?
+            = link_to "Sort by MVESTS", discussions_url(trending_ignored: 'true', order_by: 'ignoring_vests')

@@ -20,6 +20,7 @@ class DiscussionsController < ApplicationController
     @min_rshares = (params[:min_rshares].presence || '25000000000000').to_i
     @max_rshares = (params[:max_rshares].presence || '99999999999999').to_i
     @flagged_by = params[:flagged_by].presence || ''
+    @order_by = params[:order_by].presence || ''
 
     @discussions = []
     
