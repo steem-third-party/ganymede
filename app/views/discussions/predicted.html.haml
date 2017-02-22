@@ -19,10 +19,15 @@
         %br
 
         .jumbotron
-          - if @discussions.any?
-            %h4 This is a list of new posts and their predicted payout based on analysis of the current trending posts &hellip;
-          - else
-            %h4 Unable to do predictions right now.  This might be because there were no posts trending for this tag or no new posts to make a prediction on.
+          %h4
+            - if @discussions.any?
+              This is a list of new posts and their predicted payout based on
+              analysis of the current trending#{!!@tag ? "/#{@tag}" : ''} posts
+              &hellip;
+            - else
+              Unable to do predictions right now.  This might be because there
+              were no posts trending for this tag or no new posts to make a
+              prediction on.
 
         %small
           %ul
