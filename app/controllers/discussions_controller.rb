@@ -95,103 +95,13 @@ private
       end
     end
     
-    respond_to do |format|
-      format.html { render 'other_promoted', layout: action_name != 'card' }
-      format.atom { render layout: false }
-      format.rss { render layout: false }
-      format.text { send_urls('other_promoted') }
-    end
+    render_discussions(:other_promoted)
   end
   
   def predicted
-    data_labels = %w(
-      author_reputation percent_steem_dollars promoted category net_votes
-      total_pending_payout_value
-    )
-    prediction_label = data_labels.last
-
-    options = {
-      limit: 100
-    }
-
-    options[:tag] = @tag if !!@tag
-
-    response = api_execute(:get_discussions_by_trending, options)
-    trending_comments = response.result
-
-    data_items = trending_comments.map do |comment|
-      data_labels.map do |label|
-        case label
-        when 'author_reputation'; to_rep comment[label]
-        when 'promoted'; base_value comment[label]
-        when 'total_pending_payout_value'; base_value comment[label]
-        else; comment[label]
-        end
-      end
-    end
+    @discussions = discussions(with: FindPredictedJob, tag: @tag)
     
-    render 'predicted', layout: action_name != 'card' and return if data_items.empty?
-
-    data_set = Ai4r::Data::DataSet.new data_labels: data_labels, data_items: data_items
-    id3 = Ai4r::Classifiers::ID3.new.build(data_set)
-
-    response = api_execute(:get_discussions_by_created, options)
-    new_comments = response.result - trending_comments
-     
-    predictions = new_comments.map do |comment|
-      next unless comment.mode == 'first_payout'
-
-      data_item = data_labels.map do |label|
-        case label
-        when 'author_reputation'; to_rep comment[label]
-        when 'promoted'; base_value comment[label]
-        when 'total_pending_payout_value'; base_value comment[label]
-        else; comment[label]
-        end
-      end
-
-      prediction = (id3.eval(data_item) rescue nil)
-
-      next if prediction.nil?
-
-      {
-        difference: prediction - base_value(comment.total_pending_payout_value),
-        symbol: symbol_value(comment.total_pending_payout_value),
-        url: comment.url,
-        slug: comment.url.split('@').last,
-        cashout_time: comment.cashout_time,
-        votes: comment.active_votes.size,
-        title: comment.title,
-        content: comment.body,
-        author: comment.author,
-        author_reputation: to_rep(comment.author_reputation)
-      }
-    end.reject(&:nil?)
-
-    if predictions.any?
-      @discussions += predictions.sort_by { |p| p[:difference] }.map do |prediction|
-        {
-          slug: prediction[:slug],
-          url: prediction[:url],
-          from: prediction[:slug].split('@').last.split('/').first,
-          amount: prediction[:difference],
-          timestamp: prediction[:cashout_time],
-          symbol: prediction[:symbol],
-          votes: prediction[:votes],
-          title: prediction[:title],
-          content: prediction[:content],
-          author: prediction[:author],
-          author_reputation: prediction[:author_reputation]
-        }
-      end
-    end
-    
-    respond_to do |format|
-      format.html { render 'predicted', layout: action_name != 'card' }
-      format.atom { render layout: false }
-      format.rss { render layout: false }
-      format.text { send_urls('predicted') }
-    end
+    render_discussions(:predicted)
   end
   
   def trending_by_reputation
@@ -214,12 +124,7 @@ private
       }
     end.reject(&:nil?)
     
-    respond_to do |format|
-      format.html { render 'trending_by_reputation', layout: action_name != 'card' }
-      format.atom { render layout: false }
-      format.rss { render layout: false }
-      format.text { send_urls('trending_by_reputation') }
-    end
+    render_discussions(:trending_by_reputation)
   end
   
   def trending_by_rshares
@@ -242,24 +147,15 @@ private
       }
     end.reject(&:nil?)
     
-    respond_to do |format|
-      format.html { render 'trending_by_rshares', layout: action_name != 'card' }
-      format.atom { render layout: false }
-      format.rss { render layout: false }
-      format.text { send_urls('trending_by_rshares') }
-    end
+    render_discussions(:trending_by_rshares)
   end
   
   def trending_flagged
-    @flagged_by = @flagged_by.split(' ')
+    options = {
+      with: FindTrendingFlaggedJob, tag: @tag, flagged_by: @flagged_by.split(' ')
+    }
     
-    if !!FindTrendingFlaggedJob.discussions(@tag)
-      FindTrendingFlaggedJob.perform_later(tag: @tag, flagged_by: @flagged_by)
-    else
-      FindTrendingFlaggedJob.perform_now(tag: @tag, flagged_by: @flagged_by)
-    end
-
-    @discussions = FindTrendingFlaggedJob.discussions(@tag) || []
+    @discussions = discussions(options)
     
     respond_to do |format|
       format.html { render 'trending_flagged', layout: action_name != 'card' }
@@ -270,20 +166,9 @@ private
   end
 
   def trending_ignored
-    if !!FindTrendingIgnoredJob.discussions(@tag)
-      FindTrendingIgnoredJob.perform_later(tag: @tag)
-    else
-      FindTrendingIgnoredJob.perform_now(tag: @tag)
-    end
-
-    @discussions = FindTrendingIgnoredJob.discussions(@tag) || []
+    @discussions = discussions(with: FindTrendingIgnoredJob, tag: @tag)
     
-    respond_to do |format|
-      format.html { render 'trending_ignored', layout: action_name != 'card' }
-      format.atom { render layout: false }
-      format.rss { render layout: false }
-      format.text { send_urls('trending_ignored') }
-    end
+    render_discussions(:trending_ignored)
   end
 
   def vote_ready
@@ -317,48 +202,46 @@ private
       }
     end.reject(&:nil?)
     
-    respond_to do |format|
-      format.html { render 'vote_ready', layout: action_name != 'card' }
-      format.atom { render layout: false }
-      format.rss { render layout: false }
-      format.text { send_urls('vote_ready') }
-    end
+    render_discussions(:vote_ready)
   end
   
   def flagwar
-    if !!FindFlagwarJob.discussions(@tag)
-      FindFlagwarJob.perform_later(tag: @tag)
-    else
-      FindFlagwarJob.perform_now(tag: @tag)
-    end
-
-    @discussions = FindFlagwarJob.discussions(@tag) || []
+    @discussions = discussions(with: FindFlagwarJob, tag: @tag)
     
-    respond_to do |format|
-      format.html { render 'flagwar', layout: action_name != 'card' }
-      format.atom { render layout: false }
-      format.rss { render layout: false }
-      format.text { send_urls('flagwar') }
-    end
+    render_discussions(:flagwar)
   end
   
   def first_post
-    options = {tag: @tag, min_reputation: @min_reputation, exclude_tags: @exclude_tags}
+    options = {
+      with: FindFirstPostJob, tag: @tag, min_reputation: @min_reputation,
+      exclude_tags: @exclude_tags
+    }
     
-    if !!FindFirstPostJob.discussions(@tag)
-      FindFirstPostJob.perform_now(options)
+    @discussions = discussions(options)
+    
+    render_discussions(:first_post)
+  end
+  
+  def discussions(options = {})
+    job = options.delete(:with)
+    tag = options[:tag]
+    
+    if !!job.discussions(tag)
+      job.perform_now(options)
     else
-      FindFirstPostJob.perform_later(options)
+      job.perform_later(options)
     end
     
     # this will give us the discussions from lastest request
-    @discussions = FindFirstPostJob.discussions(@tag) || []
-    
+    job.discussions(tag) || []
+  end
+  
+  def render_discussions(type)
     respond_to do |format|
-      format.html { render 'first_post', layout: action_name != 'card' }
+      format.html { render type, layout: action_name != 'card' }
       format.atom { render layout: false }
       format.rss { render layout: false }
-      format.text { send_urls('first_post') }
+      format.text { send_urls(type) }
     end
   end
   
