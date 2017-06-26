@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.1'
+gem 'rails', '~> 5.1.1'
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
 # Use Puma as the app server
@@ -34,7 +34,8 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 # Access the STEEM blockchain.
-gem 'radiator', github: 'inertia186/radiator'
+gem 'radiator'
+gem 'steemdata-rb', require: 'steemdata'
 
 # Adds general machine learning capabilities.
 gem 'ai4r'
@@ -91,7 +92,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 group :test do
   gem 'capybara-angular'
   gem 'capybara-screenshot'
-  gem 'poltergeist'
+  gem 'poltergeist', '~> 1.13.0'
   gem 'phantomjs', require: 'phantomjs/poltergeist'
   gem 'minitest'
   gem 'minitest-line'
