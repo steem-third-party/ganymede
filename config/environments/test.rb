@@ -39,4 +39,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  
+  # Since we're dealing with read-only databases, let's allow all parameters.
+  config.action_controller.permit_all_parameters = true
 end

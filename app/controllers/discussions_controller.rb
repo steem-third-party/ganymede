@@ -9,7 +9,8 @@ class DiscussionsController < ApplicationController
     @vote_ready = params[:vote_ready].presence || 'false'
     @flagwar = params[:flagwar].presence || 'false'
     @first_post = params[:first_post].presence || 'false'
-    @limit = params[:limit].presence || '2000'
+    @mentions = params[:mentions].presence || 'false'
+    @limit = params[:limit].presence || '100'
     @tag = params[:tag].presence || nil
     @exclude_tags = params[:exclude_tags].presence || ''
     @max_votes = (params[:max_votes].presence || '10').to_i
@@ -33,6 +34,7 @@ class DiscussionsController < ApplicationController
     vote_ready if @vote_ready == 'true'
     flagwar if @flagwar == 'true'
     first_post if @first_post == 'true'
+    mentions if @mentions == 'true'
   end
   
   def card
@@ -222,18 +224,43 @@ private
     render_discussions(:first_post)
   end
   
+  def mentions
+    @account_names = params[:account_names]
+    @after = Time.parse(params[:after]) rescue 2.hours.ago
+    @discussions = if !!@account_names
+      options = {
+        with: FindMentionsJob, account_names: @account_names, after: @after,
+        tag: @tag, min_reputation: @min_reputation, exclude_tags: @exclude_tags
+      }
+      
+      discussions(options)
+    else
+      []
+    end
+    
+    page = params[:page] || 1
+    per = @limit.to_i
+    @discussions = Kaminari.paginate_array(@discussions).page(page).per(per)
+    
+    render_discussions(:mentions)
+  end
+  
   def discussions(options = {})
     job = options.delete(:with)
     tag = options[:tag]
     
-    if !!job.discussions(tag)
-      job.perform_now(options)
-    else
-      job.perform_later(options)
-    end
+    if defined? job.discussions
+      if !!job.discussions(tag)
+        job.perform_now(options)
+      else
+        job.perform_later(options)
+      end
     
-    # this will give us the discussions from lastest request
-    job.discussions(tag) || []
+      # this will give us the discussions from lastest request
+      job.discussions(tag) || []
+    else
+      job.perform_now(options)
+    end
   end
   
   def render_discussions(type)

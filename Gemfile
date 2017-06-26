@@ -35,7 +35,7 @@ gem 'jbuilder', '~> 2.5'
 
 # Access the STEEM blockchain.
 gem 'radiator'
-gem 'steemdata-rb', require: 'steemdata'
+gem 'steemdata-rb', require: 'steemdata', git: 'git@github.com:steem-third-party/steemdata-rb.git'
 
 # Adds general machine learning capabilities.
 gem 'ai4r'
@@ -43,6 +43,10 @@ gem 'ai4r'
 # Templates
 gem 'haml'
 gem 'rdiscount'
+
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
+gem 'kaminari'
 
 #Assets
 
