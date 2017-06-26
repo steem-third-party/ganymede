@@ -122,6 +122,10 @@ module ApplicationHelper
       result.map(&:follower).reject(&:nil?)
   end
   
+  def reblogging_comment(permlink)
+    [] # ???
+  end
+  
   def total_author_vests(authors)
     @TOTAL_AUTHOR_VESTS_CACHE ||= {}
     
@@ -162,5 +166,12 @@ module ApplicationHelper
     DONE
     
     content.html_safe
+  end
+  
+  def version
+    content_tag(:pre, class: "version", style: 'color: #FFFFFF') do
+      ("Repo Revision: #{File.read('.revision').strip rescue '?'}; " +
+      "Repo Timestamp: #{File.ctime('.revision') rescue '?'}").html_safe
+    end
   end
 end
