@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:steem-third-party/steemdata-rb.git
+  remote: https://github.com/steem-third-party/steemdata-rb.git
   revision: b98b24bf6ec62cf125a46a60c0d23fbc10152103
   specs:
     steemdata-rb (0.0.1f)
