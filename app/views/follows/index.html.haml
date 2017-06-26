@@ -31,6 +31,9 @@
         having activity before
         = time_ago_in_words @activity_before
         ago
+      = surround '(totalling: ', ')' do
+        = "%.1f" % (@total_author_vests / 1000000.0)
+        = steemit? ? 'MVESTS' : 'MGESTS'
 
 - if !!@follows && @follows.any?
   %table.table-sm.table-striped.table-bordered
@@ -49,6 +52,7 @@
       - @follows.each do |follow|
         - account = @accounts[follow]
         - json_metadata = account.json_metadata.present? ? JSON[account.json_metadata] : {} rescue {}
+        - json_metadata = json_metadata.class == Hash ? json_metadata : {}
         %tr
           %td= link_to follow, "#{site_prefix}/@#{follow}"
           %td

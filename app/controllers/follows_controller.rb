@@ -7,6 +7,7 @@ class FollowsController < ApplicationController
     @account = params[:account].presence || nil
     @follows = []
     @accounts = {}
+    @total_author_vests = 0
     
     count = -1
 
@@ -36,6 +37,7 @@ class FollowsController < ApplicationController
         response = api_execute(:get_accounts, @follows)
         response.result.each do |account|
           @accounts[account.name] = account
+          @total_author_vests += account.vesting_shares.split(' ').first.to_i
           if latest_activity(account) < @activity_after
             @follows -= [account.name]
           end
