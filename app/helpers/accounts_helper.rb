@@ -3,10 +3,11 @@ module AccountsHelper
   
   def account_active_class(current_tab, classes = [])
     classes << case [current_tab, TRUE_STRING]
+    when [:voting, @voting] then 'active'
     when [:upvoted, @upvoted] then 'active'
     when [:downvoted, @downvoted] then 'active'
     when [:unvoted, @unvoted] then 'active'
-    when [:voting, @voting] then 'active'
+    when [:mvests, @mvests] then 'active'
     end
     
     classes.join(' ').strip

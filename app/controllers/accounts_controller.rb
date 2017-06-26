@@ -8,28 +8,29 @@ class AccountsController < ApplicationController
     init_params
     @oldest_vote = nil
     
+    voting if @voting == 'true'
     upvoted if @upvoted == 'true'
     downvoted if @downvoted == 'true'
     unvoted if @unvoted == 'true'
     metadata if @metadata == 'true'
-    voting if @voting == 'true'
+    mvests if @mvests == 'true'
   end
 private
   def init_params
     {
       account_names: nil, upvoted: 'false', downvoted: 'false',
-      unvoted: 'false', metadata: 'false', voting: 'false'
+      unvoted: 'false', metadata: 'false', voting: 'false', mvests: 'false'
     }.each do |k, v|
       instance_variable_set("@#{k}", params[k].presence || v)
     end
   end
   
   def self.rshares_json(rshares_json_url)
-    @@RSHARES_JSON ||= JSON[open(rshares_json_url).read]
+    @@RSHARES_JSON ||= JSON[open(rshares_json_url).read] rescue []
   end
 
   def self.downvotes_json(downvotes_json_url)
-    @@DOWNVOTES_JSON ||= JSON[open(downvotes_json_url).read]
+    @@DOWNVOTES_JSON ||= JSON[open(downvotes_json_url).read] rescue []
   end
   
   def accounts
@@ -58,6 +59,11 @@ private
     render_accounts(:metadata)
   end
   
+  def mvests
+    @accounts = api_execute(:get_accounts, @account_names.split(' ')).result unless @account_names.nil?
+    render_accounts(:mvests)
+  end
+  
   def voting
     @accounts = {}
     
@@ -83,9 +89,21 @@ private
   
   def fetch_voters
     if @upvoted == 'true'
-      AccountsController.rshares_json(rshares_json_url).last["voters"]
+      json = AccountsController.rshares_json(rshares_json_url)
+      
+      if json.any?
+        json.last["voters"]
+      else
+        []
+      end
     else
-      AccountsController.downvotes_json(downvotes_json_url).last["accounts"]
+      json = AccountsController.downvotes_json(downvotes_json_url)
+      
+      if json.any?
+        json.last["accounts"]
+      else
+        []
+      end
     end
   end
   
@@ -107,7 +125,7 @@ private
     @@VOTERS_CACHE[{type => voters}] ||= voters.map do |voter|
       result = account_votes(voter) or next
       
-      @oldest_vote = result.first[:timestamp]
+      @oldest_vote = result.first[:timestamp] if result.any?
       
       result.map do |vote|
         vote[:vote].author if vote_match? type, vote

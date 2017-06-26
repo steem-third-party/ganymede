@@ -1,0 +1,30 @@
+= render partial: 'nav'
+- total = 0
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
+
+        %div.float-right
+          = form_tag accounts_path, method: :get do
+            = hidden_field_tag :mvests, true
+            = text_field_tag :account_names, @account_names, size: 50
+            = submit_tag 'Query', class: 'btn btn-primary'
+
+        %br
+        %br
+
+        - if !!@accounts
+          %ul
+            - @accounts.each do |account|
+              %li
+                = account.name
+                - mvests = account.vesting_shares.split(' ').first.to_i
+                - total += mvests
+                = "%.1f" % (mvests / 1000000.0)
+                = steemit? ? 'MVESTS' : 'MGESTS'
+
+        %h3
+          Totaling
+          = "%.1f" % (total / 1000000.0)
+          = steemit? ? 'MVESTS' : 'MGESTS'
