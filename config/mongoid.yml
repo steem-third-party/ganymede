@@ -1,3 +1,12 @@
+production:
+  clients:
+    default:
+      database: SteemData
+      hosts:
+        - mongo1.steemdata.com:27017
+      options:
+        user: 'steemit'
+        password: 'steemit'
 development:
   clients:
     default:
@@ -7,3 +16,13 @@ development:
       options:
         user: 'steemit'
         password: 'steemit'
+test:
+  clients:
+    default:
+      database: SteemData
+      hosts:
+        - mongo1.steemdata.com:27017
+      options:
+        user: 'steemit'
+        password: 'steemit'
+
