@@ -23,6 +23,11 @@ This project also serves to demonstrate a Ruby on Rails project that can access 
 
 ---
 
+## New Feature
+
+* Mentions - allows you to search for posts containing specific author names over a certain period of time.
+  Example: [steem-ganymede.herokuapp.com](https://steem-ganymede.herokuapp.com/discussions?utf8=✓&mentions=true&account_names=papa-pepper&limit=100&commit=Query)
+
 ## Features
 
 * Discussions
@@ -47,7 +52,7 @@ This project also serves to demonstrate a Ruby on Rails project that can access 
     * `FALLBACK_API_URL` - default: `https://this.piston.rocks:443`
     * `RSHARES_JSON_URL` - default: `https://steemdb.com/api/rshares`
     * `SITE_LOGO` - default: `https://i.imgur.com/uCaoQzf.png`
-    * `SITE_PREFIX` - default: `http://steemit.com`
+    * `SITE_PREFIX` - default: `https://steemit.com`
 * Easy to host on heroku or as a stand-alone electron app.
 
 ## Future Features
