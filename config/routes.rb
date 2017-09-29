@@ -13,4 +13,9 @@ Rails.application.routes.draw do
   resources :accounts, only: :index
   resources :transfers, only: :index
   resources :tickers, param: :pair, only: [:index, :show]
+  resources :charts, param: :account_name, only: [:index, :show] do
+    member do
+      get :net_transfers
+    end
+  end
 end

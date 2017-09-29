@@ -8,6 +8,8 @@
 #= require angular-ui-bootstrap
 #= require angular-ui-bootstrap-tpls
 #= require nprogress
+#= require Chart.bundle
+#= require chartkick
 #= require main
 #= require_tree .
 
