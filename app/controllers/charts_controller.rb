@@ -5,8 +5,9 @@ class ChartsController < ApplicationController
   def net_transfers
     @account_name = params[:account_name]
     @days = (params[:days] || '14.0').to_f
+    @symbol = params[:symbol] || 'SBD'
     
-    @bids = SteemApi::Tx::Transfer.where(to: @account_name)
+    @bids = SteemApi::Tx::Transfer.where(to: @account_name, amount_symbol: @symbol)
     @bids = @bids.where('timestamp > ?', @days.day.ago)
     @bids = @bids.where('memo LIKE ?', '%@%')
     @bids = @bids.group_by do |b|
@@ -17,7 +18,7 @@ class ChartsController < ApplicationController
       end
     end
 
-    @refunds = SteemApi::Tx::Transfer.where(from: @account_name)
+    @refunds = SteemApi::Tx::Transfer.where(from: @account_name, amount_symbol: @symbol)
     @refunds = @refunds.where('timestamp > ?', @days.day.ago)
     @refunds = @refunds.where('memo LIKE ?', '%ID:%')
     @refunds = @refunds.group_by do |b|
@@ -34,5 +35,12 @@ class ChartsController < ApplicationController
     end
     
     @days = [@net_transfers.size, @days].min
+    @average = if @days == 0
+      0
+    elsif @days < 2
+      @net_transfers.map{ |k, v| v }.sum / (@days * 24)
+    else
+      @net_transfers.map{ |k, v| v }.sum / @days
+    end
   end
 end

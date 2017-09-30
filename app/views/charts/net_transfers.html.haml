@@ -1,7 +1,13 @@
 %h1
   Net Transfers to
-  =link_to "@#{@account_name}", "https://steemit.com/@#{@account_name}"
-  =surround '(', ')' do
-    =pluralize(@days, 'Day')
+  = link_to "@#{@account_name}", "https://steemit.com/@#{@account_name}"
+  = surround '(', ')' do
+    = pluralize(@days, 'Day')
 
 = line_chart @net_transfers
+
+%small
+  = @days < 2 ? 'Hourly' : 'Daily'
+  Average:
+  = '%.3f' % @average
+  = @symbol
