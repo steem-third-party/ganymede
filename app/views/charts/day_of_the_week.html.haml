@@ -1,0 +1,33 @@
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
+
+        %div.float-right
+          .row
+            .col-sm-12
+              = form_tag day_of_the_week_chart_path(@account_name), method: :get, class: 'form-inline' do
+                .form-group
+                  %label{for: :symbol} Symbol:
+                  = text_field_tag :symbol, @symbol, class: 'form-control form-control-sm', style: 'width: 48px'
+                  &nbsp;&nbsp;&nbsp;
+                .form-group
+                  %label{for: :days} Days:
+                  = number_field_tag :days, @days, class: 'form-control form-control-sm', style: 'width: 48px'
+                  &nbsp;&nbsp;&nbsp;
+                .form-group
+                  %label{for: :compare_to} Compare to:
+                  = text_field_tag :compare_to, @compare_to, class: 'form-control form-control-sm', style: 'width: 128px'
+                  &nbsp;&nbsp;&nbsp;
+                  = submit_tag 'Draw', class: 'btn btn-primary'
+        
+        %h1
+          Day of the Week for
+          = link_to "@#{@account_name}", "https://steemit.com/@#{@account_name}"
+          = surround '(', ')' do
+            = pluralize(@days, 'Day')
+
+        - if @compare_to.present?
+          = column_chart @composite
+        - else
+          = column_chart @net_transfers

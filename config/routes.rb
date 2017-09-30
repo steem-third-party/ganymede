@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :charts, param: :account_name, only: [:index, :show] do
     member do
       get :net_transfers
+      get :day_of_the_week
     end
   end
 end
