@@ -1,3 +1,4 @@
+#= require popper
 #= require jquery
 #= require jquery-ujs
 #= require tether

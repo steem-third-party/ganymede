@@ -37,7 +37,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'radiator'
 gem 'steemdata-rb', require: 'steemdata', git: 'https://github.com/steem-third-party/steemdata-rb.git'
 gem 'steem_api'
-gem 'chartkick', '2.2.3'
+gem 'chartkick'
 
 # Adds general machine learning capabilities.
 gem 'ai4r'
@@ -55,9 +55,10 @@ gem 'kaminari'
 gem 'bootstrap-glyphicons', '~> 0.0.1'
 # Wraps the Angular.js UI Bootstrap library.
 gem 'angular-ui-bootstrap-rails'
+gem 'popper_js', '~> 1.12.3'
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-bootstrap', '~> 4.0.0.alpha.6'
+  gem 'rails-assets-bootstrap', '~> 4.0.0.beta'
   gem 'rails-assets-jquery', '~> 2.2.4'
   gem 'rails-assets-jquery-ujs', '~> 1.2.0'
   gem 'rails-assets-angular', '~> 1.5.7'

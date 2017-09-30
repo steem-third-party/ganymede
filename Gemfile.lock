@@ -173,6 +173,7 @@ GEM
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
+    popper_js (1.12.5)
     pry (0.11.1)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -318,7 +319,7 @@ DEPENDENCIES
   byebug
   capybara-angular
   capybara-screenshot
-  chartkick (= 2.2.3)
+  chartkick
   codeclimate-test-reporter
   coffee-rails (~> 4.2)
   fast_stack
@@ -332,6 +333,7 @@ DEPENDENCIES
   minitest-line
   phantomjs
   poltergeist (~> 1.13.0)
+  popper_js (~> 1.12.3)
   pry-rails
   puma (~> 3.0)
   rack-mini-profiler
@@ -339,7 +341,7 @@ DEPENDENCIES
   rails (~> 5.1.1)
   rails-assets-angular (~> 1.5.7)!
   rails-assets-angular-flash-alert (~> 1.1.1)!
-  rails-assets-bootstrap (~> 4.0.0.alpha.6)!
+  rails-assets-bootstrap (~> 4.0.0.beta)!
   rails-assets-jquery (~> 2.2.4)!
   rails-assets-jquery-ujs (~> 1.2.0)!
   rails-assets-nprogress (~> 0.2.0)!
