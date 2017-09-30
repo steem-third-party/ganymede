@@ -81,7 +81,7 @@ GEM
     capybara-screenshot (1.0.17)
       capybara (>= 1.0, < 3)
       launchy
-    chartkick (2.2.4)
+    chartkick (2.2.3)
     cliver (0.3.2)
     codeclimate-test-reporter (1.0.7)
       simplecov
@@ -318,7 +318,7 @@ DEPENDENCIES
   byebug
   capybara-angular
   capybara-screenshot
-  chartkick
+  chartkick (= 2.2.3)
   codeclimate-test-reporter
   coffee-rails (~> 4.2)
   fast_stack

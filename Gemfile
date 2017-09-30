@@ -37,7 +37,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'radiator'
 gem 'steemdata-rb', require: 'steemdata', git: 'https://github.com/steem-third-party/steemdata-rb.git'
 gem 'steem_api'
-gem 'chartkick'
+gem 'chartkick', '2.2.3'
 
 # Adds general machine learning capabilities.
 gem 'ai4r'
