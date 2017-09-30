@@ -19,7 +19,7 @@ class ChartsController < ApplicationController
       @net_transfers.map{ |k, v| v }.sum / @days
     end
     
-    if !!@compare_to
+    if @compare_to.present?
       @compare_to_net_transfers = build_net_transfers(@compare_to, @symbol, @days)
       @compare_to_average = if @days == 0
         0

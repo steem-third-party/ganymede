@@ -27,13 +27,13 @@
           = surround '(', ')' do
             = pluralize(@days, 'Day')
 
-        - if !!@compare_to
+        - if @compare_to.present?
           = line_chart @composite
         - else
           = line_chart @net_transfers
 
         %small
-          - if !!@compare_to
+          - if @compare_to.present?
             = @days < 2 ? 'Hourly' : 'Daily'
             = @account_name
             average:
