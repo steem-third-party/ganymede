@@ -1,13 +1,51 @@
-%h1
-  Net Transfers to
-  = link_to "@#{@account_name}", "https://steemit.com/@#{@account_name}"
-  = surround '(', ')' do
-    = pluralize(@days, 'Day')
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
 
-= line_chart @net_transfers
+        %div.float-right
+          .row
+            .col-sm-12
+              = form_tag net_transfers_chart_path(@account_name), method: :get, class: 'form-inline' do
+                .form-group
+                  %label{for: :symbol} Symbol:
+                  = text_field_tag :symbol, @symbol, class: 'form-control form-control-sm', style: 'width: 48px'
+                  &nbsp;&nbsp;&nbsp;
+                .form-group
+                  %label{for: :days} Days:
+                  = number_field_tag :days, @days, class: 'form-control form-control-sm', style: 'width: 48px'
+                  &nbsp;&nbsp;&nbsp;
+                .form-group
+                  %label{for: :compare_to} Compare to:
+                  = text_field_tag :compare_to, @compare_to, class: 'form-control form-control-sm', style: 'width: 128px'
+                  &nbsp;&nbsp;&nbsp;
+                  = submit_tag 'Draw', class: 'btn btn-primary'
+        
+        %h1
+          Net Transfers to
+          = link_to "@#{@account_name}", "https://steemit.com/@#{@account_name}"
+          = surround '(', ')' do
+            = pluralize(@days, 'Day')
 
-%small
-  = @days < 2 ? 'Hourly' : 'Daily'
-  Average:
-  = '%.3f' % @average
-  = @symbol
+        - if !!@compare_to
+          = line_chart @composite
+        - else
+          = line_chart @net_transfers
+
+        %small
+          - if !!@compare_to
+            = @days < 2 ? 'Hourly' : 'Daily'
+            = @account_name
+            average:
+            = '%.3f' % @average
+            = @symbol
+            %br
+            = @days < 2 ? 'Hourly' : 'Daily'
+            = @compare_to
+            average:
+            = '%.3f' % @compare_to_average
+            = @symbol
+          - else
+            Average:
+            = '%.3f' % @average
+            = @symbol
