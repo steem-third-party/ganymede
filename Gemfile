@@ -35,8 +35,9 @@ gem 'jbuilder', '~> 2.5'
 
 # Access the STEEM blockchain.
 gem 'radiator'
-gem 'steemdata-rb', require: 'steemdata', git: 'https://github.com/steem-third-party/steemdata-rb.git'
+gem 'steemdata'
 gem 'steem_api'
+gem 'golos_cloud'
 gem 'chartkick'
 
 # Adds general machine learning capabilities.
@@ -77,12 +78,11 @@ gem 'wkhtmltoimage-binary'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  gem 'pry-rails'
 end
 
 group :development do
-  gem 'better_errors'
-  gem 'binding_of_caller', require: false
+  # gem 'better_errors'
+  # gem 'binding_of_caller', require: false
   gem 'rack-mini-profiler', require: false
   gem 'flamegraph', require: false
   gem 'fast_stack', require: false
@@ -99,13 +99,12 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 group :test do
   gem 'capybara-angular'
   gem 'capybara-screenshot'
-  gem 'poltergeist', '~> 1.13.0'
+  gem 'poltergeist', '~> 1.16.0'
   gem 'phantomjs', require: 'phantomjs/poltergeist'
   gem 'minitest'
   gem 'minitest-line'
   gem 'simplecov', require: false
   gem 'webmock', require: false
-  gem 'codeclimate-test-reporter'
   # See: https://github.com/myronmarston/vcr
   gem 'vcr'
   gem 'rails-controller-testing'

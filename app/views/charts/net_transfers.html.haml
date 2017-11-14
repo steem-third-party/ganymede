@@ -13,12 +13,15 @@
                   &nbsp;&nbsp;&nbsp;
                 .form-group
                   %label{for: :days} Days:
-                  = number_field_tag :days, @days, class: 'form-control form-control-sm', style: 'width: 48px'
+                  = number_field_tag :days, @days, class: 'form-control form-control-sm', style: 'width: 64px'
                   &nbsp;&nbsp;&nbsp;
                 .form-group
                   %label{for: :compare_to} Compare to:
                   = text_field_tag :compare_to, @compare_to, class: 'form-control form-control-sm', style: 'width: 128px'
                   &nbsp;&nbsp;&nbsp;
+                .form-group
+                  %label{for: :segments} Segments:
+                  = select_tag :segments, options_for_select([['Default', 'default'], ['Hourly', 'hourly']], @segments)
                   = submit_tag 'Draw', class: 'btn btn-primary'
         
         %h1
@@ -34,13 +37,13 @@
 
         %small
           - if @compare_to.present?
-            = @days < 2 ? 'Hourly' : 'Daily'
+            = @segments == 'hourly' ? 'Hourly' : 'Daily'
             = @account_name
             average:
             = '%.3f' % @average
             = @symbol
             %br
-            = @days < 2 ? 'Hourly' : 'Daily'
+            = @segments == 'hourly' ? 'Hourly' : 'Daily'
             = @compare_to
             average:
             = '%.3f' % @compare_to_average
