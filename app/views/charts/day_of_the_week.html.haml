@@ -23,7 +23,7 @@
         
         %h1
           Day of the Week for
-          = link_to "@#{@account_name}", "https://steemit.com/@#{@account_name}"
+          = link_to "@#{@account_name}", "#{site_prefix}/@#{@account_name}"
           = surround '(', ')' do
             = pluralize(@days, 'Day')
 

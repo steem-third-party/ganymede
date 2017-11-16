@@ -26,7 +26,7 @@
         
         %h1
           Net Transfers to
-          = link_to "@#{@account_name}", "https://steemit.com/@#{@account_name}"
+          = link_to "@#{@account_name}", "#{site_prefix}/@#{@account_name}"
           = surround '(', ')' do
             = pluralize(@days, 'Day')
 
