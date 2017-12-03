@@ -23,7 +23,7 @@ class DiscussionsController < ApplicationController
     @flagged_by = params[:flagged_by].presence || ''
     @order_by = params[:order_by].presence || ''
 
-    @discussions = []
+    @discussions = comments.none
     
     other_promoted if @other_promoted == 'true'
     predicted if @predicted == 'true'
@@ -226,7 +226,7 @@ private
   
   def mentions
     @account_names = params[:account_names]
-    @after = Time.parse(params[:after]) rescue 2.hours.ago
+    @after = (Time.parse(params[:after]) rescue 2.hours.ago).to_date
     @discussions = if !!@account_names
       options = {
         with: FindMentionsJob, account_names: @account_names, after: @after,
@@ -235,12 +235,12 @@ private
       
       discussions(options)
     else
-      []
+      comments.none
     end
     
     page = params[:page] || 1
     per = @limit.to_i
-    @discussions = Kaminari.paginate_array(@discussions).page(page).per(per)
+    @discussions = @discussions.paginate(page: page, per_page: per)
     
     render_discussions(:mentions)
   end
@@ -278,5 +278,13 @@ private
     end
     
     send_data urls.join("\n"), filename: "#{filename}.txt", content_type: 'text/plain', disposition: :attachment
+  end
+  
+  def comments
+    if steemit?
+      SteemApi::Comment
+    elsif golos?
+      GolosCloud::Comment
+    end
   end
 end

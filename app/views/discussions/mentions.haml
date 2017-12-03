@@ -14,20 +14,20 @@
             .row
               .form-group
                 %label{for: :account_names} Account Names:
-                = text_field_tag :account_names, @account_names, class: 'form-control form-control-sm', style: 'width: 480px'
+                = text_field_tag :account_names, @account_names, class: 'form-control form-control-sm', style: 'width: 240px'
                 &nbsp;&nbsp;&nbsp;
               .form-group
                 %label{for: :after} After:
-                = text_field_tag :after, @after, class: 'form-control form-control-sm', style: 'width: 192px'
+                = text_field_tag :after, @after, class: 'form-control form-control-sm', style: 'width: 96px'
                 &nbsp;&nbsp;&nbsp;
               .form-group
                 %label{for: :limit} Limit:
                 = number_field_tag :limit, @limit, class: 'form-control form-control-sm', style: 'width: 96px'
                 &nbsp;&nbsp;&nbsp;
-              -# .form-group
-              -#   %label{for: :min_reputation} Minimum Reputation:
-              -#   = number_field_tag :min_reputation, @min_reputation, class: 'form-control form-control-sm', style: 'width: 48px'
-              -#   &nbsp;&nbsp;&nbsp;
+              .form-group
+                %label{for: :min_reputation} Minimum Reputation:
+                = number_field_tag :min_reputation, @min_reputation, class: 'form-control form-control-sm', style: 'width: 48px'
+                &nbsp;&nbsp;&nbsp;
               -# .form-group
               -#   %label{for: :tag} Tag:
               -#   = select_tag :tag, tags_for_select(@tag), class: 'form-control form-control-sm'
@@ -41,7 +41,9 @@
 
         %small
           %ul
-            - @discussions.each do |discussion|
+            -# Save transfer time by only selecting the columns we need.
+            - cols = %w(parent_author parent_permlink title permlink author author_reputation)
+            - @discussions.select(cols).each do |discussion|
               %li
                 - if discussion[:parent_author] == ''
                   - url = "#{site_prefix}/#{discussion[:parent_permlink]}/@#{discussion[:author]}/#{discussion[:permlink]}"
@@ -49,5 +51,8 @@
                 - else
                   - url = "#{site_prefix}/#{discussion[:parent_permlink]}/@#{discussion[:author]}/#{discussion[:permlink]}"
                   = link_to 'Comment', url
+                by
+                = link_to discussion[:author], "#{site_prefix}/@#{discussion[:author]}"
+                %font.reputation= to_rep discussion[:author_reputation]
                   
-        = will_paginate @discussions, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'pagination-lg'
+        = will_paginate @discussions.select(:id), :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'pagination-lg'
