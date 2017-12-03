@@ -1,7 +1,6 @@
 %ul.nav.nav-tabs
   %li.nav-item= link_to 'First Post', discussions_url(first_post: true), class: discussion_active_class(:first_post, ['nav-link'])
-  - if steemit?
-    %li.nav-item= link_to 'Mentions', discussions_url(mentions: true), class: discussion_active_class(:mentions, ['nav-link'])
+  %li.nav-item= link_to 'Mentions', discussions_url(mentions: true), class: discussion_active_class(:mentions, ['nav-link'])
   %li.nav-item= link_to 'Vote Ready', discussions_url(vote_ready: true), class: discussion_active_class(:vote_ready, ['nav-link'])
   %li.nav-item= link_to 'Promoted by Third Parties', discussions_url(other_promoted: true), class: discussion_active_class(:other_promoted, ['nav-link'])
   %li.nav-item= link_to 'Predicted to Trend', discussions_url(predicted: true), class: discussion_active_class(:predicted, ['nav-link'])
