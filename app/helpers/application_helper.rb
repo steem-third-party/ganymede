@@ -97,6 +97,8 @@ module ApplicationHelper
     MvestsLookupJob.latest_mvests(placeholder)
   end
   
+  # Converts a raw reputation score to a reputation level, e.g.:
+  # 119307203632653 -> 70
   def to_rep(raw)
     raw = raw.to_i
     neg = raw < 0
@@ -105,6 +107,16 @@ module ApplicationHelper
     level = (neg ? -1 : 1) * level
     level = (level * 9) + 25
     level.to_i
+  end
+  
+  # Converts a reputation level to a raw reputation score, e.g.:
+  # 70 -> 119307203632653
+  def from_level(level)
+    level = level.to_f
+    neg = level < 0
+    raw = (neg ? level + 25 : level - 25) / 9
+    raw = [raw + 9, 0].max
+    (raw = 10 ** raw).to_i
   end
 
   def base_value(raw)
