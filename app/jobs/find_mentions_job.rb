@@ -13,7 +13,7 @@ class FindMentionsJob < ApplicationJob
     only_posts = options[:only_posts].presence || true
     exclude_tags = options[:exclude_tags].presence || ''
     account_names = options[:account_names].presence || ''
-    after = options[:after] || 2.hours.ago.to_date
+    after = options[:after] || 2.days.ago.to_date
 
     account_names = account_names.split(' ')
     match = comments.where("created >= ?", after.beginning_of_day)
