@@ -51,6 +51,18 @@
     color: #666;
     box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
   }
+  .dosbox-container {
+    width: 640px;
+    height: 400px;
+    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
+    margin: 4em auto 0;
+  }
+  .dosbox-container > .dosbox-overlay {
+    background: url(https://js-dos.com/cdn/digger.png);
+  }
+  .dosbox-start {
+    font-size: 35px !important;
+  }
   </style>
 </head>
 
@@ -62,5 +74,21 @@
     </div>
     <p>If you are the application owner check the logs for more information.</p>
   </div>
+  <div id="dosbox"></div>
+  <br/>
+  <button onclick="dosbox.requestFullScreen();">Make fullscreen</button>
+
+  <script type="text/javascript" src="https://js-dos.com/cdn/js-dos-api.js"></script>
+  <script type="text/javascript">
+    var dosbox = new Dosbox({
+      id: "dosbox",
+      onload: function (dosbox) {
+        dosbox.run("https://js-dos.com/cdn/digger.zip", "./DIGGER.COM");
+      },
+      onrun: function (dosbox, app) {
+        console.log("App '" + app + "' is runned");
+      }
+    });
+  </script>
 </body>
 </html>
