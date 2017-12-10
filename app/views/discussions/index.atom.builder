@@ -4,12 +4,16 @@ atom_feed do |feed|
     
   @discussions.each do |d|
     cache ['atom-discussion', d] do
-      feed.entry(d, url: "#{site_prefix}#{d[:url]}", published: d[:timestamp], updated: d[:timestamp], id: d[:slug]) do |entry|
+      timestamp = d[:timestamp] || d[:created]
+      slug = d[:slug] || "#{d[:author]}/#{d[:permlink]}"
+      from = d[:from] || d[:author]
+      
+      feed.entry(d, url: "#{site_prefix}#{d[:url]}", published: timestamp, updated: timestamp, id: slug) do |entry|
         entry.title d[:title]
-        entry.content "<p>#{markdown(d[:content])}</p>"
+        entry.content "<p>#{markdown(d[:content] || d[:body])}</p>"
         entry.author do |author|
-          author.name "@#{d[:from]}"
-          author.blog "#{site_prefix}/@#{d[:from]}"
+          author.name "@#{from}"
+          author.blog "#{site_prefix}/@#{from}"
           author.reputation d[:author_reputation] if !!d[:author_reputation]
         end
       end
