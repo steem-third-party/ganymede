@@ -35,8 +35,8 @@ gem 'jbuilder', '~> 2.5'
 
 # Access the STEEM blockchain.
 gem 'radiator'
-gem 'steem_api', github: 'steem-third-party/steem_api'
-gem 'golos_cloud'
+gem 'steem_api', '1.1.1rc1'
+gem 'golos_cloud', '1.1.1rc1'
 gem 'chartkick'
 
 # Adds general machine learning capabilities.
