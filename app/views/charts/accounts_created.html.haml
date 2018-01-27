@@ -31,5 +31,10 @@
           = line_chart @account_creates
 
         %small
-          Average:
-          = '%.3f' % @average
+          Total:
+          = @total
+          - unless @segments == 'hourly'
+            \|
+            Average:
+            = @average
+            per day

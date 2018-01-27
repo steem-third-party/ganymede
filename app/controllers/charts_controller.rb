@@ -77,7 +77,8 @@ class ChartsController < ApplicationController
     end
     @account_creates = @account_creates.count(:all)
     @days = @account_creates.size - 1 unless @segments == 'hourly'
-    @average = @account_creates.values.sum / @days
+    @total = @account_creates.values.sum
+    @average = @total / @days
     
     case @style
     when 'cumlative'
