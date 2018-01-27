@@ -19,4 +19,6 @@ Rails.application.routes.draw do
       get :day_of_the_week
     end
   end
+  
+  get 'chart/accounts_created', to: 'charts#accounts_created'
 end

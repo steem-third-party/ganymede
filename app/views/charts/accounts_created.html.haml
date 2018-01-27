@@ -1,0 +1,35 @@
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
+
+        %div.float-right
+          .row
+            .col-sm-12
+              = form_tag chart_accounts_created_path, method: :get, class: 'form-inline' do
+                .form-group
+                  %label{for: :days} Days:
+                  = number_field_tag :days, @days, class: 'form-control form-control-sm', style: 'width: 64px'
+                  &nbsp;&nbsp;&nbsp;
+                .form-group
+                  %label{for: :segments} Segments:
+                  = select_tag :segments, options_for_select([['Default', 'default'], ['Hourly', 'hourly']], @segments)
+                  &nbsp;&nbsp;&nbsp;
+                .form-group
+                  %label{for: :style} Style:
+                  = select_tag :style, options_for_select([['Default', 'default'], ['Cumlative', 'cumlative']], @style)
+                  = submit_tag 'Draw', class: 'btn btn-primary'
+        
+        %h1
+          Accounts Created
+          = surround '(', ')' do
+            = pluralize(@days, 'Day')
+
+        - if @style == 'cumlative'
+          = area_chart @account_creates
+        - else
+          = line_chart @account_creates
+
+        %small
+          Average:
+          = '%.3f' % @average

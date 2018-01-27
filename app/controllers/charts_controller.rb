@@ -58,6 +58,35 @@ class ChartsController < ApplicationController
       {name: @compare_to, data: @compare_to_net_transfers}
     ]
   end
+  
+  def accounts_created
+    @days = (params[:days] || '14.0').to_f
+    @segments = params[:segments] || 'default'
+    @average = 0
+    @style = params[:style] || 'default'
+    
+    if @days < 2 && @segments == 'default'
+      @segments = 'hourly'
+    end
+    
+    @account_creates = account_creates.where('timestamp > ?', @days.day.ago)
+    @account_creates = if @segments == 'hourly'
+      @account_creates.group("FORMAT(timestamp, 'HH')").order('format_timestamp_hh')
+    else
+      @account_creates.group('CAST(timestamp AS DATE)').order('cast_timestamp_as_date')
+    end
+    @account_creates = @account_creates.count(:all)
+    @days = @account_creates.size - 1 unless @segments == 'hourly'
+    @average = @account_creates.values.sum / @days
+    
+    case @style
+    when 'cumlative'
+      total = 0
+      @account_creates.each do |k, v|
+        @account_creates[k] = (total += v)
+      end
+    end
+  end
 private
   def build_net_transfers(account_name, symbol, days, segments)
     bids = transfers.where(to: account_name, amount_symbol: symbol)
@@ -123,6 +152,14 @@ private
       SteemApi::Tx::Transfer
     elsif golos?
       GolosCloud::Tx::Transfer
+    end
+  end
+  
+  def account_creates
+    if steemit?
+      SteemApi::Tx::AccountCreate
+    elsif golos?
+      GolosCloud::Tx::AccountCreate
     end
   end
 end
