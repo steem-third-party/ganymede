@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root to: 'static#index'
   get :favicon, to: 'static#favicon'
   get :mvests, to: 'static#mvests'
-  
+
   resources :static, only: :index
   resources :discussions, only: :index do
     collection do
@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       get :day_of_the_week
     end
   end
-  
+
   get 'chart/accounts_created', to: 'charts#accounts_created'
+  get 'chart/accounts_last_bandwidth_updated', to: 'charts#accounts_last_bandwidth_updated'
 end
