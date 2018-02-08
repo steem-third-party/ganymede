@@ -4,3 +4,4 @@
   %li.nav-item= link_to 'Downvoted', accounts_url(downvoted: true, account_names: @account_names), class: account_active_class(:downvoted, ['nav-link'])
   %li.nav-item= link_to 'Unvoted', accounts_url(unvoted: true, account_names: @account_names), class: account_active_class(:unvoted, ['nav-link'])
   %li.nav-item= link_to (steemit? ? 'MVESTS' : 'MGESTS'), accounts_url(mvests: true, account_names: @account_names), class: account_active_class(:mvests, ['nav-link'])
+  %li.nav-item= link_to ('Crosscheck'), accounts_url(crosscheck: true, account_names: @account_names), class: account_active_class(:crosscheck, ['nav-link'])

@@ -1,0 +1,43 @@
+= render partial: 'nav'
+- total = 0
+.card.border-top-0{style: 'padding-top: 0'}
+  .card-block
+    .row
+      .col-md-12
+
+        %div.float-right
+          = form_tag accounts_path, method: :get do
+            = hidden_field_tag :crosscheck, true
+            = text_field_tag :account_names, @account_names, size: 50
+            = submit_tag 'Query', class: 'btn btn-primary'
+
+        %br
+        %br
+        
+        - if !!@accounts
+        
+          - @accounts.each do |account|
+          
+            %h3= account
+
+            %h4 Power Downs
+            %pre
+              %code= @powerdowns[account]
+
+            %h4 Power Ups
+            %pre
+              %code= @powerups[account]
+
+            %h4 Transfers
+            %pre
+              %code= @transfers[account]
+
+            %h4 Vesting From
+            %pre
+              %code= @vesting_from[account]
+
+            %h4 Vesting To
+            %pre
+              %code= @vesting_to[account]
+            
+            %hr
