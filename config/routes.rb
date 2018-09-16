@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       get :card
     end
   end
+  resources :blocks, only: :index
   resources :follows, only: :index
   resources :accounts, only: :index
   resources :transfers, only: :index

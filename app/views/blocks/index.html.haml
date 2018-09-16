@@ -1,0 +1,33 @@
+= form_tag blocks_path, method: :get, class: 'form-inline' do
+  = hidden_field_tag :transaction_type, :transfer
+  .row
+    .col-md-12
+      Find blocks with transfers:
+  .row
+    .col-md-12
+      %div.float-right
+        .form-group
+          %label{for: :from} From:
+          = text_field_tag :from, @from, class: 'form-control form-control-sm', style: 'width: 240px'
+          &nbsp;&nbsp;&nbsp;
+          %label{for: :to} To:
+          = text_field_tag :to, @to, class: 'form-control form-control-sm', style: 'width: 240px'
+          &nbsp;&nbsp;&nbsp;
+          %label{for: :memo} Memo:
+          = text_field_tag :memo, @memo, class: 'form-control form-control-sm', style: 'width: 240px'
+          &nbsp;&nbsp;&nbsp;
+        = submit_tag 'Query', class: 'btn btn-primary'
+
+  .row
+    .col-md-12
+      %br
+      %br
+
+      - if !!@transactions
+        %ul
+        - @transactions.each do |trx|
+          %li
+            %code
+              = link_to "https://steemd.com/b/#{trx.block_num}", "https://steemd.com/b/#{trx.block_num}"
+              %br
+              block_num: #{trx.block_num}; transaction_num: #{trx.transaction_num}; expiration: #{trx.expiration}
